@@ -3,611 +3,1240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ForgeAI — AI Website Builder</title>
+<title>ForgeAI — Private AI Website Studio</title>
 
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#08090d;color:#fff;font-family:Inter,Arial,sans-serif}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-
-header{
-height:64px;padding:0 20px;display:flex;align-items:center;
-justify-content:space-between;background:#0d0e13;
-border-bottom:1px solid #292b35;position:sticky;top:0;z-index:20
+:root{
+  --bg:#07080c;
+  --panel:#0e1016;
+  --panel2:#131620;
+  --line:#252936;
+  --muted:#8b91a1;
+  --text:#f7f7fb;
+  --purple:#8b5cf6;
+  --purple2:#a78bfa;
+  --green:#45d483;
+  --danger:#ff6b7a;
 }
 
-.logo{font-size:23px;font-weight:900}
-.logo span{color:#8b5cf6}
-.badge{font-size:12px;color:#888}
-
-.wrap{max-width:1500px;margin:auto;padding:18px}
-
-.grid{
-display:grid;
-grid-template-columns:380px minmax(0,1fr);
-gap:18px
+*{
+  box-sizing:border-box;
 }
 
-.panel{
-background:#111217;
-border:1px solid #292b35;
-border-radius:16px;
-padding:18px;
-min-width:0
+html,body{
+  margin:0;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,
+  BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
-h2{margin:0 0 14px;font-size:20px}
-
-label{
-display:block;
-margin:14px 0 7px;
-color:#aaa;
-font-size:12px;
-font-weight:700
+button,input,textarea{
+  font:inherit;
 }
 
-input,textarea{
-width:100%;
-background:#181a21;
-color:#fff;
-border:1px solid #30323d;
-border-radius:10px;
-padding:12px;
-outline:0
+button{
+  cursor:pointer;
 }
 
-input:focus,textarea:focus{border-color:#8b5cf6}
-
-textarea{
-height:230px;
-resize:vertical;
-line-height:1.5
+.app{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:230px 1fr;
 }
 
-.row{display:flex;gap:8px}
-.row input{min-width:0}
+/* SIDEBAR */
+
+.sidebar{
+  border-right:1px solid var(--line);
+  background:#0a0b10;
+  padding:18px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.brand{
+  font-weight:900;
+  font-size:21px;
+  padding:4px 8px;
+}
+
+.brand i{
+  font-style:normal;
+  color:var(--purple2);
+}
+
+.private{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:#65dfa0;
+  background:#102218;
+  border:1px solid #1b4930;
+  padding:7px 9px;
+  border-radius:8px;
+  text-align:center;
+}
+
+.nav{
+  display:grid;
+  gap:5px;
+}
+
+.nav button{
+  border:1px solid transparent;
+  background:transparent;
+  color:#a6abba;
+  text-align:left;
+  padding:11px 12px;
+  border-radius:9px;
+}
+
+.nav button:hover,
+.nav button.active{
+  background:#171923;
+  color:#fff;
+  border-color:#292d39;
+}
+
+.nav button.active{
+  box-shadow:inset 2px 0 var(--purple);
+}
+
+.sideBottom{
+  margin-top:auto;
+  border-top:1px solid var(--line);
+  padding-top:14px;
+}
+
+.user{
+  font-size:12px;
+  color:#aaa;
+  padding:8px;
+}
+
+/* MAIN */
+
+.main{
+  min-width:0;
+}
+
+.topbar{
+  height:68px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  background:#0b0c11;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.crumb{
+  font-size:13px;
+  color:#8f95a5;
+}
+
+.crumb b{
+  color:#fff;
+}
+
+.topActions{
+  display:flex;
+  gap:8px;
+}
+
+/* BUTTONS */
 
 .btn{
-border:1px solid #343641;
-background:#22242d;
-color:#fff;
-border-radius:10px;
-padding:10px 12px;
-font-weight:700
+  border:1px solid #303441;
+  background:#171922;
+  color:#eee;
+  padding:9px 12px;
+  border-radius:9px;
+  font-weight:700;
+  font-size:12px;
 }
 
 .btn:hover{
-border-color:#8b5cf6;
-background:#292b36
+  border-color:#6f54c7;
+  background:#1d1f2a;
 }
 
-.primary{
-width:100%;
-margin-top:14px;
-border:0;
-border-radius:10px;
-padding:14px;
-background:linear-gradient(135deg,#713cf2,#9b5cff);
-color:#fff;
-font-weight:800
+.btn.primary{
+  border:0;
+  background:linear-gradient(135deg,#7040ef,#9b61ff);
 }
 
-.primary:disabled{opacity:.5;cursor:wait}
+.btn.green{
+  color:#76e7ad;
+  border-color:#24583d;
+}
+
+/* WORKSPACE */
+
+.workspace{
+  padding:18px;
+  display:grid;
+  grid-template-columns:
+    minmax(280px,350px)
+    minmax(420px,1fr)
+    minmax(280px,360px);
+  gap:14px;
+  min-height:calc(100vh - 68px);
+}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:14px;
+  min-width:0;
+}
+
+.cardHead{
+  padding:14px 15px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.cardHead h3{
+  margin:0;
+  font-size:13px;
+}
+
+.muted{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.body{
+  padding:14px;
+}
+
+/* INPUTS */
+
+label{
+  display:block;
+  font-size:11px;
+  font-weight:800;
+  color:#aeb3c1;
+  margin:12px 0 7px;
+}
+
+textarea,
+input{
+  width:100%;
+  background:#11131b;
+  border:1px solid #2b2f3b;
+  color:#fff;
+  border-radius:9px;
+  padding:10px;
+  outline:none;
+}
+
+textarea:focus,
+input:focus{
+  border-color:var(--purple);
+}
+
+textarea{
+  height:170px;
+  resize:vertical;
+  line-height:1.5;
+}
+
+.row{
+  display:flex;
+  gap:7px;
+}
+
+.row>*{
+  min-width:0;
+}
+
+.row input{
+  flex:1;
+}
 
 .status{
-min-height:22px;
-margin-top:10px;
-font-size:12px;
-color:#aaa
+  font-size:11px;
+  color:#858b99;
+  min-height:20px;
+  margin-top:8px;
 }
 
-.ok{color:#68dda0}
-.err{color:#ff7777}
-
-.actions{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:7px;
-margin-top:9px
+.ok{
+  color:#61df9e;
 }
 
-.small{
-margin-top:12px;
-color:#777;
-font-size:11px;
-line-height:1.5
+.err{
+  color:#ff7885;
+}
+
+.promptActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-top:8px;
+}
+
+.wide{
+  width:100%;
+  margin-top:8px;
 }
 
 /* PREVIEW */
 
-.previewHead{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-margin-bottom:12px
+.preview{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
 }
 
-.previewHead h2{margin:0}
-
-.previewActions{
-display:flex;
-gap:7px
-}
-
-.deviceTabs{
-display:flex;
-justify-content:center;
-gap:7px;
-margin-bottom:12px;
-padding:6px;
-background:#0b0c10;
-border:1px solid #292b35;
-border-radius:11px;
+.previewTools{
+  display:flex;
+  gap:5px;
 }
 
 .device{
-border:1px solid transparent;
-background:transparent;
-color:#999;
-padding:9px 15px;
-border-radius:8px;
-font-size:12px;
-font-weight:800
+  padding:7px 9px;
+  font-size:11px;
 }
 
-.device:hover{color:#fff}
-
 .device.active{
-background:#713cf2;
-color:#fff;
-border-color:#713cf2
+  background:var(--purple);
+  border-color:var(--purple);
+  color:white;
 }
 
 .previewArea{
-width:100%;
-min-height:720px;
-display:flex;
-justify-content:center;
-align-items:flex-start;
-overflow:auto;
-background:
-radial-gradient(circle at top,#242631,#08090d 70%);
-padding:15px;
-border-radius:12px;
-border:1px solid #30323d
+  flex:1;
+  min-height:680px;
+  padding:12px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  overflow:auto;
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      #202432,
+      #090a0f 65%
+    );
+  border-radius:0 0 14px 14px;
 }
 
-.previewDevice{
-width:100%;
-height:690px;
-background:#fff;
-border-radius:7px;
-overflow:hidden;
-box-shadow:0 15px 50px rgba(0,0,0,.4);
-transition:width .3s ease
+.frame{
+  height:650px;
+  width:100%;
+  background:#fff;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 18px 60px #0009;
+  transition:.25s;
 }
 
-#preview{
-width:100%;
-height:100%;
-border:0;
-display:none;
-background:#fff
+.frame iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  background:#fff;
 }
 
 .empty{
-width:100%;
-height:690px;
-display:flex;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-text-align:center;
-color:#777;
-padding:25px
+  height:100%;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  color:#777;
+  padding:30px;
 }
 
-.emptyIcon{font-size:48px;margin-bottom:10px}
-.empty b{font-size:19px;color:#ddd}
+.emptyIcon{
+  font-size:42px;
+}
+
+.empty b{
+  display:block;
+  color:#ddd;
+  margin:8px 0;
+}
+
 .empty p{
-max-width:420px;
-font-size:13px;
-line-height:1.5
+  max-width:380px;
+  font-size:12px;
+  line-height:1.5;
 }
 
-/* CODE */
+/* AI CHAT */
 
-.code{margin-top:18px}
-
-.codeHead{
-display:flex;
-justify-content:space-between;
-align-items:center
+.chatTabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-bottom:1px solid var(--line);
 }
 
-pre{
-margin:12px 0 0;
-padding:14px;
-background:#08090d;
-border:1px solid #292b35;
-border-radius:10px;
-max-height:450px;
-overflow:auto;
-white-space:pre-wrap;
-word-break:break-word;
-color:#ddd;
-font:12px/1.5 monospace
+.chatTabs button{
+  background:transparent;
+  border:0;
+  color:#8e94a3;
+  padding:12px;
+  font-weight:800;
+  font-size:11px;
 }
 
-/* FULLSCREEN */
+.chatTabs button.active{
+  color:#fff;
+  background:#171923;
+  border-bottom:2px solid var(--purple);
+}
+
+.chat{
+  display:flex;
+  flex-direction:column;
+  height:calc(100% - 48px);
+}
+
+.messages{
+  flex:1;
+  overflow:auto;
+  padding:13px;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  min-height:300px;
+}
+
+.msg{
+  max-width:92%;
+  padding:10px 11px;
+  border-radius:10px;
+  font-size:11px;
+  line-height:1.5;
+  white-space:pre-wrap;
+}
+
+.msg.ai{
+  background:#171923;
+  border:1px solid #292d39;
+  color:#dce0e9;
+}
+
+.msg.user{
+  margin-left:auto;
+  background:#6136d5;
+}
+
+.chatInput{
+  padding:10px;
+  border-top:1px solid var(--line);
+  display:flex;
+  gap:7px;
+}
+
+.chatInput textarea{
+  height:62px;
+  resize:none;
+}
+
+/* REVIEW */
+
+.review{
+  display:grid;
+  gap:8px;
+}
+
+.reviewItem{
+  border:1px solid #292d38;
+  background:#11131a;
+  border-radius:10px;
+  padding:10px;
+}
+
+.reviewItem b{
+  font-size:11px;
+}
+
+.reviewItem p{
+  font-size:10px;
+  color:#9ea4b2;
+  margin:5px 0 8px;
+}
+
+.pill{
+  font-size:9px;
+  color:#8ee9b8;
+  background:#102218;
+  border:1px solid #1c4b32;
+  padding:3px 6px;
+  border-radius:20px;
+}
+
+.history{
+  margin-top:12px;
+}
+
+.version{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:9px 0;
+  border-bottom:1px solid #20232c;
+  font-size:11px;
+}
+
+.version:last-child{
+  border:0;
+}
+
+/* MODAL */
 
 .modal{
-position:fixed;
-inset:0;
-background:#050507;
-z-index:100;
-display:none;
-flex-direction:column
+  position:fixed;
+  inset:0;
+  background:#05060aee;
+  display:none;
+  z-index:100;
+  padding:20px;
 }
 
-.modal.open{display:flex}
-
-.modalBar{
-height:60px;
-flex:none;
-padding:0 12px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-background:#0d0e13;
-border-bottom:1px solid #292b35
+.modal.open{
+  display:flex;
+  flex-direction:column;
 }
 
-.modalBarActions{
-display:flex;
-gap:7px
+.modalTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px;
 }
 
 .modal iframe{
-width:100%;
-flex:1;
-border:0;
-background:#fff
+  flex:1;
+  border:0;
+  background:#fff;
+  border-radius:10px;
 }
 
 /* TOAST */
 
 .toast{
-position:fixed;
-left:50%;
-bottom:20px;
-transform:translate(-50%,20px);
-opacity:0;
-background:#181a21;
-border:1px solid #3a3c47;
-padding:11px 15px;
-border-radius:10px;
-z-index:200;
-transition:.2s;
-pointer-events:none;
-font-size:12px
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  background:#171922;
+  border:1px solid #353947;
+  padding:10px 14px;
+  border-radius:9px;
+  font-size:11px;
+  z-index:200;
+  transition:.2s;
 }
 
 .toast.show{
-opacity:1;
-transform:translate(-50%,0)
+  opacity:1;
+  transform:translate(-50%,0);
 }
 
 /* RESPONSIVE */
 
-@media(max-width:1000px){
-.grid{grid-template-columns:1fr}
+@media(max-width:1200px){
+
+.workspace{
+  grid-template-columns:
+    300px
+    minmax(420px,1fr);
 }
 
-@media(max-width:700px){
-.wrap{padding:10px}
-
-.panel{padding:14px}
-
-.badge{display:none}
-
-.previewHead{
-flex-direction:column;
-align-items:stretch
+.rightCol{
+  grid-column:1/-1;
+  min-height:480px;
 }
 
-.previewActions{
-display:grid;
-grid-template-columns:1fr 1fr
+.chat{
+  height:480px;
+}
+
+}
+
+@media(max-width:800px){
+
+.app{
+  display:block;
+}
+
+.sidebar{
+  display:none;
+}
+
+.topbar{
+  padding:0 12px;
+}
+
+.workspace{
+  display:flex;
+  flex-direction:column;
+  padding:10px;
+}
+
+.leftCol,
+.rightCol,
+.preview{
+  width:100%;
 }
 
 .previewArea{
-min-height:620px
+  min-height:600px;
 }
 
-.previewDevice{
-height:590px
+.frame{
+  height:570px;
 }
 
-.empty{
-height:590px
+.rightCol{
+  min-height:500px;
 }
 
-.deviceTabs{
-overflow-x:auto;
-justify-content:flex-start
+.chat{
+  height:500px;
 }
 
-.device{
-white-space:nowrap
+.topActions .btn:nth-child(1){
+  display:none;
 }
+
 }
 
 @media(max-width:500px){
-.row{flex-direction:column}
 
-.row .btn{width:100%}
-
-.actions{
-grid-template-columns:1fr 1fr
+.topbar{
+  height:auto;
+  min-height:62px;
+  gap:8px;
 }
 
-.actions .btn:last-child{
-grid-column:1/-1
+.crumb{
+  font-size:11px;
 }
 
-.modalBar{
-font-size:11px
+.topActions{
+  gap:4px;
 }
 
-.modalBarActions .btn{
-padding:8px
+.topActions .btn{
+  padding:7px 8px;
 }
+
+.previewTools{
+  overflow-x:auto;
+}
+
+.device{
+  white-space:nowrap;
+}
+
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<div class="logo">⚡ Forge<span>AI</span></div>
-<div class="badge">AI Website Generator</div>
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<div class="brand">
+⚡ Forge<i>AI</i>
+</div>
+
+<div class="private">
+Private Agency Edition
+</div>
+
+<nav class="nav">
+
+<button class="active">
+✦ AI Studio
+</button>
+
+<button>
+▦ Projects
+</button>
+
+<button>
+♙ Clients
+</button>
+
+<button>
+◈ Templates
+</button>
+
+<button>
+◆ Brand Kits
+</button>
+
+<button>
+⚙ Settings
+</button>
+
+</nav>
+
+<div class="sideBottom">
+
+<div class="user">
+Agency Workspace<br>
+<span class="muted">
+Production environment
+</span>
+</div>
+
+</div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<header class="topbar">
+
+<div class="crumb">
+<b>AI Studio</b>
+/
+New Client Website
+</div>
+
+<div class="topActions">
+
+<button class="btn green">
+● AI Engine Connected
+</button>
+
+<button class="btn" id="exportBtn">
+Export
+</button>
+
+<button class="btn primary" id="saveVersion">
+Save Version
+</button>
+
+</div>
+
 </header>
 
-<main class="wrap">
 
-<div class="grid">
+<section class="workspace">
 
-<!-- LEFT PANEL -->
 
-<section class="panel">
+<!-- CLIENT BRIEF -->
 
-<h2>✨ Create Website</h2>
+<div class="leftCol card">
 
-<label> API Key</label>
+<div class="cardHead">
 
-<div class="row">
+<h3>
+Client Brief
+</h3>
+
+<span class="pill">
+AI READY
+</span>
+
+</div>
+
+
+<div class="body">
+
+<label>
+PROJECT NAME
+</label>
+
 <input
-id="apiKey"
-type="password"
-placeholder="Paste Gemini API key">
-<button class="btn" id="save">Save</button>
-</div>
+id="project"
+value="Luxury Kitchen Studio"
+>
 
-<div id="apiStatus" class="small">
-No saved key.
-</div>
 
-<label>Describe your website</label>
+<label>
+CLIENT
+</label>
 
-<textarea id="prompt" placeholder="Create a premium luxury kitchen remodeling website for a company in Dallas, Texas.
+<input
+id="client"
+value="Dallas Kitchen Co."
+>
+
+
+<label>
+WEBSITE BRIEF
+</label>
+
+<textarea id="prompt">Create a premium luxury kitchen remodeling website for a company in Dallas, Texas.
 
 Use black, ivory and gold.
 
-Include:
-Hero
-Services
-About
-Projects
-Testimonials
-Process
-FAQ
-Quote CTA
-Contact
-Footer
+Include Hero, Services, About, Projects, Testimonials, Process, FAQ, Quote CTA and Contact.
 
-Make it look like a $5,000+ professional agency website.
+Make it feel like a high-end agency website.</textarea>
 
-Make every button and interaction functional."></textarea>
 
-<button class="primary" id="generate">
-✨ Generate Website
-</button>
+<label>
+GEMINI API KEY — PROTOTYPE ONLY
+</label>
 
-<div id="status" class="status"></div>
+<div class="row">
 
-<div class="actions">
-
-<button class="btn" id="copy">
-📋 Copy
-</button>
-
-<button class="btn" id="download">
-💾 Download
-</button>
-
-<button class="btn" id="regenerate">
-🔄 Regenerate
-</button>
-
-</div>
+<input
+id="apiKey"
+type="password"
+placeholder="Paste key"
+>
 
 <button
 class="btn"
-id="clear"
-style="width:100%;margin-top:8px">
-Remove API Key
-</button>
-
-<div class="small">
-Your API key is stored only in this browser.<br><br>
-For a production SaaS, use a secure backend.
-</div>
-
-</section>
-
-
-<!-- RIGHT PANEL -->
-
-<section class="panel">
-
-<div class="previewHead">
-
-<h2>Live Preview</h2>
-
-<div class="previewActions">
-
-<button class="btn" id="fullscreen">
-↗ Full Screen
-</button>
-
-<button class="btn" id="newtab">
-↗ New Tab
+id="saveKey">
+Save
 </button>
 
 </div>
 
+<div
+id="keyStatus"
+class="status">
+No key saved.
 </div>
 
 
-<!-- DEVICE SWITCHER -->
+<button
+class="btn primary wide"
+id="generate">
+✨ Generate Website
+</button>
 
-<div class="deviceTabs">
+<div
+id="status"
+class="status">
+</div>
+
+
+<div class="promptActions">
 
 <button
-class="device active"
-data-width="100%">
-🖥 Desktop
+class="btn"
+id="copy">
+Copy HTML
 </button>
 
 <button
-class="device"
-data-width="768px">
-▣ Tablet
+class="btn"
+id="download">
+Download
 </button>
 
+</div>
+
+
 <button
-class="device"
-data-width="390px">
-📱 Mobile
+class="btn wide"
+id="clearKey">
+Remove saved key
 </button>
+
+
+<div
+class="muted"
+style="margin-top:10px">
+
+For the production agency version,
+move the API key to your backend.
+Never expose a production secret
+in browser code.
+
+</div>
+
+</div>
 
 </div>
 
 
 <!-- PREVIEW -->
 
+<div class="preview card">
+
+<div class="cardHead">
+
+<h3>
+Live Website Preview
+</h3>
+
+<div class="previewTools">
+
+<button
+class="btn device active"
+data-width="100%">
+Desktop
+</button>
+
+<button
+class="btn device"
+data-width="768px">
+Tablet
+</button>
+
+<button
+class="btn device"
+data-width="390px">
+Mobile
+</button>
+
+<button
+class="btn"
+id="fullscreen">
+↗
+</button>
+
+</div>
+
+</div>
+
+
 <div class="previewArea">
 
 <div
-class="previewDevice"
-id="previewDevice">
+class="frame"
+id="frame">
 
 <div
 class="empty"
 id="empty">
+
+<div>
 
 <div class="emptyIcon">
 ⚡
 </div>
 
 <b>
-Your AI website will appear here
+Your client website will appear here
 </b>
 
 <p>
-Describe your website and click
-<strong>Generate Website</strong>.
+Generate a website, then use AI
+Designer to refine it and AI
+Strategist to find improvements.
 </p>
 
 </div>
 
+</div>
+
+
 <iframe
 id="preview"
-sandbox="allow-scripts allow-forms allow-modals allow-popups">
+sandbox="allow-scripts allow-forms allow-modals allow-popups"
+style="display:none">
 </iframe>
 
 </div>
 
 </div>
 
-</section>
+</div>
+
+
+<!-- AI CHAT -->
+
+<div class="rightCol card">
+
+<div class="chatTabs">
+
+<button
+class="active"
+data-tab="designer">
+🎨 AI Designer
+</button>
+
+<button
+data-tab="strategy">
+🧠 AI Strategist
+</button>
 
 </div>
 
 
-<!-- GENERATED CODE -->
+<!-- DESIGNER -->
 
-<section class="panel code">
+<div
+class="chat"
+id="designer">
 
-<div class="codeHead">
+<div
+class="messages"
+id="designerMessages">
 
-<h2>
-Generated HTML
-</h2>
+<div class="msg ai">
+
+<b>
+AI Designer
+</b>
+
+<br>
+
+Tell me how you want the current
+website redesigned.
+
+I can change the visual direction,
+sections, layout, copy,
+responsiveness and interactions.
+
+</div>
+
+</div>
+
+
+<div class="chatInput">
+
+<textarea
+id="designInput"
+placeholder="e.g. Make the hero more premium and improve the CTA...">
+</textarea>
+
+<button
+class="btn primary"
+id="designSend">
+Send
+</button>
+
+</div>
+
+</div>
+
+
+<!-- STRATEGIST -->
+
+<div
+class="chat"
+id="strategy"
+style="display:none">
+
+<div
+class="messages"
+id="strategyMessages">
+
+<div class="msg ai">
+
+<b>
+AI Strategist
+</b>
+
+<br>
+
+Analyze the current website to get
+practical UX, conversion, content,
+mobile and SEO recommendations.
+
+</div>
+
+</div>
+
+
+<div class="chatInput">
+
+<textarea
+id="strategyInput"
+placeholder="Ask for a website audit...">
+</textarea>
+
+<button
+class="btn primary"
+id="strategySend">
+Analyze
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- INTELLIGENCE -->
+
+<div class="leftCol card">
+
+<div class="cardHead">
+
+<h3>
+Website Intelligence
+</h3>
 
 <span
-id="count"
-class="small">
-0 characters
+class="muted"
+id="count">
+0 chars
 </span>
 
 </div>
 
-<pre id="output">
-Your complete HTML will appear here...
-</pre>
+
+<div class="body">
+
+<div class="review">
+
+<div class="reviewItem">
+
+<b>
+Conversion
+</b>
+
+<p>
+Use Strategy AI to identify
+high-impact CTA and trust
+improvements.
+</p>
+
+</div>
+
+
+<div class="reviewItem">
+
+<b>
+Responsive QA
+</b>
+
+<p>
+Preview the same website at
+desktop, tablet and mobile
+widths before export.
+</p>
+
+</div>
+
+
+<div class="reviewItem">
+
+<b>
+Accessibility
+</b>
+
+<p>
+Ask the AI to improve semantics,
+contrast, keyboard behavior and
+form labels.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="history">
+
+<label>
+VERSION HISTORY
+</label>
+
+<div id="versions">
+
+<div class="version">
+
+<span>
+Version 1 · Initial
+</span>
+
+<span class="muted">
+Current
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- CODE -->
+
+<div class="preview card">
+
+<div class="cardHead">
+
+<h3>
+Generated HTML
+</h3>
+
+<button
+class="btn"
+id="toggleCode">
+Show Code
+</button>
+
+</div>
+
+
+<pre
+id="code"
+style="
+display:none;
+margin:0;
+padding:14px;
+max-height:300px;
+overflow:auto;
+white-space:pre-wrap;
+font-size:10px;
+color:#cfd3dd;
+background:#08090d;
+"></pre>
+
+</div>
+
 
 </section>
 
 </main>
 
+</div>
 
-<!-- FULLSCREEN MODAL -->
+
+<!-- FULLSCREEN -->
 
 <div
 class="modal"
 id="modal">
 
-<div class="modalBar">
+<div class="modalTop">
 
 <b>
 ⚡ ForgeAI — Full Preview
 </b>
 
-<div class="modalBarActions">
-
 <button
 class="btn"
-id="modalTab">
-New Tab
+id="closeModal">
+Close
 </button>
-
-<button
-class="btn"
-id="close">
-✕ Close
-</button>
-
-</div>
 
 </div>
 
 <iframe
-id="modalFrame"
-sandbox="allow-scripts allow-forms allow-modals allow-popups">
+id="modalFrame">
 </iframe>
 
 </div>
@@ -626,29 +1255,24 @@ id="toast">
 "use strict";
 
 
-/* =========================
-   CONFIG
-========================= */
+const $=
+id=>document.getElementById(id);
 
-const KEY="forgeai_api_key";
+const KEY=
+"forgeai_api_key";
 
-/*
-Change this model if your Gemini
-account/API does not support it.
-*/
-const MODEL="gemini-3-flash-preview";
+const MODEL=
+"gemini-3-flash-preview";
 
 
 let generatedHTML="";
+
 let lastPrompt="";
 
+let versions=[];
 
-/* =========================
-   HELPERS
-========================= */
 
-const $=id=>document.getElementById(id);
-
+/* TOAST */
 
 function toast(message){
 
@@ -658,129 +1282,86 @@ t.textContent=message;
 
 t.classList.add("show");
 
-clearTimeout(window.toastTimer);
+clearTimeout(window.tt);
 
-window.toastTimer=setTimeout(()=>{
-
+window.tt=setTimeout(
+()=>{
 t.classList.remove("show");
-
-},2200);
+},
+2200
+);
 
 }
 
 
-function setStatus(message,type=""){
+/* STATUS */
+
+function status(message,type=""){
 
 const s=$("status");
 
 s.textContent=message;
 
-s.className="status "+type;
+s.className=
+"status "+type;
 
 }
 
 
-/* =========================
-   API KEY
-========================= */
+/* CLEAN AI OUTPUT */
 
-function saveKey(){
+function clean(text){
 
-const key=$("apiKey").value.trim();
+let html=
+String(text||"")
+.trim();
 
-if(!key){
-
-toast("Enter your Gemini API key.");
-
-return;
-}
-
-localStorage.setItem(KEY,key);
-
-$("apiStatus").textContent="✅ API key saved.";
-
-toast("API key saved.");
-
-}
-
-
-function clearKey(){
-
-localStorage.removeItem(KEY);
-
-$("apiKey").value="";
-
-$("apiStatus").textContent="API key removed.";
-
-toast("API key removed.");
-
-}
-
-
-function getKey(){
-
-return $("apiKey").value.trim()
-||localStorage.getItem(KEY)
-||"";
-}
-
-
-function loadKey(){
-
-const key=localStorage.getItem(KEY);
-
-if(key){
-
-$("apiKey").value=key;
-
-$("apiStatus").textContent=
-"✅ Saved API key loaded.";
-
-}
-
-}
-
-
-/* =========================
-   CLEAN AI OUTPUT
-========================= */
-
-function cleanHTML(text){
-
-let html=String(text||"").trim();
-
-html=html.replace(
+html=
+html.replace(
 /^```html\s*/i,
 ""
 );
 
-html=html.replace(
+html=
+html.replace(
 /^```\s*/i,
 ""
 );
 
-html=html.replace(
+html=
+html.replace(
 /\s*```$/i,
 ""
 );
 
 const start=
-html.toLowerCase()
-.indexOf("<!doctype html>");
+html
+.toLowerCase()
+.indexOf(
+"<!doctype html>"
+);
 
 if(start>0){
 
-html=html.slice(start);
+html=
+html.slice(start);
 
 }
 
 const end=
-html.toLowerCase()
-.lastIndexOf("</html>");
+html
+.toLowerCase()
+.lastIndexOf(
+"</html>"
+);
 
-if(end!==-1){
+if(end>-1){
 
-html=html.slice(0,end+7);
+html=
+html.slice(
+0,
+end+7
+);
 
 }
 
@@ -789,15 +1370,14 @@ return html.trim();
 }
 
 
-function validHTML(html){
+/* VALID HTML */
+
+function valid(html){
 
 return (
 
 /<!doctype\s+html/i.test(html)&&
-/<html/i.test(html)&&
-/<head/i.test(html)&&
 /<body/i.test(html)&&
-/<\/body>/i.test(html)&&
 /<\/html>/i.test(html)
 
 );
@@ -805,244 +1385,188 @@ return (
 }
 
 
-/* =========================
-   PREVIEW
-========================= */
+/* API KEY */
 
-function showHTML(html){
+function getKey(){
 
-generatedHTML=html;
+return (
 
-$("output").textContent=html;
+$("apiKey")
+.value
+.trim()
 
-$("count").textContent=
-html.length.toLocaleString()
-+" characters";
+||
 
-$("empty").style.display="none";
+localStorage.getItem(KEY)
 
-$("preview").style.display="block";
+||
 
-$("preview").srcdoc=html;
+""
+
+);
 
 }
 
 
-/* =========================
-   AI SYSTEM PROMPT
-========================= */
+/* SHOW WEBSITE */
 
-function buildPrompt(user){
+function show(html){
 
-return `You are ForgeAI, an elite AI website designer and senior frontend developer.
+generatedHTML=
+html;
 
-Create a complete premium website based on this request:
+$("preview").srcdoc=
+html;
 
+$("preview").style.display=
+"block";
+
+$("empty").style.display=
+"none";
+
+$("code").textContent=
+html;
+
+$("count").textContent=
+html.length.toLocaleString()
++
+" chars";
+
+}
+
+
+/* AI SYSTEM PROMPT */
+
+function systemPrompt(
+user,
+mode="generate"
+){
+
+return `You are ForgeAI, an elite AI website designer and senior frontend developer working inside an agency production studio.
+
+CURRENT TASK:
+${mode}
+
+USER REQUEST:
 ${user}
 
-IMPORTANT:
+${
+mode==="redesign"
+?
+`
+Modify the CURRENT website supplied in the
+conversation.
 
-RETURN ONLY ONE COMPLETE HTML DOCUMENT.
+Preserve working content and functionality
+unless the request requires changes.
 
-The response MUST start with:
+Return the COMPLETE updated HTML document only.
+`
+:""
+}
 
-<!DOCTYPE html>
+${
+mode==="audit"
+?
+`
+Act as an expert web strategist.
 
-The response MUST end with:
+Analyze the CURRENT website and provide
+5-7 specific actionable recommendations
+across:
 
-</html>
-
-Put ALL CSS inside <style>.
-
-Put ALL JavaScript inside <script>.
-
-Do not use Markdown.
-
-Do not use code fences.
-
-Do not explain anything outside the HTML.
-
-DESIGN QUALITY:
-
-Create a visually impressive, modern, premium website.
-
-Use professional typography.
-
-Use strong spacing and hierarchy.
-
-Use beautiful responsive layouts.
-
-Use subtle animations.
-
-Use hover effects.
-
-Use modern cards and sections.
-
-Use high-quality HTTPS images where appropriate.
-
-Make the website look like a professional $5,000+ agency-built website.
-
-RESPONSIVENESS:
-
-The website MUST work perfectly on:
-
-Desktop
-Tablet
+UX
+Conversion
 Mobile
+Content
+Accessibility
+SEO
 
-Prevent horizontal scrolling.
+Do not invent business facts.
 
-Make navigation responsive.
+Return concise recommendations.
+`
+:""
+}
 
-FUNCTIONALITY:
 
-Every button must work.
+FOR WEBSITE GENERATION OR REDESIGN:
 
-Every navigation link must work.
-
-Mobile menu must open and close.
-
-FAQ must open and close.
-
-Forms must validate.
-
-Forms must show a success message without page reload.
-
-CTA buttons must work.
-
-Modals must open and close.
-
-Sliders must work if included.
-
-Tabs must work if included.
-
-Animations must work.
-
-All JavaScript functions must exist.
-
-All event listeners must point to real elements/functions.
-
-Never create decorative dead buttons.
-
-CONTENT:
-
-Include appropriate sections such as:
-
-Navigation
-Hero
-CTA
-Services
-About
-Stats
-Projects
-Gallery
-Process
-Testimonials
-FAQ
-Contact
-Footer
-
-Only include sections that make sense for the requested business.
-
-CODE QUALITY:
-
-Use semantic HTML.
-
-Use clean CSS.
-
-Use vanilla JavaScript.
-
-Do not depend on frameworks unless specifically requested.
-
-Do not leave unfinished sections.
-
-Do not use TODO.
-
-Do not use placeholder functions.
-
-Do not write "continue".
-
-Do not write "remaining code".
-
-Before returning the result, internally check:
-
-1. HTML structure
-2. CSS
-3. JavaScript
-4. Buttons
-5. Links
-6. Forms
-7. Mobile navigation
-8. FAQ
-9. Responsive layout
-10. Closing HTML tags
+- Return ONLY one complete HTML document.
+- Begin with <!DOCTYPE html>
+- End with </html>
+- All CSS must be inside <style>.
+- All JavaScript must be inside <script>.
+- No Markdown.
+- No explanation outside HTML.
+- Use semantic HTML.
+- Responsive from 320px to desktop.
+- Prevent horizontal scrolling.
+- Use premium typography.
+- Use strong spacing and hierarchy.
+- Create polished interactions.
+- Navigation must work.
+- Buttons must work.
+- Links must work.
+- Forms must validate.
+- Forms must show success state.
+- FAQ must work if included.
+- Mobile navigation must work.
+- Modals must work if included.
+- Tabs must work if included.
+- Sliders must work if included.
+- Do not create dead buttons.
+- Do not use lorem ipsum.
+- Do not use TODO.
+- Do not create fake awards.
+- Do not create fake certifications.
+- Do not invent business facts.
+- Preserve existing functionality when redesigning.
+- Internally check HTML, CSS, JS, forms,
+  responsive behavior and closing tags.
 
 RETURN ONLY THE COMPLETE HTML DOCUMENT.`;
 
 }
 
 
-/* =========================
-   GENERATE
-========================= */
+/* AI REQUEST */
 
-async function generate(){
+async function callAI(
+text,
+mode
+){
 
-const key=getKey();
-
-const prompt=$("prompt")
-.value
-.trim();
-
+const key=
+getKey();
 
 if(!key){
 
 toast(
-"Enter and save your Gemini API key."
+"Add a Gemini API key for this prototype."
 );
 
-return;
+throw new Error(
+"API key required"
+);
 
 }
 
-
-if(!prompt){
-
-toast(
-"Describe your website first."
-);
-
-return;
-
-}
-
-
-lastPrompt=prompt;
-
-
-const btn=$("generate");
-
-btn.disabled=true;
-
-btn.textContent="🤖 Designing...";
-
-setStatus(
-"AI is creating your website..."
-);
-
-
-try{
 
 const url=
 "https://generativelanguage.googleapis.com/v1beta/models/"
-+MODEL+
++
+MODEL
++
 ":generateContent?key="
-+encodeURIComponent(key);
++
+encodeURIComponent(key);
 
 
 const response=
-await fetch(url,{
-
+await fetch(
+url,
+{
 method:"POST",
 
 headers:{
@@ -1061,7 +1585,10 @@ parts:[
 {
 
 text:
-buildPrompt(prompt)
+systemPrompt(
+text,
+mode
+)
 
 }
 
@@ -1073,13 +1600,19 @@ buildPrompt(prompt)
 
 generationConfig:{
 
-temperature:.65
+temperature:
+mode==="audit"
+?
+.35
+:
+.65
 
 }
 
 })
 
-});
+}
+);
 
 
 const data=
@@ -1091,61 +1624,97 @@ if(!response.ok){
 throw new Error(
 data?.error?.message
 ||
-"Gemini API request failed."
+"Gemini request failed."
 );
 
 }
 
 
-const text=
+return (
 data
 ?.candidates?.[0]
 ?.content?.parts?.[0]
-?.text;
-
-
-if(!text){
-
-throw new Error(
-"Gemini returned no website."
+?.text
+||
+""
 );
 
 }
 
+
+/* GENERATE */
+
+async function generate(){
+
+const prompt=
+$("prompt")
+.value
+.trim();
+
+
+if(!prompt){
+
+toast(
+"Add a client brief."
+);
+
+return;
+
+}
+
+
+lastPrompt=
+prompt;
+
+$("generate").disabled=
+true;
+
+status(
+"AI is generating the client website..."
+);
+
+
+try{
 
 const html=
-cleanHTML(text);
+clean(
+await callAI(
+prompt,
+"generate"
+)
+);
 
 
-if(!validHTML(html)){
+if(!valid(html)){
 
 throw new Error(
-"Gemini returned incomplete HTML. Try Regenerate."
+"AI returned incomplete HTML. Try again."
 );
 
 }
 
 
-showHTML(html);
+show(html);
 
+addVersion(
+"Initial Generation",
+html
+);
 
-setStatus(
-"✅ Website generated successfully.",
+status(
+"Website generated successfully.",
 "ok"
 );
 
-
 toast(
-"Website ready!"
+"Website ready."
 );
 
 
 }catch(error){
 
-console.error(error);
-
-setStatus(
-"❌ "+error.message,
+status(
+"Error: "+error.message,
 "err"
 );
 
@@ -1156,19 +1725,314 @@ toast(
 
 }finally{
 
-btn.disabled=false;
-
-btn.textContent=
-"✨ Generate Website";
+$("generate").disabled=
+false;
 
 }
 
 }
 
 
-/* =========================
-   COPY
-========================= */
+/* ADD VERSION */
+
+function addVersion(
+name,
+html
+){
+
+versions.unshift({
+name:name,
+html:html
+});
+
+
+if(versions.length>8){
+
+versions.pop();
+
+}
+
+
+$("versions").innerHTML=
+versions
+.map(
+(v,index)=>`
+
+<div class="version">
+
+<span>
+Version ${
+versions.length-index
+}
+·
+${v.name}
+</span>
+
+<button
+class="btn"
+onclick="restoreVersion(${index})">
+
+${
+index===0
+?
+"Current"
+:
+"Restore"
+}
+
+</button>
+
+</div>
+
+`
+)
+.join("");
+
+}
+
+
+/* RESTORE */
+
+window.restoreVersion=
+function(index){
+
+show(
+versions[index].html
+);
+
+toast(
+"Version restored."
+);
+
+};
+
+
+/* CHAT MESSAGE */
+
+function addMessage(
+id,
+text,
+type
+){
+
+const box=
+$(id);
+
+const message=
+document.createElement(
+"div"
+);
+
+message.className=
+"msg "+type;
+
+message.textContent=
+text;
+
+box.appendChild(
+message
+);
+
+box.scrollTop=
+box.scrollHeight;
+
+}
+
+
+/* AI DESIGNER */
+
+async function redesign(){
+
+if(!generatedHTML){
+
+toast(
+"Generate a website first."
+);
+
+return;
+
+}
+
+
+const request=
+$("designInput")
+.value
+.trim();
+
+
+if(!request){
+
+return;
+
+}
+
+
+addMessage(
+"designerMessages",
+request,
+"user"
+);
+
+
+$("designInput")
+.value="";
+
+
+addMessage(
+"designerMessages",
+"Working on the current website...",
+"ai"
+);
+
+
+try{
+
+const updatedHTML=
+clean(
+await callAI(
+
+"CURRENT WEBSITE:\n"
++
+generatedHTML
++
+"\n\nREDESIGN REQUEST:\n"
++
+request,
+
+"redesign"
+
+)
+);
+
+
+if(!valid(updatedHTML)){
+
+throw new Error(
+"AI returned incomplete HTML."
+);
+
+}
+
+
+show(
+updatedHTML
+);
+
+addVersion(
+request,
+updatedHTML
+);
+
+
+addMessage(
+"designerMessages",
+"Done — the preview has been updated and a new version was saved.",
+"ai"
+);
+
+
+toast(
+"Redesign applied."
+);
+
+
+}catch(error){
+
+addMessage(
+"designerMessages",
+"I couldn't apply that change: "
++
+error.message,
+"ai"
+);
+
+}
+
+}
+
+
+/* AI STRATEGIST */
+
+async function strategy(){
+
+if(!generatedHTML){
+
+toast(
+"Generate a website first."
+);
+
+return;
+
+}
+
+
+const request=
+$("strategyInput")
+.value
+.trim()
+||
+"Audit this website and give the highest-impact improvements.";
+
+
+addMessage(
+"strategyMessages",
+request,
+"user"
+);
+
+
+$("strategyInput")
+.value="";
+
+
+addMessage(
+"strategyMessages",
+"Analyzing the current website...",
+"ai"
+);
+
+
+try{
+
+const analysis=
+await callAI(
+
+"CURRENT WEBSITE:\n"
++
+generatedHTML
++
+"\n\nAUDIT REQUEST:\n"
++
+request,
+
+"audit"
+
+);
+
+
+addMessage(
+"strategyMessages",
+analysis,
+"ai"
+);
+
+
+}catch(error){
+
+addMessage(
+"strategyMessages",
+"Audit failed: "
++
+error.message,
+"ai"
+);
+
+}
+
+}
+
+
+/* COPY */
 
 async function copyHTML(){
 
@@ -1187,20 +2051,29 @@ try{
 
 await navigator
 .clipboard
-.writeText(generatedHTML);
+.writeText(
+generatedHTML
+);
 
-}catch(e){
+}catch(error){
 
 const box=
-document.createElement("textarea");
+document.createElement(
+"textarea"
+);
 
-box.value=generatedHTML;
+box.value=
+generatedHTML;
 
-document.body.appendChild(box);
+document.body.appendChild(
+box
+);
 
 box.select();
 
-document.execCommand("copy");
+document.execCommand(
+"copy"
+);
 
 box.remove();
 
@@ -1208,15 +2081,13 @@ box.remove();
 
 
 toast(
-"✅ Complete HTML copied."
+"HTML copied."
 );
 
 }
 
 
-/* =========================
-   DOWNLOAD
-========================= */
+/* DOWNLOAD */
 
 function downloadHTML(){
 
@@ -1233,54 +2104,253 @@ return;
 
 const blob=
 new Blob(
-
-[generatedHTML],
-
+[
+generatedHTML
+],
 {
 type:"text/html"
 }
-
 );
 
 
 const url=
-URL.createObjectURL(blob);
+URL.createObjectURL(
+blob
+);
 
 
 const a=
-document.createElement("a");
+document.createElement(
+"a"
+);
 
 a.href=url;
 
 a.download=
 "forgeai-website.html";
 
-document.body.appendChild(a);
+document.body.appendChild(
+a
+);
 
 a.click();
 
 a.remove();
 
 
-setTimeout(()=>{
-
-URL.revokeObjectURL(url);
-
-},1000);
+setTimeout(
+()=>{
+URL.revokeObjectURL(
+url
+);
+},
+1000
+);
 
 
 toast(
-"✅ HTML downloaded."
+"Downloaded."
 );
 
 }
 
 
-/* =========================
-   NEW TAB
-========================= */
+/* SAVE API KEY */
 
-function openNewTab(){
+function saveKey(){
+
+const key=
+$("apiKey")
+.value
+.trim();
+
+
+if(!key){
+
+toast(
+"Enter a key."
+);
+
+return;
+
+}
+
+
+localStorage.setItem(
+KEY,
+key
+);
+
+
+$("keyStatus")
+.textContent=
+"Saved in this browser (prototype).";
+
+
+toast(
+"Key saved."
+);
+
+}
+
+
+/* CLEAR API KEY */
+
+function clearKey(){
+
+localStorage.removeItem(
+KEY
+);
+
+$("apiKey")
+.value="";
+
+$("keyStatus")
+.textContent=
+"No key saved.";
+
+toast(
+"Saved key removed."
+);
+
+}
+
+
+/* DEVICE SWITCHER */
+
+document
+.querySelectorAll(
+".device"
+)
+.forEach(
+button=>{
+
+button.onclick=
+()=>{
+
+document
+.querySelectorAll(
+".device"
+)
+.forEach(
+item=>{
+item.classList.remove(
+"active"
+);
+}
+);
+
+
+button.classList.add(
+"active"
+);
+
+
+$("frame")
+.style.width=
+button.dataset.width;
+
+};
+
+}
+);
+
+
+/* CHAT TABS */
+
+document
+.querySelectorAll(
+".chatTabs button"
+)
+.forEach(
+button=>{
+
+button.onclick=
+()=>{
+
+document
+.querySelectorAll(
+".chatTabs button"
+)
+.forEach(
+item=>{
+item.classList.remove(
+"active"
+);
+}
+);
+
+
+button.classList.add(
+"active"
+);
+
+
+const tab=
+button.dataset.tab;
+
+
+$("designer").style.display=
+tab==="designer"
+?
+"flex"
+:
+"none";
+
+
+$("strategy").style.display=
+tab==="strategy"
+?
+"flex"
+:
+"none";
+
+};
+
+}
+);
+
+
+/* EVENTS */
+
+$("generate")
+.onclick=
+generate;
+
+
+$("designSend")
+.onclick=
+redesign;
+
+
+$("strategySend")
+.onclick=
+strategy;
+
+
+$("copy")
+.onclick=
+copyHTML;
+
+
+$("download")
+.onclick=
+downloadHTML;
+
+
+$("saveKey")
+.onclick=
+saveKey;
+
+
+$("clearKey")
+.onclick=
+clearKey;
+
+
+$("saveVersion")
+.onclick=
+()=>{
 
 if(!generatedHTML){
 
@@ -1292,57 +2362,44 @@ return;
 
 }
 
-
-const blob=
-new Blob(
-
-[generatedHTML],
-
-{
-type:"text/html"
-}
-
+addVersion(
+"Manual Save",
+generatedHTML
 );
-
-
-const url=
-URL.createObjectURL(blob);
-
-
-const win=
-window.open(
-url,
-"_blank"
-);
-
-
-if(!win){
-
-URL.revokeObjectURL(url);
 
 toast(
-"Allow popups and try again."
+"Version saved."
 );
 
-return;
-
-}
+};
 
 
-setTimeout(()=>{
-
-URL.revokeObjectURL(url);
-
-},60000);
-
-}
+$("exportBtn")
+.onclick=
+downloadHTML;
 
 
-/* =========================
-   FULLSCREEN
-========================= */
+$("toggleCode")
+.onclick=
+()=>{
 
-function openFullscreen(){
+$("code")
+.style.display=
+$("code")
+.style.display==="none"
+?
+"block"
+:
+"none";
+
+};
+
+
+/* FULLSCREEN */
+
+$("fullscreen")
+.onclick=
+()=>{
 
 if(!generatedHTML){
 
@@ -1361,217 +2418,85 @@ generatedHTML;
 
 
 $("modal")
-.classList.add("open");
+.classList.add(
+"open"
+);
 
-document.body.style.overflow=
-"hidden";
-
-}
+};
 
 
-function closeFullscreen(){
+$("closeModal")
+.onclick=
+()=>{
 
 $("modal")
-.classList.remove("open");
+.classList.remove(
+"open"
+);
 
 $("modalFrame")
 .srcdoc="";
 
-document.body.style.overflow="";
-
-}
+};
 
 
-/* =========================
-   DEVICE SWITCHER
-========================= */
+/* KEYBOARD */
 
-document
-.querySelectorAll(".device")
-.forEach(button=>{
-
-button.addEventListener(
-"click",
-()=>{
-
-document
-.querySelectorAll(".device")
-.forEach(btn=>{
-
-btn.classList.remove(
-"active"
-);
-
-});
-
-
-button.classList.add(
-"active"
-);
-
-
-const width=
-button.dataset.width;
-
-
-$("previewDevice")
-.style.width=
-width;
-
-
-if(width==="100%"){
-
-$("previewArea")
-.style.alignItems=
-"flex-start";
-
-}else{
-
-$("previewArea")
-.style.alignItems=
-"flex-start";
-
-}
-
-}
-
-);
-
-});
-
-
-/* =========================
-   EVENTS
-========================= */
-
-$("save")
-.addEventListener(
-"click",
-saveKey
-);
-
-
-$("clear")
-.addEventListener(
-"click",
-clearKey
-);
-
-
-$("generate")
-.addEventListener(
-"click",
-generate
-);
-
-
-$("copy")
-.addEventListener(
-"click",
-copyHTML
-);
-
-
-$("download")
-.addEventListener(
-"click",
-downloadHTML
-);
-
-
-$("regenerate")
-.addEventListener(
-"click",
-()=>{
-
-if(!lastPrompt){
-
-toast(
-"Generate a website first."
-);
-
-return;
-
-}
-
-generate();
-
-}
-);
-
-
-$("fullscreen")
-.addEventListener(
-"click",
-openFullscreen
-);
-
-
-$("newtab")
-.addEventListener(
-"click",
-openNewTab
-);
-
-
-$("modalTab")
-.addEventListener(
-"click",
-openNewTab
-);
-
-
-$("close")
-.addEventListener(
-"click",
-closeFullscreen
-);
-
-
-/* ESC CLOSE */
-
-document.addEventListener(
-"keydown",
-event=>{
-
-if(event.key==="Escape"){
-
-closeFullscreen();
-
-}
-
-});
-
-
-/* ENTER = GENERATE */
-
-$("prompt")
-.addEventListener(
-"keydown",
+$("designInput")
+.onkeydown=
 event=>{
 
 if(
 (event.ctrlKey||
-event.metaKey)&&
+event.metaKey)
+&&
 event.key==="Enter"
 ){
 
-generate();
+redesign();
 
 }
 
-});
+};
 
 
-/* =========================
-   START
-========================= */
+$("strategyInput")
+.onkeydown=
+event=>{
 
-loadKey();
+if(
+(event.ctrlKey||
+event.metaKey)
+&&
+event.key==="Enter"
+){
 
-console.log(
-"ForgeAI loaded successfully."
+strategy();
+
+}
+
+};
+
+
+/* LOAD SAVED KEY */
+
+const savedKey=
+localStorage.getItem(
+KEY
 );
+
+
+if(savedKey){
+
+$("apiKey")
+.value=
+savedKey;
+
+$("keyStatus")
+.textContent=
+"Saved key loaded.";
+
+}
 
 </script>
 
