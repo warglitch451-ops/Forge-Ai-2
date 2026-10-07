@@ -2,38 +2,37 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090b10">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ForgeAI Studio V4</title>
 
 <style>
-*{box-sizing:border-box}
-
 :root{
-  --bg:#080a0f;
-  --panel:#10131b;
-  --panel2:#171b25;
-  --panel3:#1d2230;
-  --line:#292f3d;
-  --text:#f7f8fc;
-  --muted:#98a1b5;
-  --accent:#7c5cff;
-  --accent2:#9a82ff;
-  --good:#35d39a;
-  --danger:#ff5570;
-  --warning:#f6bd4f;
+  --bg:#08090d;
+  --panel:#101218;
+  --panel2:#151821;
+  --panel3:#1b1f2a;
+  --border:#292e3b;
+  --text:#f5f7fb;
+  --muted:#9299aa;
+  --primary:#7c5cff;
+  --primary2:#5f43db;
+  --danger:#ff5571;
+  --success:#3bd59f;
+  --shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+*{
+  box-sizing:border-box;
 }
 
 html,body{
   margin:0;
-  padding:0;
-  min-height:100%;
-}
-
-body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   background:var(--bg);
   color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
 button,input,textarea,select{
@@ -44,544 +43,511 @@ button{
   cursor:pointer;
 }
 
-button:disabled{
-  opacity:.5;
-  cursor:not-allowed;
+.app{
+  height:100vh;
+  display:grid;
+  grid-template-columns:310px 1fr 350px;
+  background:
+    radial-gradient(circle at 20% 0%,rgba(124,92,255,.09),transparent 35%),
+    radial-gradient(circle at 90% 100%,rgba(0,210,255,.05),transparent 35%),
+    var(--bg);
+}
+
+/* LEFT */
+
+.left{
+  border-right:1px solid var(--border);
+  background:rgba(10,11,16,.94);
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+}
+
+.logo{
+  padding:20px;
+  border-bottom:1px solid var(--border);
+}
+
+.logoRow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logoMark{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  background:linear-gradient(135deg,#8e6bff,#5b3ee8);
+  box-shadow:0 10px 30px rgba(124,92,255,.3);
+}
+
+.logoTitle{
+  font-size:17px;
+  font-weight:800;
+}
+
+.logoSub{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:2px;
+}
+
+.leftScroll{
+  overflow:auto;
+  padding:16px;
+}
+
+.group{
+  margin-bottom:18px;
+}
+
+.groupTitle{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#6f7687;
+  margin:0 0 9px;
+}
+
+label{
+  display:block;
+  color:#aeb4c2;
+  font-size:11px;
+  margin:0 0 6px;
 }
 
 input,
 textarea,
 select{
   width:100%;
-  background:var(--panel);
-  border:1px solid var(--line);
   color:var(--text);
-  border-radius:10px;
-  padding:11px 12px;
+  background:#0d0f15;
+  border:1px solid var(--border);
   outline:none;
-  transition:.2s;
+  border-radius:9px;
+  padding:10px 11px;
+  transition:.15s;
 }
 
 input:focus,
 textarea:focus,
 select:focus{
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(124,92,255,.12);
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(124,92,255,.1);
 }
 
 textarea{
-  min-height:100px;
+  min-height:90px;
   resize:vertical;
 }
 
-.app{
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:300px 1fr;
-}
-
-.sidebar{
-  background:#0c0f15;
-  border-right:1px solid var(--line);
-  padding:18px;
-  overflow:auto;
-  position:relative;
-  z-index:10;
-}
-
-.brand{
-  font-size:24px;
-  font-weight:950;
-  letter-spacing:-.04em;
-}
-
-.brand span{
-  color:var(--accent);
-}
-
-.version{
-  display:inline-block;
-  margin-left:5px;
-  padding:3px 6px;
-  border:1px solid var(--line);
-  border-radius:6px;
-  font-size:9px;
-  color:var(--muted);
-  vertical-align:middle;
-}
-
-.small{
-  font-size:11px;
-  color:var(--muted);
-  line-height:1.5;
-}
-
-.label{
-  display:block;
-  font-size:11px;
-  color:var(--muted);
-  margin:14px 0 6px;
-  font-weight:700;
-}
-
-.btn{
-  width:100%;
-  border:0;
-  border-radius:10px;
-  padding:12px;
-  margin-top:8px;
-  background:var(--accent);
-  color:#fff;
-  font-weight:850;
-  transition:.2s;
-}
-
-.btn:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.08);
-}
-
-.btn.secondary{
-  background:#202532;
-}
-
-.btn.success{
-  background:#176d54;
-}
-
-.btn.danger{
-  background:#6d2430;
-}
-
-.btn.warning{
-  background:#6f541d;
-}
-
-.status{
-  margin-top:12px;
-  padding:11px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:#11141c;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.5;
-}
-
-.status.good{
-  border-color:rgba(53,211,154,.35);
-  color:#83e8c2;
-}
-
-.status.error{
-  border-color:rgba(255,85,112,.35);
-  color:#ff9aaa;
-}
-
-.workspace{
-  min-width:0;
-  display:flex;
-  flex-direction:column;
-}
-
-.topbar{
-  height:64px;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  gap:9px;
-  padding:10px 15px;
-  background:#090b10;
-}
-
-.topbar .title{
-  flex:1;
-  font-weight:850;
-}
-
-.pill{
-  font-size:10px;
-  border:1px solid var(--line);
-  background:var(--panel);
-  padding:7px 10px;
-  border-radius:999px;
-  color:var(--muted);
-}
-
-.editor{
-  display:grid;
-  grid-template-columns:220px minmax(400px,1fr) 350px;
-  min-height:calc(100vh - 64px);
-}
-
-.pages{
-  border-right:1px solid var(--line);
-  background:#0c0f15;
-  padding:14px;
-  overflow:auto;
-}
-
-.pagesTitle{
-  font-size:11px;
-  color:var(--muted);
-  font-weight:900;
-  letter-spacing:.1em;
-  margin:4px 0 10px;
-}
-
-.pageBtn{
-  width:100%;
-  text-align:left;
-  border:1px solid transparent;
-  background:transparent;
-  color:var(--muted);
-  padding:12px;
-  border-radius:10px;
-  margin-bottom:6px;
-}
-
-.pageBtn:hover{
-  background:#151923;
-  color:#fff;
-}
-
-.pageBtn.active{
-  background:#1a1e29;
-  color:#fff;
-  border-color:#343a49;
-}
-
-.pageBtn small{
-  display:block;
-  margin-top:3px;
-  color:#697287;
-}
-
-.previewWrap{
-  padding:14px;
-  min-width:0;
-  background:#080a0f;
-}
-
-.previewTools{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  margin-bottom:9px;
-  flex-wrap:wrap;
-}
-
-.previewTools button{
-  width:auto;
-  margin:0;
-  padding:8px 11px;
-}
-
-.previewSize{
-  margin-left:auto;
-  font-size:10px;
-  color:var(--muted);
-}
-
-.previewFrame{
-  display:flex;
-  justify-content:center;
-  width:100%;
-}
-
-iframe{
-  width:100%;
-  height:calc(100vh - 115px);
-  min-height:650px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:white;
-  transition:.25s;
-  box-shadow:0 25px 80px rgba(0,0,0,.3);
-}
-
-iframe.mobile{
-  width:390px;
-  max-width:100%;
-}
-
-.inspector{
-  border-left:1px solid var(--line);
-  background:#0c0f15;
-  padding:15px;
-  overflow:auto;
-}
-
-.inspectorHeader{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:13px;
-}
-
-.inspector h3{
-  font-size:14px;
-  margin:0;
-}
-
-.group{
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:13px;
-  margin-bottom:12px;
-  background:#10131a;
-}
-
-.groupTitle{
-  font-size:12px;
-  font-weight:900;
+.field{
   margin-bottom:10px;
 }
 
 .row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
+  display:flex;
   gap:8px;
 }
 
-.row3{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:8px;
+.row>*{
+  flex:1;
 }
 
-.color{
-  height:42px;
-  padding:4px;
+.btn{
+  border:1px solid var(--border);
+  background:#151821;
+  color:#f5f7fb;
+  border-radius:9px;
+  padding:10px 12px;
+  font-weight:700;
+  font-size:12px;
+  transition:.15s;
 }
 
-.sectionEditor{
-  border:1px solid var(--line);
+.btn:hover{
+  background:#1d2230;
+  border-color:#3a4050;
+  transform:translateY(-1px);
+}
+
+.btnPrimary{
+  width:100%;
+  border:0;
+  background:linear-gradient(135deg,#8667ff,#603fe0);
+  box-shadow:0 12px 30px rgba(124,92,255,.22);
+}
+
+.btnPrimary:hover{
+  background:linear-gradient(135deg,#957aff,#6949e8);
+}
+
+.btnSuccess{
+  border-color:rgba(59,213,159,.25);
+  color:#73e5bd;
+}
+
+.btnDanger{
+  color:#ff7890;
+  border-color:rgba(255,85,113,.2);
+}
+
+.btnSmall{
+  padding:7px 9px;
+  font-size:11px;
+}
+
+.status{
+  border:1px solid var(--border);
+  background:#0c0e13;
   border-radius:10px;
   padding:10px;
-  margin-top:8px;
-  background:#0d1016;
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.5;
 }
 
-.sectionHeader{
+.status.good{
+  border-color:rgba(59,213,159,.25);
+  color:#6de4b7;
+}
+
+.status.bad{
+  border-color:rgba(255,85,113,.25);
+  color:#ff7e91;
+}
+
+.checkRow{
   display:flex;
   align-items:center;
-  gap:6px;
-}
-
-.sectionHeader strong{
-  flex:1;
-  font-size:12px;
-}
-
-.iconBtn{
-  border:1px solid var(--line);
-  background:#171b24;
-  color:#fff;
-  width:30px;
-  height:30px;
-  border-radius:7px;
-}
-
-.iconBtn:hover{
-  background:#232938;
-}
-
-.itemEditor{
-  margin-top:8px;
-  padding:9px;
-  border:1px solid #252b37;
-  border-radius:8px;
-}
-
-.itemEditor input,
-.itemEditor textarea{
-  margin-top:6px;
-}
-
-.productRow{
-  border:1px solid var(--line);
-  border-radius:9px;
-  padding:9px;
-  margin-top:8px;
-  background:#0d1016;
-}
-
-.productRow input{
-  margin-top:6px;
-}
-
-.notice{
-  padding:10px;
-  border-radius:9px;
-  background:#171b24;
-  color:var(--muted);
+  gap:7px;
+  color:#aeb4c2;
   font-size:11px;
-  line-height:1.5;
-  margin-top:8px;
 }
 
-.qualityBox{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
+.checkRow input{
+  width:auto;
 }
 
-.qualityMetric{
-  border:1px solid var(--line);
-  background:#11151d;
-  border-radius:9px;
-  padding:10px;
+/* CENTER */
+
+.center{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
 }
 
-.qualityMetric b{
-  display:block;
-  font-size:18px;
-  margin-bottom:2px;
+.topbar{
+  height:64px;
+  flex:none;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 16px;
+  background:rgba(10,11,16,.82);
+  backdrop-filter:blur(18px);
 }
 
-.qualityMetric span{
-  font-size:9px;
-  color:var(--muted);
+.topLeft,
+.topRight{
+  display:flex;
+  align-items:center;
+  gap:7px;
 }
 
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.72);
-  backdrop-filter:blur(8px);
-  z-index:100;
-  display:none;
+.projectTitle{
+  font-size:13px;
+  font-weight:800;
+  margin-right:8px;
+}
+
+.pill{
+  border:1px solid var(--border);
+  background:#11141b;
+  color:#aeb4c2;
+  padding:6px 9px;
+  border-radius:999px;
+  font-size:10px;
+}
+
+.score{
+  color:#75e4bd;
+  border-color:rgba(59,213,159,.25);
+}
+
+.previewBar{
+  height:46px;
+  flex:none;
+  display:flex;
   align-items:center;
   justify-content:center;
-  padding:20px;
+  gap:5px;
+  border-bottom:1px solid var(--border);
+  background:#0c0e13;
 }
 
-.modal.show{
+.modeBtn{
+  border:1px solid transparent;
+  background:transparent;
+  color:#737a8b;
+  padding:7px 13px;
+  border-radius:7px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.modeBtn.active{
+  color:#fff;
+  background:#1b1f2a;
+  border-color:#303646;
+}
+
+.previewWrap{
+  flex:1;
+  min-height:0;
   display:flex;
-}
-
-.modalBox{
-  width:min(650px,100%);
-  max-height:90vh;
+  justify-content:center;
+  align-items:flex-start;
   overflow:auto;
-  background:#11141c;
-  border:1px solid var(--line);
-  border-radius:18px;
   padding:20px;
-  box-shadow:0 30px 100px rgba(0,0,0,.55);
+  background:
+    radial-gradient(circle at 50% 0%,rgba(124,92,255,.05),transparent 40%),
+    #07080c;
 }
 
-.modalHead{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:15px;
-}
-
-.toast{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  z-index:200;
-  background:#161b25;
-  border:1px solid var(--line);
-  border-radius:10px;
-  padding:12px 15px;
-  font-size:12px;
-  opacity:0;
-  pointer-events:none;
-  transform:translateY(10px);
+.previewFrame{
+  width:100%;
+  height:100%;
+  max-width:1280px;
+  border:1px solid #252a36;
+  border-radius:14px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  overflow:hidden;
   transition:.25s;
 }
 
-.toast.show{
-  opacity:1;
-  transform:translateY(0);
+.previewFrame.mobile{
+  width:390px;
+  max-width:390px;
 }
 
-.hidden{
-  display:none!important;
+/* RIGHT */
+
+.right{
+  border-left:1px solid var(--border);
+  background:#0b0d12;
+  min-width:0;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
 }
 
-@media(max-width:1200px){
-
-  .editor{
-    grid-template-columns:190px minmax(350px,1fr) 320px;
-  }
-
+.rightHeader{
+  padding:17px 17px 14px;
+  border-bottom:1px solid var(--border);
 }
 
-@media(max-width:1000px){
+.rightTitle{
+  font-weight:800;
+  font-size:14px;
+}
 
+.rightSub{
+  color:#747b8d;
+  font-size:10px;
+  margin-top:3px;
+}
+
+.inspector{
+  overflow:auto;
+  padding:15px;
+}
+
+.card{
+  border:1px solid var(--border);
+  background:#11141b;
+  border-radius:12px;
+  padding:12px;
+  margin-bottom:12px;
+}
+
+.cardTitle{
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:11px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.mini{
+  color:#707789;
+  font-size:9px;
+  font-weight:600;
+}
+
+.pageList{
+  display:flex;
+  gap:7px;
+  overflow:auto;
+  padding:10px 16px;
+  border-bottom:1px solid var(--border);
+  background:#0c0e13;
+}
+
+.pageBtn{
+  flex:0 0 auto;
+  border:1px solid var(--border);
+  background:#11141b;
+  color:#8f96a6;
+  border-radius:8px;
+  padding:8px 12px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.pageBtn.active{
+  background:rgba(124,92,255,.14);
+  color:#fff;
+  border-color:rgba(124,92,255,.55);
+}
+
+.colorRow{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.colorBox{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+.colorBox input[type=color]{
+  width:38px;
+  height:38px;
+  padding:3px;
+  flex:none;
+}
+
+.imagePreview{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  border-radius:9px;
+  border:1px solid var(--border);
+  background:#090b10;
+  display:block;
+  margin-bottom:8px;
+}
+
+.sectionItem{
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:9px;
+  margin-bottom:8px;
+  background:#0d0f15;
+}
+
+.sectionTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:8px;
+}
+
+.sectionType{
+  font-size:9px;
+  color:#8c94a5;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-weight:800;
+}
+
+.productSelect{
+  max-height:160px;
+  overflow:auto;
+}
+
+.productOption{
+  width:100%;
+  text-align:left;
+  border:1px solid var(--border);
+  background:#0d0f15;
+  color:#aeb4c2;
+  border-radius:8px;
+  padding:8px;
+  margin-bottom:5px;
+  font-size:10px;
+}
+
+.productOption.active{
+  color:#fff;
+  border-color:rgba(124,92,255,.55);
+  background:rgba(124,92,255,.1);
+}
+
+.issue{
+  color:#ff9aaa;
+  font-size:10px;
+  margin:4px 0;
+}
+
+/* MOBILE */
+
+@media(max-width:1100px){
   .app{
-    grid-template-columns:250px 1fr;
+    grid-template-columns:270px 1fr 300px;
   }
-
-  .editor{
-    grid-template-columns:180px 1fr;
-  }
-
-  .inspector{
-    position:fixed;
-    right:0;
-    top:64px;
-    bottom:0;
-    width:350px;
-    z-index:50;
-    box-shadow:-30px 0 80px rgba(0,0,0,.6);
-  }
-
 }
 
-@media(max-width:720px){
-
-  .app{
-    grid-template-columns:1fr;
-  }
-
-  .sidebar{
-    border-right:0;
-    border-bottom:1px solid var(--line);
-  }
-
-  .editor{
-    grid-template-columns:1fr;
-  }
-
-  .pages{
-    display:flex;
-    gap:6px;
+@media(max-width:850px){
+  html,body{
     overflow:auto;
-    border-right:0;
-    border-bottom:1px solid var(--line);
   }
 
-  .pagesTitle{
-    display:none;
+  .app{
+    min-height:100vh;
+    height:auto;
+    display:flex;
+    flex-direction:column;
   }
 
-  .pageBtn{
-    min-width:120px;
-    margin:0;
-  }
-
-  .inspector{
-    position:static;
-    width:auto;
-    border-left:0;
-    box-shadow:none;
-  }
-
-  iframe{
-    min-height:700px;
-    height:700px;
-  }
-
-  .previewSize{
+  .left,
+  .right{
     width:100%;
-    margin-left:0;
+    border:0;
+  }
+
+  .left{
+    max-height:none;
+  }
+
+  .leftScroll{
+    max-height:none;
+  }
+
+  .center{
+    min-height:700px;
+    order:-1;
+  }
+
+  .right{
+    border-top:1px solid var(--border);
+  }
+
+  .previewWrap{
+    min-height:650px;
   }
 }
 </style>
@@ -591,829 +557,1257 @@ iframe.mobile{
 
 <div class="app">
 
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
+  <!-- LEFT -->
+  <aside class="left">
 
-<aside class="sidebar">
-
-  <div class="brand">
-    Forge<span>AI</span>
-    <span class="version">V4</span>
-  </div>
-
-  <div class="small">
-    AI website generator • visual editor • multi-page builder
-  </div>
-
-  <label class="label">
-    Gemini API Key
-  </label>
-
-  <input
-    id="apiKey"
-    type="password"
-    placeholder="Testing only"
-  >
-
-  <label class="label">
-    Website Description
-  </label>
-
-  <textarea
-    id="prompt"
-    placeholder="Example: Premium futuristic electric vehicle company with Home, Products and About pages..."
-  ></textarea>
-
-  <label class="label">
-    Business Type
-  </label>
-
-  <select id="business">
-    <option>Automotive</option>
-    <option>E-commerce</option>
-    <option>SaaS</option>
-    <option>Agency</option>
-    <option>Real Estate</option>
-    <option>Restaurant</option>
-    <option>Portfolio</option>
-    <option>Technology</option>
-    <option>Fashion</option>
-    <option>Beauty</option>
-    <option>Education</option>
-    <option>Fitness</option>
-    <option>Other</option>
-  </select>
-
-  <button
-    class="btn"
-    id="generateBtn"
-  >
-    ✦ Generate 3-Page Website
-  </button>
-
-  <button
-    class="btn secondary"
-    id="improveBtn"
-  >
-    ✨ AI Improve
-  </button>
-
-  <button
-    class="btn secondary"
-    id="qualityBtn"
-  >
-    ✓ Run Quality Check
-  </button>
-
-  <button
-    class="btn secondary"
-    id="downloadBtn"
-  >
-    ↓ Download HTML
-  </button>
-
-  <button
-    class="btn success"
-    id="saveBtn"
-  >
-    Save Project
-  </button>
-
-  <button
-    class="btn secondary"
-    id="newBtn"
-  >
-    New Project
-  </button>
-
-  <div
-    class="status"
-    id="status"
-  >
-    Ready. Create a website to start.
-  </div>
-
-</aside>
-
-
-<!-- =====================================================
-     WORKSPACE
-===================================================== -->
-
-<main class="workspace">
-
-  <div class="topbar">
-
-    <div class="title">
-      ForgeAI Website Studio
+    <div class="logo">
+      <div class="logoRow">
+        <div class="logoMark">F</div>
+        <div>
+          <div class="logoTitle">ForgeAI Studio</div>
+          <div class="logoSub">AI Website Builder · V4</div>
+        </div>
+      </div>
     </div>
 
-    <div
-      class="pill"
-      id="pagePill"
-    >
-      Home
+    <div class="leftScroll">
+
+      <div class="group">
+        <div class="groupTitle">Project</div>
+
+        <div class="field">
+          <label>Project name</label>
+          <input id="projectName" placeholder="My Website">
+        </div>
+
+        <div class="row">
+          <button class="btn btnSmall" id="undoBtn">↶ Undo</button>
+          <button class="btn btnSmall" id="redoBtn">↷ Redo</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="groupTitle">Gemini</div>
+
+        <div class="field">
+          <label>Gemini API key</label>
+          <input id="apiKey" type="password" placeholder="AIza...">
+        </div>
+
+        <div class="field">
+          <label>Model</label>
+          <input id="model" value="gemini-2.5-flash">
+        </div>
+
+        <label class="checkRow">
+          <input type="checkbox" id="rememberKey">
+          Remember API key on this device
+        </label>
+      </div>
+
+      <div class="group">
+        <div class="groupTitle">Generate</div>
+
+        <div class="field">
+          <label>Business / website idea</label>
+          <input id="business" placeholder="Luxury sneaker brand">
+        </div>
+
+        <div class="field">
+          <label>Describe your website</label>
+          <textarea id="prompt" placeholder="Create a premium modern website for..."></textarea>
+        </div>
+
+        <button class="btn btnPrimary" id="generateBtn">
+          ✦ Generate 3-Page Website
+        </button>
+      </div>
+
+      <div class="group">
+        <div class="groupTitle">AI Editor</div>
+
+        <div class="field">
+          <label>Tell ForgeAI what to change</label>
+          <textarea id="aiEdit" placeholder="Examples:
+Change brand name to NovaLux
+Change hero title to Luxury Without Limits
+Replace the hero image
+Add a new product called Air Max Pro
+Make the website black and gold"></textarea>
+        </div>
+
+        <button class="btn btnPrimary" id="aiEditBtn">
+          ✦ Apply AI Edit
+        </button>
+
+        <div style="height:7px"></div>
+
+        <button class="btn" id="improveBtn">
+          ✨ AI Improve Website
+        </button>
+      </div>
+
+      <div class="group">
+        <div class="groupTitle">Project Files</div>
+
+        <div class="row">
+          <button class="btn btnSmall" id="saveBtn">Save</button>
+          <button class="btn btnSmall" id="loadBtn">Load</button>
+        </div>
+
+        <div style="height:7px"></div>
+
+        <div class="row">
+          <button class="btn btnSmall" id="exportProjectBtn">Export JSON</button>
+          <button class="btn btnSmall" id="importProjectBtn">Import JSON</button>
+        </div>
+
+        <input id="importFile" type="file" accept=".json" hidden>
+      </div>
+
+      <div class="group">
+        <div class="groupTitle">Export</div>
+
+        <button class="btn btnSuccess" id="downloadBtn">
+          ↓ Download HTML
+        </button>
+
+        <div style="height:7px"></div>
+
+        <button class="btn" id="copyBtn">
+          ⧉ Copy HTML
+        </button>
+
+        <div style="height:7px"></div>
+
+        <button class="btn" id="newTabBtn">
+          ↗ Open Preview
+        </button>
+      </div>
+
+      <div class="group">
+        <div class="groupTitle">Status</div>
+        <div id="status" class="status">
+          Ready. Create a website from a prompt.
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+
+  <!-- CENTER -->
+  <main class="center">
+
+    <div class="topbar">
+
+      <div class="topLeft">
+        <div class="projectTitle" id="topProjectName">ForgeAI</div>
+        <div class="pill" id="pagePill">Home</div>
+        <div class="pill score" id="scorePill">0/100</div>
+      </div>
+
+      <div class="topRight">
+        <button class="btn btnSmall" id="qualityBtn">Quality</button>
+        <button class="btn btnSmall" id="refreshBtn">↻</button>
+      </div>
+
     </div>
 
-    <div
-      class="pill"
-      id="scorePill"
-    >
-      No project
+    <div id="pageList" class="pageList"></div>
+
+    <div class="previewBar">
+      <button class="modeBtn active" id="desktopBtn">▣ Desktop</button>
+      <button class="modeBtn" id="mobileBtn">▯ Mobile</button>
     </div>
 
-  </div>
+    <div class="previewWrap">
+      <iframe
+        id="preview"
+        class="previewFrame"
+        sandbox="allow-scripts allow-forms"
+        title="ForgeAI Preview">
+      </iframe>
+    </div>
+
+  </main>
 
 
-  <div class="editor">
+  <!-- RIGHT -->
+  <aside class="right">
 
-    <!-- PAGES -->
+    <div class="rightHeader">
+      <div class="rightTitle">Visual Editor</div>
+      <div class="rightSub">Click a page or product to edit it.</div>
+    </div>
 
-    <aside
-      class="pages"
-      id="pages"
-    ></aside>
+    <div id="inspector" class="inspector"></div>
 
-
-    <!-- PREVIEW -->
-
-    <section class="previewWrap">
-
-      <div class="previewTools">
-
-        <button
-          class="btn secondary"
-          id="desktopBtn"
-        >
-          Desktop
-        </button>
-
-        <button
-          class="btn secondary"
-          id="mobileBtn"
-        >
-          Mobile
-        </button>
-
-        <button
-          class="btn secondary"
-          id="refreshBtn"
-        >
-          Refresh
-        </button>
-
-        <span
-          class="previewSize"
-          id="previewSize"
-        >
-          Live preview
-        </span>
-
-      </div>
-
-      <div class="previewFrame">
-
-        <iframe
-          id="preview"
-          title="ForgeAI Website Preview"
-        ></iframe>
-
-      </div>
-
-    </section>
-
-
-    <!-- INSPECTOR -->
-
-    <aside
-      class="inspector"
-      id="inspector"
-    >
-
-      <div class="inspectorHeader">
-
-        <h3>
-          Visual Editor
-        </h3>
-
-      </div>
-
-      <div
-        id="inspectorContent"
-        class="small"
-      >
-        Generate a project first.
-      </div>
-
-    </aside>
-
-  </div>
-
-</main>
+  </aside>
 
 </div>
-
-
-<!-- =====================================================
-     MODAL
-===================================================== -->
-
-<div
-  class="modal"
-  id="modal"
->
-
-  <div class="modalBox">
-
-    <div class="modalHead">
-
-      <strong id="modalTitle">
-        Add Page
-      </strong>
-
-      <button
-        class="iconBtn"
-        id="closeModal"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div id="modalContent"></div>
-
-  </div>
-
-</div>
-
-
-<div
-  class="toast"
-  id="toast"
-></div>
 
 
 <script>
-
-"use strict";
-
-
-/* =====================================================
-   CONFIG
-===================================================== */
+/* ============================================================
+   FORGEAI STUDIO V4
+   One-file AI website builder
+   ============================================================ */
 
 const CONFIG = {
-
-  /*
-   Testing only.
-
-   For production:
-   ForgeAI frontend
-        ↓
-   Your backend
-        ↓
-   Gemini
-  */
-
-  model:
-    "gemini-3-flash-preview",
-
-  endpoint:
-    "https://generativelanguage.googleapis.com/v1beta/models/"
-
+  endpoint: "https://generativelanguage.googleapis.com/v1beta/models/",
+  defaultModel: "gemini-2.5-flash",
+  storageProject: "forgeai_v4_project",
+  storageKey: "forgeai_v4_api_key",
+  storageRemember: "forgeai_v4_remember"
 };
-
-
-/* =====================================================
-   STATE
-===================================================== */
 
 const state = {
-
-  project:null,
-
-  selectedPage:"home",
-
-  previewMode:"desktop",
-
-  dirty:false,
-
-  lastQuality:null
-
+  project: null,
+  selectedPage: "home",
+  selectedProduct: null,
+  selectedSection: null,
+  previewMode: "desktop",
+  history: [],
+  future: [],
+  html: "",
+  busy: false
 };
 
 
-/* =====================================================
-   HELPERS
-===================================================== */
+/* ============================================================
+   BASIC HELPERS
+   ============================================================ */
 
-const $ =
-  id =>
-  document.getElementById(id);
+function $(id){
+  return document.getElementById(id);
+}
 
+function deepClone(obj){
+  return JSON.parse(JSON.stringify(obj));
+}
+
+function uid(prefix="id"){
+  return prefix + "_" + Math.random().toString(36).slice(2,9);
+}
 
 function esc(value){
-
   return String(value ?? "")
-    .replace(
-      /[&<>"']/g,
-      char =>
-        ({
-          "&":"&amp;",
-          "<":"&lt;",
-          ">":"&gt;",
-          '"':"&quot;",
-          "'":"&#039;"
-        }[char])
-    );
-
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
-
-function uid(){
-
-  return (
-    Date.now().toString(36) +
-    Math.random().toString(36).slice(2,8)
-  );
-
+function escAttr(value){
+  return esc(value);
 }
 
+function safeColor(value, fallback="#7c5cff"){
+  const v = String(value || "").trim();
 
-function slug(value){
-
-  return String(value || "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g,"-")
-    .replace(/^-+|-+$/g,"")
-    .slice(0,40) || "page";
-
-}
-
-
-function toast(message){
-
-  const el =
-    $("toast");
-
-  el.textContent =
-    message;
-
-  el.classList.add("show");
-
-  clearTimeout(
-    toast.timer
-  );
-
-  toast.timer =
-    setTimeout(
-      () =>
-        el.classList.remove("show"),
-      2200
-    );
-
-}
-
-
-function status(
-  message,
-  type=""
-){
-
-  const el =
-    $("status");
-
-  el.textContent =
-    message;
-
-  el.className =
-    "status " +
-    type;
-
-}
-
-
-/* =====================================================
-   DEFAULT CONTENT
-===================================================== */
-
-function defaultItem(type){
-
-  const names = {
-
-    products:"Product",
-
-    features:"Feature",
-
-    services:"Service",
-
-    gallery:"Gallery Image",
-
-    faq:"Frequently Asked Question",
-
-    stats:"Statistic",
-
-    contact:"Contact",
-
-    cta:"Call to Action"
-
-  };
-
-  return {
-
-    title:
-      names[type] ||
-      "New Item",
-
-    description:
-      "Add your content here.",
-
-    image:"",
-
-    price:"",
-
-    button:
-      "Learn More"
-
-  };
-
-}
-
-
-function defaultSection(type){
-
-  const section = {
-
-    id:uid(),
-
-    type:type,
-
-    title:
-      type === "products"
-      ? "Featured Collection"
-      : type === "features"
-      ? "Why Choose Us"
-      : type === "faq"
-      ? "Frequently Asked Questions"
-      : type === "gallery"
-      ? "Our Collection"
-      : type === "stats"
-      ? "Built for Results"
-      : type === "contact"
-      ? "Get in Touch"
-      : type === "cta"
-      ? "Ready to Get Started?"
-      : "About",
-
-    description:
-      "Discover what makes this business different.",
-
-    items:[]
-
-  };
-
-
-  let count = 3;
-
-  if(type === "products")
-    count = 6;
-
-  if(type === "faq")
-    count = 4;
-
-  if(type === "stats")
-    count = 4;
-
-  for(
-    let i=0;
-    i<count;
-    i++
-  ){
-
-    section.items.push(
-      defaultItem(type)
-    );
-
+  if(/^#[0-9a-fA-F]{3,8}$/.test(v)){
+    return v;
   }
 
-
-  return section;
-
+  return fallback;
 }
 
-
-/* =====================================================
-   GEMINI CALL
-===================================================== */
-
-async function gemini(
-  prompt
-){
-
-  const key =
-    $("apiKey")
-      .value
-      .trim();
-
-
-  if(!key){
-
-    throw new Error(
-      "Enter your Gemini API key for testing."
-    );
-
-  }
-
-
-  const url =
-    CONFIG.endpoint +
-    encodeURIComponent(
-      CONFIG.model
-    ) +
-    ":generateContent?key=" +
-    encodeURIComponent(key);
-
-
-  const response =
-    await fetch(
-      url,
-      {
-
-        method:"POST",
-
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
-
-        body:
-          JSON.stringify({
-
-            contents:[
-              {
-                role:"user",
-
-                parts:[
-                  {
-                    text:prompt
-                  }
-                ]
-              }
-            ],
-
-            generationConfig:{
-
-              temperature:.35,
-
-              maxOutputTokens:30000,
-
-              responseMimeType:
-                "application/json"
-
-            }
-
-          })
-
-      }
-    );
-
-
-  if(!response.ok){
-
-    const text =
-      await response.text();
-
-    throw new Error(
-      "Gemini API error: " +
-      text.slice(0,500)
-    );
-
-  }
-
-
-  const data =
-    await response.json();
-
-
-  const parts =
-    data
-      ?.candidates?.[0]
-      ?.content?.parts || [];
-
-
-  const text =
-    parts
-      .map(
-        part =>
-          part.text || ""
-      )
-      .join("");
-
-
-  if(!text){
-
-    throw new Error(
-      "Gemini returned empty content."
-    );
-
-  }
-
-
-  return text;
-
-}
-
-
-/* =====================================================
-   ROBUST JSON PARSER
-===================================================== */
-
-function parseJSON(
-  raw
-){
-
-  let text =
-    String(raw || "")
-      .trim();
-
-
-  text =
-    text
-      .replace(
-        /^```json\s*/i,
-        ""
-      )
-      .replace(
-        /^```\s*/i,
-        ""
-      )
-      .replace(
-        /\s*```$/i,
-        ""
-      )
-      .trim();
-
-
-  /*
-   First try normal JSON.
-  */
-
-  try{
-
-    return JSON.parse(
-      text
-    );
-
-  }
-
-  catch(_){}
-
-
-  /*
-   Find first { and last }.
-  */
-
-  const start =
-    text.indexOf("{");
-
-  const end =
-    text.lastIndexOf("}");
-
+function safeImage(url){
+  const v = String(url || "").trim();
 
   if(
-    start === -1 ||
-    end === -1
+    v.startsWith("data:image/") ||
+    v.startsWith("https://") ||
+    v.startsWith("http://")
   ){
-
-    throw new Error(
-      "AI returned invalid JSON."
-    );
-
+    return v;
   }
 
+  return "";
+}
 
-  try{
+function safeHref(url, fallback="#home"){
+  const v = String(url || "").trim();
 
-    return JSON.parse(
-      text.slice(
-        start,
-        end + 1
-      )
-    );
-
+  if(
+    v.startsWith("#") ||
+    v.startsWith("https://") ||
+    v.startsWith("http://") ||
+    v.startsWith("mailto:") ||
+    v.startsWith("tel:")
+  ){
+    return v;
   }
 
-  catch(error){
+  return fallback;
+}
 
-    throw new Error(
-      "AI JSON could not be parsed: " +
-      error.message
-    );
+function slug(value){
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"")
+    .slice(0,50);
+}
 
-  }
+function setStatus(text,type=""){
+  const el = $("status");
+  el.textContent = text;
+  el.className = "status " + type;
+}
 
+function debounce(fn,delay=500){
+  let t;
+  return (...args)=>{
+    clearTimeout(t);
+    t=setTimeout(()=>fn(...args),delay);
+  };
 }
 
 
-/* =====================================================
-   AI BLUEPRINT PROMPT
-===================================================== */
+/* ============================================================
+   DEFAULT PROJECT
+   ============================================================ */
 
-function blueprintPrompt(){
+function defaultProduct(i){
+  const products = [
+    ["Apex One","Premium everyday performance.","$129"],
+    ["Nova Pro","Designed for people who want more.","$179"],
+    ["Orbit X","Minimal design. Maximum impact.","$219"],
+    ["Velocity","Built for modern lifestyles.","$149"],
+    ["Prime Studio","Premium materials and refined details.","$249"],
+    ["Elite Max","Our most advanced flagship product.","$299"]
+  ];
 
-return `
+  const p = products[i % products.length];
 
-You are ForgeAI's senior website architect and conversion designer.
+  return {
+    id:"product_"+(i+1),
+    title:p[0],
+    description:p[1],
+    image:"",
+    price:p[2],
+    button:"View Details"
+  };
+}
+
+function defaultSection(type,id,title){
+  return {
+    id:id || uid("section"),
+    type:type,
+    title:title || "",
+    description:"",
+    items:[]
+  };
+}
+
+function createDefaultProject(){
+  const products = [];
+
+  for(let i=0;i<6;i++){
+    products.push(defaultProduct(i));
+  }
+
+  return {
+    version:4,
+    projectName:"ForgeAI Project",
+
+    brand:{
+      name:"Nova",
+      tagline:"Designed for what comes next.",
+      description:"A modern brand built around thoughtful design, strong performance and a premium digital experience.",
+      primary:"#7c5cff",
+      secondary:"#111827",
+      accent:"#00d4ff",
+      logoText:"N"
+    },
+
+    seo:{
+      title:"Nova — Designed for what comes next",
+      description:"A premium modern website created with ForgeAI.",
+      keywords:["premium","modern","design"]
+    },
+
+    pages:[
+      {
+        id:"home",
+        name:"Home",
+        hero:{
+          eyebrow:"THE NEXT STANDARD",
+          title:"Designed for what comes next.",
+          description:"A premium digital experience built to turn attention into action.",
+          button:"Explore Products",
+          buttonHref:"#products",
+          image:""
+        },
+        sections:[
+          {
+            id:"home_features",
+            type:"features",
+            title:"Built around better ideas",
+            description:"Everything is designed to make the experience feel simple, premium and memorable.",
+            items:[
+              {
+                id:"f1",
+                title:"Premium Design",
+                description:"Clean layouts, strong typography and polished details.",
+                image:""
+              },
+              {
+                id:"f2",
+                title:"Built to Perform",
+                description:"Responsive experiences designed for modern devices.",
+                image:""
+              },
+              {
+                id:"f3",
+                title:"Made to Convert",
+                description:"Clear messaging and focused calls to action.",
+                image:""
+              }
+            ]
+          },
+          {
+            id:"home_products",
+            type:"products",
+            title:"Featured Products",
+            description:"Explore the collection.",
+            items:deepClone(products.slice(0,3))
+          },
+          {
+            id:"home_gallery",
+            type:"gallery",
+            title:"A closer look",
+            description:"Visual moments from the brand.",
+            items:[
+              {id:"g1",title:"Design",description:"",image:""},
+              {id:"g2",title:"Performance",description:"",image:""},
+              {id:"g3",title:"Lifestyle",description:"",image:""}
+            ]
+          },
+          {
+            id:"home_faq",
+            type:"faq",
+            title:"Frequently asked questions",
+            description:"",
+            items:[
+              {
+                id:"faq1",
+                title:"How does ordering work?",
+                description:"Choose a product, review the details and continue through your preferred checkout flow."
+              },
+              {
+                id:"faq2",
+                title:"Is the website mobile friendly?",
+                description:"Yes. The generated experience is responsive across phones, tablets and desktop screens."
+              },
+              {
+                id:"faq3",
+                title:"Can the design be customized?",
+                description:"Yes. Brand colors, copy, images, products and sections can all be edited in ForgeAI Studio."
+              }
+            ]
+          },
+          {
+            id:"home_cta",
+            type:"cta",
+            title:"Ready to explore?",
+            description:"Discover the complete collection and find the product that fits you.",
+            items:[
+              {
+                id:"cta1",
+                title:"Explore Products",
+                description:"",
+                button:"View Products",
+                buttonHref:"#products"
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        id:"products",
+        name:"Products",
+        hero:{
+          eyebrow:"THE COLLECTION",
+          title:"Products made to stand out.",
+          description:"Explore the full collection with a premium shopping experience.",
+          button:"Back Home",
+          buttonHref:"#home",
+          image:""
+        },
+        sections:[
+          {
+            id:"products_all",
+            type:"products",
+            title:"All Products",
+            description:"Choose your favorite.",
+            items:deepClone(products)
+          },
+          {
+            id:"products_cta",
+            type:"cta",
+            title:"Need help choosing?",
+            description:"Compare the collection and discover what works best for you.",
+            items:[
+              {
+                id:"cta2",
+                title:"Learn More",
+                description:"",
+                button:"About Us",
+                buttonHref:"#about"
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        id:"about",
+        name:"About",
+        hero:{
+          eyebrow:"OUR STORY",
+          title:"More than a product.",
+          description:"A modern brand focused on design, quality and creating experiences people remember.",
+          button:"Explore Products",
+          buttonHref:"#products",
+          image:""
+        },
+        sections:[
+          {
+            id:"about_story",
+            type:"about",
+            title:"Built with intention",
+            description:"Every detail is designed to feel considered, useful and unmistakably modern.",
+            items:[
+              {
+                id:"a1",
+                title:"Our Philosophy",
+                description:"We believe good design should feel effortless. Strong ideas become powerful when people can understand and use them immediately.",
+                image:""
+              },
+              {
+                id:"a2",
+                title:"Our Approach",
+                description:"We combine clear communication, thoughtful visuals and responsive technology to create a complete digital experience.",
+                image:""
+              }
+            ]
+          },
+          {
+            id:"about_features",
+            type:"features",
+            title:"What matters to us",
+            description:"",
+            items:[
+              {
+                id:"af1",
+                title:"Quality",
+                description:"We focus on details that make the final experience feel polished."
+              },
+              {
+                id:"af2",
+                title:"Innovation",
+                description:"We keep exploring better ways to create useful digital experiences."
+              },
+              {
+                id:"af3",
+                title:"Simplicity",
+                description:"Complex technology should still feel simple to the person using it."
+              }
+            ]
+          },
+          {
+            id:"about_contact",
+            type:"contact",
+            title:"Let's connect",
+            description:"Have a question? Send us a message.",
+            items:[]
+          }
+        ]
+      }
+    ],
+
+    footer:{
+      description:"Created with ForgeAI Studio.",
+      email:"hello@example.com",
+      phone:"+1 000 000 0000",
+      address:""
+    }
+  };
+}
+
+
+/* ============================================================
+   NORMALIZATION
+   ============================================================ */
+
+function normalizeItem(item={}){
+  return {
+    id:item.id || uid("item"),
+    title:String(item.title || ""),
+    description:String(item.description || ""),
+    image:safeImage(item.image || ""),
+    price:String(item.price || ""),
+    button:String(item.button || ""),
+    buttonHref:safeHref(item.buttonHref || "#home"),
+    meta:String(item.meta || "")
+  };
+}
+
+function normalizeSection(section={}){
+  const validTypes = [
+    "features",
+    "products",
+    "about",
+    "stats",
+    "gallery",
+    "faq",
+    "contact",
+    "cta"
+  ];
+
+  const type = validTypes.includes(section.type)
+    ? section.type
+    : "features";
+
+  return {
+    id:section.id || uid("section"),
+    type,
+    title:String(section.title || ""),
+    description:String(section.description || ""),
+    items:Array.isArray(section.items)
+      ? section.items.map(normalizeItem)
+      : []
+  };
+}
+
+function normalizeHero(hero={}){
+  return {
+    eyebrow:String(hero.eyebrow || ""),
+    title:String(hero.title || ""),
+    description:String(hero.description || ""),
+    button:String(hero.button || ""),
+    buttonHref:safeHref(hero.buttonHref || "#products"),
+    image:safeImage(hero.image || "")
+  };
+}
+
+function normalizePage(page,id,name){
+  return {
+    id,
+    name:String(page?.name || name),
+    hero:normalizeHero(page?.hero || {}),
+    sections:Array.isArray(page?.sections)
+      ? page.sections.map(normalizeSection)
+      : []
+  };
+}
+
+function normalizeBlueprint(raw){
+  const fallback=createDefaultProject();
+
+  const source = raw && typeof raw==="object"
+    ? raw
+    : fallback;
+
+  const pageMap={};
+
+  if(Array.isArray(source.pages)){
+    source.pages.forEach(p=>{
+      if(p && p.id){
+        pageMap[p.id]=p;
+      }
+    });
+  }
+
+  const pages=[
+    normalizePage(pageMap.home || fallback.pages[0],"home","Home"),
+    normalizePage(pageMap.products || fallback.pages[1],"products","Products"),
+    normalizePage(pageMap.about || fallback.pages[2],"about","About")
+  ];
+
+  let productPage=pages.find(p=>p.id==="products");
+
+  let productSections=productPage.sections.filter(s=>s.type==="products");
+
+  if(productSections.length===0){
+    productPage.sections.unshift({
+      id:"products_all",
+      type:"products",
+      title:"All Products",
+      description:"Explore the collection.",
+      items:[]
+    });
+    productSections=productPage.sections.filter(s=>s.type==="products");
+  }
+
+  let allProducts=productSections.flatMap(s=>s.items);
+
+  if(allProducts.length<6){
+    const need=6-allProducts.length;
+
+    for(let i=0;i<need;i++){
+      allProducts.push(defaultProduct(allProducts.length+i));
+    }
+
+    productSections[0].items=allProducts;
+  }
+
+  const project={
+    version:4,
+    projectName:String(source.projectName || fallback.projectName),
+
+    brand:{
+      name:String(source.brand?.name || fallback.brand.name),
+      tagline:String(source.brand?.tagline || fallback.brand.tagline),
+      description:String(source.brand?.description || fallback.brand.description),
+      primary:safeColor(source.brand?.primary,fallback.brand.primary),
+      secondary:safeColor(source.brand?.secondary,fallback.brand.secondary),
+      accent:safeColor(source.brand?.accent,fallback.brand.accent),
+      logoText:String(source.brand?.logoText || fallback.brand.logoText)
+    },
+
+    seo:{
+      title:String(source.seo?.title || ""),
+      description:String(source.seo?.description || ""),
+      keywords:Array.isArray(source.seo?.keywords)
+        ? source.seo.keywords.map(x=>String(x)).slice(0,20)
+        : []
+    },
+
+    pages,
+
+    footer:{
+      description:String(source.footer?.description || ""),
+      email:String(source.footer?.email || ""),
+      phone:String(source.footer?.phone || ""),
+      address:String(source.footer?.address || "")
+    }
+  };
+
+  return project;
+}
+
+
+/* ============================================================
+   VALIDATION + QUALITY
+   ============================================================ */
+
+function validateProject(project){
+  const issues=[];
+
+  if(!project){
+    return ["No project loaded."];
+  }
+
+  if(!project.brand?.name){
+    issues.push("Brand name is missing.");
+  }
+
+  if(project.pages?.length!==3){
+    issues.push("Project must contain exactly 3 pages.");
+  }
+
+  ["home","products","about"].forEach(id=>{
+    if(!project.pages?.find(p=>p.id===id)){
+      issues.push("Missing " + id + " page.");
+    }
+  });
+
+  project.pages?.forEach(page=>{
+    if(!page.name) issues.push(page.id+" page name is empty.");
+    if(!page.hero?.title) issues.push(page.name+" hero title is empty.");
+    if(!page.hero?.description) issues.push(page.name+" hero description is empty.");
+  });
+
+  const products=getAllProducts();
+
+  if(products.length<6){
+    issues.push("At least 6 products are recommended.");
+  }
+
+  const ids=new Set();
+
+  products.forEach(p=>{
+    if(ids.has(p.id)){
+      issues.push("Duplicate product ID detected.");
+    }
+    ids.add(p.id);
+
+    if(!p.title) issues.push("A product is missing a title.");
+    if(!p.description) issues.push("Product \""+(p.title||"Unnamed")+"\" has no description.");
+  });
+
+  if(!project.seo?.title){
+    issues.push("SEO title is missing.");
+  }
+
+  if(!project.seo?.description){
+    issues.push("SEO description is missing.");
+  }
+
+  if(!project.footer?.email){
+    issues.push("Footer email is missing.");
+  }
+
+  return [...new Set(issues)];
+}
+
+function qualityReport(project){
+  let score=0;
+  const issues=[];
+
+  if(project?.pages?.length===3) score+=20;
+  else issues.push("Use exactly 3 pages.");
+
+  if(project?.brand?.name && project.brand.tagline) score+=10;
+  else issues.push("Complete brand name and tagline.");
+
+  const titles=project?.pages?.filter(p=>p.hero?.title).length || 0;
+  score+=Math.min(15,titles*5);
+
+  if(titles<3){
+    issues.push("Every page should have a strong hero title.");
+  }
+
+  const products=getAllProducts();
+
+  if(products.length>=6) score+=15;
+  else{
+    score+=Math.min(15,products.length*2);
+    issues.push("Add more products.");
+  }
+
+  const productImages=products.filter(p=>p.image).length;
+
+  if(productImages>=6) score+=10;
+  else{
+    score+=Math.min(10,productImages*2);
+    issues.push("Add product images for a stronger visual result.");
+  }
+
+  if(project?.seo?.title && project?.seo?.description){
+    score+=10;
+  }else{
+    issues.push("Complete SEO title and description.");
+  }
+
+  if(project?.footer?.email && project?.footer?.description){
+    score+=10;
+  }else{
+    issues.push("Complete footer/contact information.");
+  }
+
+  const sections=project?.pages?.reduce(
+    (n,p)=>n+(p.sections?.length||0),
+    0
+  ) || 0;
+
+  if(sections>=8) score+=10;
+  else{
+    score+=Math.min(10,sections);
+    issues.push("Add more useful sections.");
+  }
+
+  return {
+    score:Math.min(100,Math.round(score)),
+    issues:[...new Set(issues)]
+  };
+}
+
+
+/* ============================================================
+   PRODUCTS
+   ============================================================ */
+
+function getAllProducts(){
+  if(!state.project) return [];
+
+  const productsPage=state.project.pages.find(p=>p.id==="products");
+
+  if(!productsPage) return [];
+
+  return productsPage.sections
+    .filter(s=>s.type==="products")
+    .flatMap(s=>s.items);
+}
+
+function getProductById(id){
+  return getAllProducts().find(p=>p.id===id);
+}
+
+function getSelectedPage(){
+  return state.project?.pages.find(p=>p.id===state.selectedPage);
+}
+
+function getSelectedSection(){
+  const page=getSelectedPage();
+  return page?.sections.find(s=>s.id===state.selectedSection);
+}
+
+function getProductSection(){
+  const page=state.project.pages.find(p=>p.id==="products");
+
+  if(!page) return null;
+
+  let section=page.sections.find(s=>s.type==="products");
+
+  if(!section){
+    section={
+      id:uid("products"),
+      type:"products",
+      title:"All Products",
+      description:"",
+      items:[]
+    };
+
+    page.sections.push(section);
+  }
+
+  return section;
+}
+
+
+/* ============================================================
+   HISTORY
+   ============================================================ */
+
+function pushHistory(){
+  if(!state.project) return;
+
+  state.history.push(deepClone(state.project));
+
+  if(state.history.length>30){
+    state.history.shift();
+  }
+
+  state.future=[];
+}
+
+function undo(){
+  if(!state.history.length) return;
+
+  state.future.push(deepClone(state.project));
+  state.project=state.history.pop();
+
+  renderAll();
+  setStatus("Undo complete.","good");
+}
+
+function redo(){
+  if(!state.future.length) return;
+
+  state.history.push(deepClone(state.project));
+  state.project=state.future.pop();
+
+  renderAll();
+  setStatus("Redo complete.","good");
+}
+
+
+/* ============================================================
+   IMAGE UPLOAD / COMPRESSION
+   ============================================================ */
+
+async function imageFileToDataURL(file){
+  if(!file) return "";
+
+  if(file.type==="image/svg+xml"){
+    return await new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+
+      reader.onload=()=>resolve(reader.result);
+      reader.onerror=reject;
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  return await new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+
+    reader.onload=()=>{
+      const img=new Image();
+
+      img.onload=()=>{
+        const max=1400;
+
+        let width=img.width;
+        let height=img.height;
+
+        if(width>max){
+          height=Math.round(height*max/width);
+          width=max;
+        }
+
+        if(height>max){
+          width=Math.round(width*max/height);
+          height=max;
+        }
+
+        const canvas=document.createElement("canvas");
+
+        canvas.width=width;
+        canvas.height=height;
+
+        const ctx=canvas.getContext("2d");
+
+        ctx.drawImage(img,0,0,width,height);
+
+        resolve(
+          canvas.toDataURL("image/jpeg",.82)
+        );
+      };
+
+      img.onerror=reject;
+      img.src=reader.result;
+    };
+
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+
+/* ============================================================
+   GEMINI
+   ============================================================ */
+
+async function callGemini(instruction){
+  const key=$("apiKey").value.trim();
+
+  if(!key){
+    throw new Error("Enter your Gemini API key first.");
+  }
+
+  const model=($("model").value.trim() || CONFIG.defaultModel);
+
+  const url=
+    CONFIG.endpoint+
+    encodeURIComponent(model)+
+    ":generateContent?key="+
+    encodeURIComponent(key);
+
+  const body={
+    contents:[
+      {
+        role:"user",
+        parts:[
+          {
+            text:instruction
+          }
+        ]
+      }
+    ],
+    generationConfig:{
+      temperature:.7,
+      responseMimeType:"application/json"
+    }
+  };
+
+  const response=await fetch(url,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(body)
+  });
+
+  const data=await response.json();
+
+  if(!response.ok){
+    throw new Error(
+      data?.error?.message ||
+      "Gemini request failed."
+    );
+  }
+
+  const text=data?.candidates?.[0]?.content?.parts
+    ?.map(p=>p.text||"")
+    .join("") || "";
+
+  if(!text){
+    throw new Error("Gemini returned an empty response.");
+  }
+
+  return text;
+}
+
+
+/* ============================================================
+   ROBUST JSON PARSER
+   ============================================================ */
+
+function extractBalancedJSON(text){
+  let start=-1;
+  let depth=0;
+  let inString=false;
+  let escaped=false;
+
+  for(let i=0;i<text.length;i++){
+
+    const ch=text[i];
+
+    if(start===-1){
+
+      if(ch==="{" || ch==="["){
+        start=i;
+        depth=1;
+      }
+
+      continue;
+    }
+
+    if(inString){
+
+      if(escaped){
+        escaped=false;
+      }else if(ch==="\\"){
+        escaped=true;
+      }else if(ch==='"'){
+        inString=false;
+      }
+
+      continue;
+    }
+
+    if(ch==='"'){
+      inString=true;
+      continue;
+    }
+
+    if(ch==="{" || ch==="["){
+      depth++;
+    }
+
+    if(ch==="}" || ch==="]"){
+      depth--;
+
+      if(depth===0){
+        return text.slice(start,i+1);
+      }
+    }
+  }
+
+  return "";
+}
+
+function parseAIJSON(raw){
+  let text=String(raw||"").trim();
+
+  text=text
+    .replace(/^```json/i,"")
+    .replace(/^```/i,"")
+    .replace(/```$/i,"")
+    .trim();
+
+  try{
+    return JSON.parse(text);
+  }catch(e){}
+
+  const extracted=extractBalancedJSON(text);
+
+  if(!extracted){
+    throw new Error("AI response was not valid JSON.");
+  }
+
+  try{
+    return JSON.parse(extracted);
+  }catch(e){
+    throw new Error("AI returned malformed JSON.");
+  }
+}
+
+
+/* ============================================================
+   AI PROMPTS
+   ============================================================ */
+
+function generationPrompt(){
+  const business=$("business").value.trim();
+  const userPrompt=$("prompt").value.trim();
+
+  return `
+You are the website architecture engine inside ForgeAI Studio.
+
+Create a premium, production-style website blueprint.
+
+BUSINESS:
+${business || "Modern premium brand"}
 
 USER REQUEST:
+${userPrompt || "Create a premium modern website."}
 
-${$("prompt").value.trim()}
-
-BUSINESS TYPE:
-
-${$("business").value}
-
-
-Create a premium professional website blueprint.
-
-The website must feel like a real commercial website,
-NOT an AI demo or generic template.
-
+IMPORTANT:
 Return ONLY valid JSON.
+No markdown.
+No explanation.
+No code fences.
 
-SCHEMA:
+The JSON must follow this structure:
 
 {
+  "version":4,
+  "projectName":"",
   "brand":{
     "name":"",
     "tagline":"",
     "description":"",
-    "logoText":"",
     "primary":"#7c5cff",
-    "secondary":"#10131b",
-    "accent":"#ffffff"
+    "secondary":"#111827",
+    "accent":"#00d4ff",
+    "logoText":""
   },
-
   "seo":{
     "title":"",
     "description":"",
     "keywords":[]
   },
-
   "pages":[
-
     {
       "id":"home",
       "name":"Home",
-
       "hero":{
         "eyebrow":"",
         "title":"",
         "description":"",
         "button":"",
-        "buttonLink":"",
+        "buttonHref":"#products",
         "image":""
       },
-
       "sections":[]
     },
-
     {
       "id":"products",
       "name":"Products",
-
       "hero":{
         "eyebrow":"",
         "title":"",
         "description":"",
         "button":"",
-        "buttonLink":"",
+        "buttonHref":"#home",
         "image":""
       },
-
       "sections":[]
     },
-
     {
       "id":"about",
       "name":"About",
-
       "hero":{
         "eyebrow":"",
         "title":"",
         "description":"",
         "button":"",
-        "buttonLink":"",
+        "buttonHref":"#products",
         "image":""
       },
-
       "sections":[]
     }
-
   ],
-
   "footer":{
     "description":"",
     "email":"",
@@ -1422,5015 +1816,3397 @@ SCHEMA:
   }
 }
 
+RULES:
 
-IMPORTANT RULES:
+1. There must be exactly 3 pages:
+   home, products, about.
 
-1. Exactly 3 pages.
+2. The Products page must contain at least 6 unique products.
 
-2. Page IDs must be:
-home
-products
-about
+3. Each product must contain:
+   id, title, description, image, price, button.
 
-3. Home must have:
-- premium hero
-- features
-- statistics OR benefits
-- CTA
-- strong conversion copy
+4. Use realistic, persuasive copy.
 
-4. Products page must contain at least 6 products/services.
+5. Do NOT invent fake customer reviews, fake awards, fake company statistics,
+fake guarantees or fake certifications.
 
-5. If the business sells physical products:
-use type "products".
+6. If testimonials are not supplied by the user, do not create fake testimonials.
 
-6. If the business is a service business:
-you may still use the products page as "Services"
-but use service items instead of fake products.
+7. Use valid HTTPS image URLs when possible.
+Unsplash image URLs are acceptable.
 
-7. About page must contain:
-- company story
-- values/features
-- FAQ
-- CTA/contact
+8. Every page needs:
+   hero.eyebrow
+   hero.title
+   hero.description
+   hero.button
+   hero.buttonHref
 
-8. Use realistic copy.
+9. Use useful sections such as:
+   features
+   products
+   about
+   gallery
+   faq
+   contact
+   cta
 
-9. NEVER invent:
-- awards
-- certifications
-- revenue
-- customer counts
-- fake reviews
-- fake partnerships
+10. Do not put HTML inside values.
 
-10. If user did not give a price:
-use "Contact for price".
+11. Brand colors must be valid hex colors.
 
-11. Use real image URLs from Unsplash when useful.
+12. Make the website visually premium and coherent.
 
-12. Every page needs useful content.
+13. Home should normally include:
+   features
+   featured products
+   gallery or about
+   FAQ
+   CTA
 
-13. Each page should have at least 2 sections.
+14. Products should include:
+   all products
+   CTA
 
-14. Product/service items should have:
-title
-description
-image when appropriate
-price when appropriate
-button
+15. About should include:
+   story/about
+   values/features
+   contact
 
-15. Make the design:
-- premium
-- modern
-- responsive
-- mobile friendly
-- visually interesting
-- conversion focused
+16. SEO must be complete.
 
-16. Navigation should work with:
-Home
-Products
-About
+17. Keep the content specific to the business instead of generic filler.
 
-17. Do not use lorem ipsum.
-
-18. Do not return HTML.
-
-19. Return JSON only.
-
+Return only JSON.
 `;
-
 }
 
 
-/* =====================================================
-   NORMALIZE BLUEPRINT
-===================================================== */
+function aiOperationsPrompt(instruction){
+  return `
+You are ForgeAI's structured website editor.
 
-function normalizeBlueprint(
-  bp
-){
+The user wants to modify an existing website.
 
-  if(!bp || typeof bp !== "object"){
+USER REQUEST:
+${instruction}
 
-    throw new Error(
-      "AI returned no project."
-    );
+CURRENT WEBSITE JSON:
+${JSON.stringify(state.project,null,2)}
 
+Return ONLY valid JSON.
+
+Return this exact top-level structure:
+
+{
+  "operations":[]
+}
+
+Allowed operations:
+
+1.
+{
+  "op":"set",
+  "path":"brand.name",
+  "value":"New Name"
+}
+
+2.
+{
+  "op":"set",
+  "path":"pages[0].hero.title",
+  "value":"New title"
+}
+
+3.
+{
+  "op":"updateProduct",
+  "pageId":"products",
+  "productId":"product_1",
+  "changes":{
+    "title":"New title",
+    "description":"New description",
+    "price":"$199",
+    "image":"https://..."
+  }
+}
+
+4.
+{
+  "op":"addProduct",
+  "pageId":"products",
+  "product":{
+    "id":"new_product",
+    "title":"",
+    "description":"",
+    "image":"",
+    "price":"",
+    "button":"View Details"
+  }
+}
+
+5.
+{
+  "op":"deleteProduct",
+  "pageId":"products",
+  "productId":"product_1"
+}
+
+6.
+{
+  "op":"updateSection",
+  "pageId":"home",
+  "sectionId":"home_features",
+  "changes":{
+    "title":"New title",
+    "description":"New description"
+  }
+}
+
+7.
+{
+  "op":"addSection",
+  "pageId":"home",
+  "section":{
+    "id":"new_section",
+    "type":"features",
+    "title":"New Section",
+    "description":"",
+    "items":[]
+  }
+}
+
+8.
+{
+  "op":"deleteSection",
+  "pageId":"home",
+  "sectionId":"home_features"
+}
+
+9.
+{
+  "op":"setPageName",
+  "pageId":"home",
+  "name":"Landing"
+}
+
+RULES:
+
+- Only perform changes requested by the user.
+- Preserve everything else.
+- Do not remove required pages.
+- Do not delete products if that would leave fewer than 6.
+- Never invent fake reviews or fake statistics.
+- Use valid JSON.
+- No markdown.
+- No explanation.
+
+Return only:
+{
+  "operations":[]
+}
+`;
+}
+
+
+/* ============================================================
+   APPLY AI OPERATIONS
+   ============================================================ */
+
+function setSafePath(root,path,value){
+  const match=String(path||"")
+    .match(/^(.*)([0-9]+)$/);
+
+  if(match){
+    const base=match[1];
+    const index=Number(match[2]);
+
+    const parts=base
+      .split(".")
+      .filter(Boolean);
+
+    let obj=root;
+
+    for(const part of parts){
+      if(
+        part==="__proto__" ||
+        part==="constructor" ||
+        part==="prototype"
+      ) return false;
+
+      if(obj[part]===undefined){
+        obj[part]={};
+      }
+
+      obj=obj[part];
+    }
+
+    if(!Array.isArray(obj)) return false;
+
+    obj[index]=value;
+
+    return true;
   }
 
+  const parts=String(path||"")
+    .split(".")
+    .filter(Boolean);
 
-  if(
-    !bp.brand ||
-    !Array.isArray(bp.pages)
-  ){
+  if(!parts.length) return false;
 
-    throw new Error(
-      "AI returned an incomplete project."
-    );
+  let obj=root;
 
-  }
-
-
-  const required =
-    ["home","products","about"];
-
-
-  for(
-    const id of required
-  ){
+  for(let i=0;i<parts.length-1;i++){
+    const part=parts[i];
 
     if(
-      !bp.pages.some(
-        page =>
-          page.id === id
+      part==="__proto__" ||
+      part==="constructor" ||
+      part==="prototype"
+    ) return false;
+
+    if(
+      obj[part]===undefined ||
+      typeof obj[part]!=="object"
+    ){
+      obj[part]={};
+    }
+
+    obj=obj[part];
+  }
+
+  const last=parts[parts.length-1];
+
+  if(
+    last==="__proto__" ||
+    last==="constructor" ||
+    last==="prototype"
+  ) return false;
+
+  obj[last]=value;
+
+  return true;
+}
+
+function applyOperations(operations){
+  if(!Array.isArray(operations)){
+    throw new Error("AI did not return operations.");
+  }
+
+  const next=deepClone(state.project);
+
+  for(const op of operations){
+
+    if(!op || typeof op!=="object") continue;
+
+    if(op.op==="set"){
+      setSafePath(next,op.path,op.value);
+    }
+
+    else if(op.op==="setPageName"){
+      const page=next.pages.find(p=>p.id===op.pageId);
+
+      if(page){
+        page.name=String(op.name||page.name);
+      }
+    }
+
+    else if(op.op==="updateProduct"){
+      const page=next.pages.find(p=>p.id===op.pageId);
+
+      if(!page) continue;
+
+      for(const section of page.sections){
+
+        if(section.type!=="products") continue;
+
+        const product=section.items.find(
+          p=>p.id===op.productId
+        );
+
+        if(product){
+          Object.assign(product,op.changes||{});
+        }
+      }
+    }
+
+    else if(op.op==="addProduct"){
+      const page=next.pages.find(p=>p.id===op.pageId);
+
+      if(!page) continue;
+
+      let section=page.sections.find(
+        s=>s.type==="products"
+      );
+
+      if(!section){
+        section={
+          id:uid("products"),
+          type:"products",
+          title:"All Products",
+          description:"",
+          items:[]
+        };
+
+        page.sections.push(section);
+      }
+
+      const product=normalizeItem(op.product||{});
+
+      if(!section.items.some(p=>p.id===product.id)){
+        section.items.push(product);
+      }
+    }
+
+    else if(op.op==="deleteProduct"){
+      const page=next.pages.find(p=>p.id===op.pageId);
+
+      if(!page) continue;
+
+      for(const section of page.sections){
+        if(section.type==="products"){
+          section.items=section.items.filter(
+            p=>p.id!==op.productId
+          );
+        }
+      }
+    }
+
+    else if(op.op==="updateSection"){
+      const page=next.pages.find(p=>p.id===op.pageId);
+
+      if(!page) continue;
+
+      const section=page.sections.find(
+        s=>s.id===op.sectionId
+      );
+
+      if(section){
+        Object.assign(section,op.changes||{});
+      }
+    }
+
+    else if(op.op==="addSection"){
+      const page=next.pages.find(p=>p.id===op.pageId);
+
+      if(!page) continue;
+
+      page.sections.push(
+        normalizeSection(op.section||{})
+      );
+    }
+
+    else if(op.op==="deleteSection"){
+      const page=next.pages.find(p=>p.id===op.pageId);
+
+      if(!page) continue;
+
+      if(page.sections.length<=1) continue;
+
+      page.sections=page.sections.filter(
+        s=>s.id!==op.sectionId
+      );
+    }
+  }
+
+  return normalizeBlueprint(next);
+}
+
+
+/* ============================================================
+   GENERATE
+   ============================================================ */
+
+async function generate(){
+  if(state.busy) return;
+
+  state.busy=true;
+
+  try{
+
+    setStatus("Generating website architecture with AI...");
+
+    const raw=await callGemini(
+      generationPrompt()
+    );
+
+    const parsed=parseAIJSON(raw);
+
+    const normalized=normalizeBlueprint(parsed);
+
+    const problems=validateProject(normalized);
+
+    if(
+      problems.some(x=>
+        x.includes("exactly 3 pages") ||
+        x.includes("Missing")
       )
     ){
+      throw new Error(
+        "AI returned an incomplete website structure."
+      );
+    }
+
+    state.project=normalized;
+    state.selectedPage="home";
+    state.selectedProduct=null;
+    state.selectedSection=null;
+    state.history=[];
+    state.future=[];
+
+    renderAll();
+    saveProject(false);
+
+    setStatus(
+      "Website generated successfully.",
+      "good"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    setStatus(
+      error.message || "Generation failed.",
+      "bad"
+    );
+
+  }finally{
+    state.busy=false;
+  }
+}
+
+
+/* ============================================================
+   AI EDIT
+   ============================================================ */
+
+async function aiEdit(){
+  if(state.busy) return;
+
+  if(!state.project){
+    setStatus("Create a website first.","bad");
+    return;
+  }
+
+  const instruction=$("aiEdit").value.trim();
+
+  if(!instruction){
+    setStatus("Write what you want ForgeAI to change.","bad");
+    return;
+  }
+
+  state.busy=true;
+
+  try{
+
+    setStatus("AI is preparing structured edits...");
+
+    const raw=await callGemini(
+      aiOperationsPrompt(instruction)
+    );
+
+    const parsed=parseAIJSON(raw);
+
+    pushHistory();
+
+    const updated=applyOperations(
+      parsed.operations
+    );
+
+    const problems=validateProject(updated);
+
+    if(
+      problems.some(x=>
+        x.includes("exactly 3 pages") ||
+        x.includes("Missing")
+      )
+    ){
+      state.project=state.history.pop();
 
       throw new Error(
-        "AI did not create the required " +
-        id +
-        " page."
+        "AI edit would damage the required 3-page structure."
       );
-
     }
 
+    state.project=updated;
+
+    renderAll();
+
+    $("aiEdit").value="";
+
+    saveProject(false);
+
+    setStatus(
+      "AI edit applied.",
+      "good"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    setStatus(
+      error.message || "AI edit failed.",
+      "bad"
+    );
+
+  }finally{
+    state.busy=false;
   }
-
-
-  bp.brand =
-    Object.assign(
-      {
-        name:"ForgeAI Website",
-        tagline:"Built for modern businesses",
-        description:"",
-        logoText:"",
-        primary:"#7c5cff",
-        secondary:"#10131b",
-        accent:"#ffffff"
-      },
-      bp.brand
-    );
-
-
-  bp.seo =
-    Object.assign(
-      {
-        title:
-          bp.brand.name,
-        description:
-          bp.brand.description,
-        keywords:[]
-      },
-      bp.seo || {}
-    );
-
-
-  bp.footer =
-    Object.assign(
-      {
-        description:
-          bp.brand.description,
-        email:"",
-        phone:"",
-        address:""
-      },
-      bp.footer || {}
-    );
-
-
-  /*
-   Keep ONLY required 3 pages.
-  */
-
-  bp.pages =
-    required.map(
-      id =>
-        bp.pages.find(
-          page =>
-            page.id === id
-        )
-    );
-
-
-  bp.pages.forEach(
-    page => {
-
-      page.name =
-        page.name ||
-        (
-          page.id === "home"
-          ? "Home"
-          : page.id === "products"
-          ? "Products"
-          : "About"
-        );
-
-
-      page.hero =
-        Object.assign(
-          {
-            eyebrow:
-              bp.brand.tagline,
-            title:
-              page.name,
-            description:
-              bp.brand.description,
-            button:
-              page.id === "products"
-              ? "Explore"
-              : "Learn More",
-            buttonLink:
-              page.id === "products"
-              ? "#products"
-              : "#about",
-            image:""
-          },
-          page.hero || {}
-        );
-
-
-      page.sections =
-        Array.isArray(
-          page.sections
-        )
-        ? page.sections
-        : [];
-
-
-      page.sections =
-        page.sections
-          .filter(Boolean)
-          .map(
-            section => {
-
-              section.id =
-                section.id ||
-                uid();
-
-              section.type =
-                section.type ||
-                "features";
-
-              section.title =
-                section.title ||
-                "Section";
-
-              section.description =
-                section.description ||
-                "";
-
-              section.items =
-                Array.isArray(
-                  section.items
-                )
-                ? section.items
-                : [];
-
-              section.items =
-                section.items.map(
-                  item =>
-                    Object.assign(
-                      {
-                        title:"Item",
-                        description:"",
-                        image:"",
-                        price:"",
-                        button:"Learn More"
-                      },
-                      item || {}
-                    )
-                );
-
-              return section;
-
-            }
-          );
-
-    }
-  );
-
-
-  /*
-   Guarantee minimum content.
-  */
-
-  const home =
-    bp.pages.find(
-      p => p.id === "home"
-    );
-
-  const products =
-    bp.pages.find(
-      p => p.id === "products"
-    );
-
-  const about =
-    bp.pages.find(
-      p => p.id === "about"
-    );
-
-
-  if(home.sections.length < 3){
-
-    home.sections.push(
-      defaultSection("features"),
-      defaultSection("cta")
-    );
-
-  }
-
-
-  if(products.sections.length < 2){
-
-    products.sections.push(
-      defaultSection("products"),
-      defaultSection("cta")
-    );
-
-  }
-
-
-  if(
-    productItems(products).length < 6
-  ){
-
-    let section =
-      products.sections.find(
-        s =>
-          s.type === "products"
-      );
-
-
-    if(!section){
-
-      section =
-        defaultSection("products");
-
-      products.sections.unshift(
-        section
-      );
-
-    }
-
-
-    while(
-      section.items.length < 6
-    ){
-
-      section.items.push(
-        defaultItem("products")
-      );
-
-    }
-
-  }
-
-
-  if(about.sections.length < 3){
-
-    about.sections.push(
-      defaultSection("about"),
-      defaultSection("faq"),
-      defaultSection("cta")
-    );
-
-  }
-
-
-  return bp;
-
 }
 
 
-/* =====================================================
-   PRODUCT / SERVICE HELPERS
-===================================================== */
+/* ============================================================
+   AI IMPROVE
+   ============================================================ */
 
-function productSections(
-  page
-){
+async function improve(){
+  if(!state.project){
+    setStatus("Create a website first.","bad");
+    return;
+  }
 
-  return (
-    page?.sections || []
-  )
-    .filter(
-      section =>
-        section.type === "products" ||
-        section.type === "services"
-    );
+  $("aiEdit").value=
+    "Improve the overall website quality, copy, hierarchy, product descriptions and section content. Keep the same brand direction and 3-page structure. Do not invent fake reviews, fake awards or fake statistics.";
 
+  await aiEdit();
 }
 
 
-function productItems(
-  page
-){
+/* ============================================================
+   RENDER GENERATED WEBSITE
+   ============================================================ */
 
-  return productSections(page)
-    .flatMap(
-      section =>
-        Array.isArray(
-          section.items
-        )
-        ? section.items
-        : []
-    );
+function imageOrPlaceholder(url,title=""){
+  const image=safeImage(url);
 
-}
-
-
-/* =====================================================
-   RENDER SECTION
-===================================================== */
-
-function renderSection(
-  section,
-  index
-){
-
-  const type =
-    section.type ||
-    "features";
-
-  const items =
-    Array.isArray(
-      section.items
-    )
-    ? section.items
-    : [];
-
-
-  const sectionId =
-    type +
-    "-" +
-    index;
-
-
-  if(
-    type === "products" ||
-    type === "services"
-  ){
-
+  if(image){
     return `
-
-<section
-  class="siteSection"
-  id="${esc(sectionId)}"
->
-
-  <div class="siteWrap">
-
-    <div class="sectionHead">
-
-      <span>
-        ${esc(
-          type === "products"
-          ? "COLLECTION"
-          : "SERVICES"
-        )}
-      </span>
-
-      <h2>
-        ${esc(section.title)}
-      </h2>
-
-      <p>
-        ${esc(section.description)}
-      </p>
-
-    </div>
-
-
-    <div class="productGrid">
-
-      ${items.map(
-        (item,itemIndex) => `
-
-        <article
-          class="productCard"
-        >
-
-          ${
-            item.image
-            ?
-
-            `
-            <img
-              src="${esc(item.image)}"
-              alt="${esc(item.title)}"
-              loading="lazy"
-            >
-            `
-
-            :
-
-            `
-            <div class="productPlaceholder">
-              ${esc(
-                String(item.title || "Item")
-                  .slice(0,1)
-                  .toUpperCase()
-              )}
-            </div>
-            `
-          }
-
-
-          <div class="productBody">
-
-            <div class="productTag">
-              ${esc(
-                type === "products"
-                ? "FEATURED"
-                : "SERVICE"
-              )}
-            </div>
-
-            <h3>
-              ${esc(item.title)}
-            </h3>
-
-            <p>
-              ${esc(item.description)}
-            </p>
-
-
-            <div class="productBottom">
-
-              <strong>
-                ${esc(
-                  item.price ||
-                  "Contact for price"
-                )}
-              </strong>
-
-              <button
-                class="smallBtn"
-                data-product="${itemIndex}"
-              >
-                ${esc(
-                  item.button ||
-                  "Learn More"
-                )}
-              </button>
-
-            </div>
-
-          </div>
-
-        </article>
-
-        `
-      ).join("")}
-
-    </div>
-
-  </div>
-
-</section>
-
-`;
-
+      <img
+        src="${escAttr(image)}"
+        alt="${escAttr(title)}"
+        loading="lazy"
+        decoding="async"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='grid';"
+      >
+      <div class="imgFallback">${esc(title||"Image")}</div>
+    `;
   }
-
-
-  if(type === "gallery"){
-
-    return `
-
-<section
-  class="siteSection"
-  id="${esc(sectionId)}"
->
-
-<div class="siteWrap">
-
-<div class="sectionHead">
-
-<span>GALLERY</span>
-
-<h2>
-${esc(section.title)}
-</h2>
-
-<p>
-${esc(section.description)}
-</p>
-
-</div>
-
-
-<div class="galleryGrid">
-
-${items.map(
-  item => `
-
-  <img
-    src="${esc(
-      item.image ||
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=85"
-    )}"
-    alt="${esc(item.title)}"
-    loading="lazy"
-  >
-
-`
-).join("")}
-
-</div>
-
-</div>
-
-</section>
-
-`;
-
-  }
-
-
-  if(type === "stats"){
-
-    return `
-
-<section
-  class="siteSection"
-  id="${esc(sectionId)}"
->
-
-<div class="siteWrap">
-
-<div class="sectionHead">
-
-<span>WHY IT MATTERS</span>
-
-<h2>
-${esc(section.title)}
-</h2>
-
-<p>
-${esc(section.description)}
-</p>
-
-</div>
-
-
-<div class="statsGrid">
-
-${items.map(
-  item => `
-
-  <div class="stat">
-
-    <strong>
-      ${esc(item.title)}
-    </strong>
-
-    <span>
-      ${esc(item.description)}
-    </span>
-
-  </div>
-
-`
-).join("")}
-
-</div>
-
-</div>
-
-</section>
-
-`;
-
-  }
-
-
-  if(type === "faq"){
-
-    return `
-
-<section
-  class="siteSection"
-  id="${esc(sectionId)}"
->
-
-<div class="siteWrap narrow">
-
-<div class="sectionHead">
-
-<span>FAQ</span>
-
-<h2>
-${esc(section.title)}
-</h2>
-
-<p>
-${esc(section.description)}
-</p>
-
-</div>
-
-
-<div class="faqList">
-
-${items.map(
-  (item,i) => `
-
-  <div class="faq">
-
-    <button
-      class="faqQuestion"
-      data-faq="${i}"
-    >
-
-      <span>
-        ${esc(item.title)}
-      </span>
-
-      <b>+</b>
-
-    </button>
-
-    <div class="faqAnswer">
-
-      ${esc(item.description)}
-
-    </div>
-
-  </div>
-
-`
-).join("")}
-
-</div>
-
-</div>
-
-</section>
-
-`;
-
-  }
-
-
-  if(type === "cta"){
-
-    return `
-
-<section
-  class="siteSection"
-  id="${esc(sectionId)}"
->
-
-<div class="siteWrap">
-
-<div class="ctaBlock">
-
-<div>
-
-<span>
-READY WHEN YOU ARE
-</span>
-
-<h2>
-${esc(section.title)}
-</h2>
-
-<p>
-${esc(section.description)}
-</p>
-
-</div>
-
-<a
-  class="ctaBtn"
-  href="#products"
->
-Get Started
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-`;
-
-  }
-
-
-  if(type === "contact"){
-
-    return `
-
-<section
-  class="siteSection"
-  id="${esc(sectionId)}"
->
-
-<div class="siteWrap">
-
-<div class="contactBlock">
-
-<div class="sectionHead">
-
-<span>CONTACT</span>
-
-<h2>
-${esc(section.title)}
-</h2>
-
-<p>
-${esc(section.description)}
-</p>
-
-</div>
-
-<div class="contactCards">
-
-${items.map(
-  item => `
-
-  <div class="contactCard">
-
-    <strong>
-      ${esc(item.title)}
-    </strong>
-
-    <p>
-      ${esc(item.description)}
-    </p>
-
-  </div>
-
-`
-).join("")}
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-`;
-
-  }
-
-
-  /*
-   Features / About / generic
-  */
 
   return `
+    <div class="imgFallback">
+      ${esc(title||"Visual")}
+    </div>
+  `;
+}
 
-<section
-  class="siteSection"
-  id="${esc(sectionId)}"
->
+function renderProductCard(product){
+  return `
+    <article
+      class="productCard"
+      data-product-id="${escAttr(product.id)}"
+      data-action="product"
+    >
 
-<div class="siteWrap">
+      <div class="productImage">
+        ${imageOrPlaceholder(product.image,product.title)}
+      </div>
 
-<div class="sectionHead">
+      <div class="productBody">
 
-<span>
-${esc(type.toUpperCase())}
-</span>
+        <div class="productMeta">
+          <span>${esc(product.meta || "Featured")}</span>
+          ${
+            product.price
+              ? `<strong>${esc(product.price)}</strong>`
+              : ""
+          }
+        </div>
 
-<h2>
-${esc(section.title)}
-</h2>
+        <h3>${esc(product.title)}</h3>
 
-<p>
-${esc(section.description)}
-</p>
+        <p>${esc(product.description)}</p>
 
-</div>
+        <button
+          class="productBtn"
+          data-action="product"
+          data-product-id="${escAttr(product.id)}">
+          ${esc(product.button || "View Details")}
+        </button>
 
+      </div>
 
-<div class="cardGrid">
+    </article>
+  `;
+}
 
-${items.map(
-  item => `
+function renderSection(section,pageId){
 
-  <article class="infoCard">
+  const title=section.title
+    ? `<h2>${esc(section.title)}</h2>`
+    : "";
 
-    ${
-      item.image
-      ?
+  const description=section.description
+    ? `<p class="sectionDesc">${esc(section.description)}</p>`
+    : "";
 
-      `
-      <img
-        src="${esc(item.image)}"
-        alt="${esc(item.title)}"
-        loading="lazy"
-      >
-      `
+  if(section.type==="products"){
 
-      :
+    return `
+      <section class="section sectionProducts" id="${escAttr(pageId+"-"+section.id)}" data-animate>
+        <div class="sectionHead">
+          ${title}
+          ${description}
+        </div>
 
-      ""
-    }
+        <div class="productGrid">
+          ${
+            section.items.map(renderProductCard).join("")
+          }
+        </div>
+      </section>
+    `;
+  }
 
-    <h3>
-      ${esc(item.title)}
-    </h3>
+  if(section.type==="features"){
 
-    <p>
-      ${esc(item.description)}
-    </p>
+    return `
+      <section class="section" id="${escAttr(pageId+"-"+section.id)}" data-animate>
+        <div class="sectionHead">
+          ${title}
+          ${description}
+        </div>
 
-    ${
-      item.price
-      ?
+        <div class="featureGrid">
+          ${
+            section.items.map((item,index)=>`
+              <div class="featureCard">
+                <div class="featureNumber">
+                  ${String(index+1).padStart(2,"0")}
+                </div>
+                <h3>${esc(item.title)}</h3>
+                <p>${esc(item.description)}</p>
+              </div>
+            `).join("")
+          }
+        </div>
+      </section>
+    `;
+  }
 
-      `
-      <strong>
-        ${esc(item.price)}
-      </strong>
-      `
+  if(section.type==="about"){
 
-      :
+    return `
+      <section class="section" id="${escAttr(pageId+"-"+section.id)}" data-animate>
+        <div class="sectionHead">
+          ${title}
+          ${description}
+        </div>
 
-      ""
-    }
+        <div class="aboutGrid">
+          ${
+            section.items.map((item,index)=>`
+              <article class="aboutCard">
+                <div class="aboutVisual">
+                  ${imageOrPlaceholder(item.image,item.title)}
+                </div>
 
-  </article>
+                <div class="aboutText">
+                  <span>0${index+1}</span>
+                  <h3>${esc(item.title)}</h3>
+                  <p>${esc(item.description)}</p>
+                </div>
+              </article>
+            `).join("")
+          }
+        </div>
+      </section>
+    `;
+  }
 
-`
-).join("")}
+  if(section.type==="gallery"){
 
-</div>
+    return `
+      <section class="section" id="${escAttr(pageId+"-"+section.id)}" data-animate>
+        <div class="sectionHead">
+          ${title}
+          ${description}
+        </div>
 
-</div>
+        <div class="galleryGrid">
+          ${
+            section.items.map(item=>`
+              <div class="galleryItem">
+                ${imageOrPlaceholder(item.image,item.title)}
+                <div class="galleryCaption">
+                  ${esc(item.title)}
+                </div>
+              </div>
+            `).join("")
+          }
+        </div>
+      </section>
+    `;
+  }
 
-</section>
+  if(section.type==="faq"){
 
-`;
+    return `
+      <section class="section narrow" id="${escAttr(pageId+"-"+section.id)}" data-animate>
+        <div class="sectionHead">
+          ${title}
+          ${description}
+        </div>
 
+        <div class="faqList">
+          ${
+            section.items.map((item,index)=>`
+              <div class="faqItem">
+                <button class="faqQuestion" data-faq="${index}">
+                  <span>${esc(item.title)}</span>
+                  <b>+</b>
+                </button>
+
+                <div class="faqAnswer">
+                  ${esc(item.description)}
+                </div>
+              </div>
+            `).join("")
+          }
+        </div>
+      </section>
+    `;
+  }
+
+  if(section.type==="contact"){
+
+    return `
+      <section class="section" id="${escAttr(pageId+"-"+section.id)}" data-animate>
+        <div class="contactBox">
+
+          <div>
+            ${title}
+            ${description}
+
+            <div class="contactDetails">
+              ${
+                state.project.footer.email
+                ? `<div>${esc(state.project.footer.email)}</div>`
+                : ""
+              }
+
+              ${
+                state.project.footer.phone
+                ? `<div>${esc(state.project.footer.phone)}</div>`
+                : ""
+              }
+
+              ${
+                state.project.footer.address
+                ? `<div>${esc(state.project.footer.address)}</div>`
+                : ""
+              }
+            </div>
+          </div>
+
+          <form class="contactForm">
+            <input required placeholder="Your name">
+            <input required type="email" placeholder="Email address">
+            <textarea required placeholder="Your message"></textarea>
+            <button class="mainBtn" type="submit">
+              Send Message
+            </button>
+            <div class="formStatus"></div>
+          </form>
+
+        </div>
+      </section>
+    `;
+  }
+
+  if(section.type==="cta"){
+
+    const item=section.items[0] || {};
+
+    return `
+      <section class="section" id="${escAttr(pageId+"-"+section.id)}" data-animate>
+        <div class="ctaBox">
+          <div>
+            ${title}
+            ${description}
+          </div>
+
+          ${
+            item.button
+            ? `
+              <a
+                class="mainBtn"
+                href="${escAttr(safeHref(item.buttonHref || "#products"))}">
+                ${esc(item.button)}
+              </a>
+            `
+            : ""
+          }
+        </div>
+      </section>
+    `;
+  }
+
+  if(section.type==="stats"){
+
+    return `
+      <section class="section" id="${escAttr(pageId+"-"+section.id)}" data-animate>
+        <div class="sectionHead">
+          ${title}
+          ${description}
+        </div>
+
+        <div class="statsGrid">
+          ${
+            section.items.map(item=>`
+              <div class="statCard">
+                <strong>${esc(item.title)}</strong>
+                <span>${esc(item.description)}</span>
+              </div>
+            `).join("")
+          }
+        </div>
+      </section>
+    `;
+  }
+
+  return "";
 }
 
 
-/* =====================================================
-   FULL WEBSITE
-===================================================== */
+function renderPage(page){
 
-function renderSite(
-  bp
-){
+  return `
+    <div class="sitePage" data-page="${escAttr(page.id)}">
 
-  const brand =
-    bp.brand;
+      <header class="hero">
+
+        <div class="heroGlow"></div>
+
+        <div class="heroContent">
+
+          ${
+            page.hero.eyebrow
+              ? `<div class="eyebrow">${esc(page.hero.eyebrow)}</div>`
+              : ""
+          }
+
+          <h1>${esc(page.hero.title)}</h1>
+
+          <p>${esc(page.hero.description)}</p>
+
+          ${
+            page.hero.button
+              ? `
+                <div class="heroActions">
+                  <a
+                    class="mainBtn"
+                    href="${escAttr(safeHref(page.hero.buttonHref,"#home"))}">
+                    ${esc(page.hero.button)}
+                  </a>
+                </div>
+              `
+              : ""
+          }
+
+        </div>
+
+        <div class="heroVisual">
+
+          ${
+            page.hero.image
+              ? imageOrPlaceholder(
+                  page.hero.image,
+                  page.hero.title
+                )
+              : `
+                <div class="heroOrb orb1"></div>
+                <div class="heroOrb orb2"></div>
+                <div class="heroGlass">
+                  <span>FORGEAI</span>
+                  <strong>${esc(page.name)}</strong>
+                </div>
+              `
+          }
+
+        </div>
+
+      </header>
+
+      ${
+        page.sections.map(
+          section=>renderSection(section,page.id)
+        ).join("")
+      }
+
+    </div>
+  `;
+}
 
 
-  const pagesHTML =
-    bp.pages
-      .map(
-        page =>
-          renderPage(
-            page,
-            bp
-          )
-      )
-      .join("");
+function renderSite(project,initialPage="home"){
 
+  const brand=project.brand;
 
-  return `<!doctype html>
+  const products=getAllProducts();
 
+  const productData={};
+
+  products.forEach(p=>{
+    productData[p.id]={
+      title:p.title,
+      description:p.description,
+      price:p.price,
+      image:p.image,
+      button:p.button
+    };
+  });
+
+  const jsonProducts=JSON.stringify(productData)
+    .replace(/</g,"\\u003c")
+    .replace(/>/g,"\\u003e")
+    .replace(/&/g,"\\u0026");
+
+  return `<!DOCTYPE html>
 <html lang="en">
-
 <head>
 
-<meta charset="utf-8">
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<title>${esc(project.seo.title || brand.name)}</title>
 
 <meta
-  name="viewport"
-  content="width=device-width,initial-scale=1"
->
-
-<title>
-${esc(
-  bp.seo?.title ||
-  brand.name
-)}
-</title>
+name="description"
+content="${escAttr(project.seo.description || brand.description)}">
 
 <meta
-  name="description"
-  content="${esc(
-    bp.seo?.description ||
-    brand.description
-  )}"
->
+name="keywords"
+content="${escAttr(project.seo.keywords.join(", "))}">
 
-<meta
-  name="keywords"
-  content="${esc(
-    (bp.seo?.keywords || [])
-      .join(", ")
-  )}"
->
+<meta property="og:title"
+content="${escAttr(project.seo.title || brand.name)}">
+
+<meta property="og:description"
+content="${escAttr(project.seo.description || brand.description)}">
 
 <style>
 
 :root{
-
-  --primary:${esc(
-    brand.primary ||
-    "#7c5cff"
-  )};
-
-  --secondary:${esc(
-    brand.secondary ||
-    "#10131b"
-  )};
-
-  --accent:${esc(
-    brand.accent ||
-    "#ffffff"
-  )};
-
-  --bg:#07090d;
-
-  --bg2:#0d1118;
-
-  --text:#f7f8fc;
-
-  --muted:#a0a9ba;
-
+  --primary:${safeColor(brand.primary)};
+  --secondary:${safeColor(brand.secondary,"#111827")};
+  --accent:${safeColor(brand.accent,"#00d4ff")};
+  --dark:#07080c;
+  --text:#f7f8fb;
+  --muted:#a0a7b6;
   --line:rgba(255,255,255,.1);
-
-  --max:1220px;
-
+  --card:rgba(255,255,255,.045);
 }
-
 
 *{
   box-sizing:border-box;
 }
 
-
 html{
   scroll-behavior:smooth;
 }
 
-
 body{
-
   margin:0;
-
-  background:
-    radial-gradient(
-      circle at 15% 10%,
-      color-mix(
-        in srgb,
-        var(--primary) 16%,
-        transparent
-      ),
-      transparent 28%
-    ),
-    var(--bg);
-
   color:var(--text);
-
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
+  background:
+    radial-gradient(circle at 20% 0%,rgba(124,92,255,.15),transparent 30%),
+    radial-gradient(circle at 90% 30%,rgba(0,212,255,.08),transparent 25%),
+    var(--dark);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   line-height:1.6;
-
 }
-
 
 a{
   color:inherit;
   text-decoration:none;
 }
 
+button,
+input,
+textarea{
+  font:inherit;
+}
 
 img{
   max-width:100%;
-  display:block;
 }
 
-
-.siteWrap{
-
-  width:
-    min(
-      var(--max),
-      92%
-    );
-
-  margin:auto;
-
+.siteNav{
+  position:sticky;
+  top:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 5vw;
+  border-bottom:1px solid var(--line);
+  background:rgba(7,8,12,.7);
+  backdrop-filter:blur(18px);
 }
 
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+}
 
-.narrow{
+.brandLogo{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(
+    135deg,
+    var(--primary),
+    var(--accent)
+  );
+  color:white;
+  box-shadow:0 10px 30px rgba(124,92,255,.3);
+}
+
+.navLinks{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+.navLinks a{
+  padding:8px 13px;
+  border-radius:8px;
+  color:#a8aebc;
+  font-size:13px;
+  font-weight:700;
+}
+
+.navLinks a:hover{
+  background:rgba(255,255,255,.06);
+  color:white;
+}
+
+.menuBtn{
+  display:none;
+  border:1px solid var(--line);
+  background:var(--card);
+  color:white;
+  border-radius:9px;
+  padding:8px 10px;
+}
+
+.hero{
+  min-height:680px;
+  padding:90px 7vw;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  align-items:center;
+  gap:70px;
+  position:relative;
+  overflow:hidden;
+}
+
+.heroGlow{
+  position:absolute;
+  width:600px;
+  height:600px;
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    rgba(124,92,255,.2),
+    transparent 68%
+  );
+  filter:blur(10px);
+  top:-250px;
+  left:-200px;
+  pointer-events:none;
+}
+
+.heroContent{
+  position:relative;
+  z-index:2;
+  max-width:760px;
+}
+
+.eyebrow{
+  display:inline-flex;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(124,92,255,.35);
+  background:rgba(124,92,255,.08);
+  color:#b9aaff;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.14em;
+  margin-bottom:18px;
+}
+
+.hero h1{
+  font-size:clamp(48px,7vw,90px);
+  line-height:.98;
+  letter-spacing:-.055em;
+  margin:0 0 24px;
   max-width:850px;
 }
 
-
-/* NAVIGATION */
-
-.siteNav{
-
-  position:sticky;
-
-  top:0;
-
-  z-index:50;
-
-  background:
-    rgba(7,9,13,.75);
-
-  backdrop-filter:
-    blur(20px);
-
-  border-bottom:
-    1px solid var(--line);
-
-}
-
-
-.navInner{
-
-  min-height:74px;
-
-  width:
-    min(
-      var(--max),
-      92%
-    );
-
-  margin:auto;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  gap:25px;
-
-}
-
-
-.siteLogo{
-
-  font-size:21px;
-
-  font-weight:950;
-
-  letter-spacing:-.04em;
-
-}
-
-
-.siteLogo span{
-  color:var(--primary);
-}
-
-
-.navLinks{
-
-  display:flex;
-
-  gap:22px;
-
-  flex-wrap:wrap;
-
-  justify-content:flex-end;
-
-}
-
-
-.navLinks a{
-
-  color:var(--muted);
-
-  font-size:13px;
-
-  transition:.2s;
-
-}
-
-
-.navLinks a:hover,
-.navLinks a.active{
-
-  color:#fff;
-
-}
-
-
-/* HERO */
-
-.siteHero{
-
-  min-height:700px;
-
-  width:
-    min(
-      var(--max),
-      92%
-    );
-
-  margin:auto;
-
-  display:grid;
-
-  grid-template-columns:
-    1.08fr .92fr;
-
-  align-items:center;
-
-  gap:60px;
-
-}
-
-
-.heroEyebrow{
-
-  color:var(--primary);
-
-  font-size:11px;
-
-  font-weight:950;
-
-  letter-spacing:.2em;
-
-}
-
-
-.heroTitle{
-
-  font-size:
-    clamp(
-      48px,
-      7vw,
-      94px
-    );
-
-  line-height:.92;
-
-  letter-spacing:-.065em;
-
-  margin:17px 0;
-
-}
-
-
-.heroDescription{
-
-  color:var(--muted);
-
-  max-width:680px;
-
+.hero p{
+  max-width:650px;
   font-size:18px;
-
+  color:var(--muted);
+  margin:0 0 32px;
 }
-
 
 .heroActions{
-
   display:flex;
-
   gap:10px;
-
-  flex-wrap:wrap;
-
-  margin-top:25px;
-
 }
 
-
-.ctaBtn{
-
+.mainBtn{
   display:inline-flex;
-
   align-items:center;
-
   justify-content:center;
-
-  padding:13px 20px;
-
-  border-radius:999px;
-
-  background:var(--primary);
-
-  color:#fff;
-
+  border:0;
+  border-radius:11px;
+  padding:13px 19px;
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--accent)
+    );
+  color:white;
   font-weight:900;
-
+  font-size:13px;
+  box-shadow:0 16px 40px rgba(124,92,255,.25);
+  transition:.2s;
 }
 
-
-.secondaryBtn{
-
-  display:inline-flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  padding:12px 18px;
-
-  border-radius:999px;
-
-  border:1px solid var(--line);
-
-  color:#fff;
-
+.mainBtn:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.08);
 }
-
-
-.heroImage{
-
-  width:100%;
-
-  height:520px;
-
-  object-fit:cover;
-
-  border-radius:30px;
-
-  border:1px solid var(--line);
-
-  box-shadow:
-    0 35px 100px
-    rgba(0,0,0,.45);
-
-}
-
 
 .heroVisual{
-
-  width:100%;
-
-  height:520px;
-
-  border-radius:30px;
-
-  border:1px solid var(--line);
-
+  min-height:430px;
+  position:relative;
   display:grid;
-
   place-items:center;
+}
 
+.heroVisual>img{
+  width:100%;
+  height:430px;
+  object-fit:cover;
+  border-radius:28px;
+  border:1px solid var(--line);
+  box-shadow:0 40px 100px rgba(0,0,0,.4);
+}
+
+.heroVisual>.imgFallback{
+  width:100%;
+  height:430px;
+  border-radius:28px;
+}
+
+.heroOrb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(2px);
+  animation:float 6s ease-in-out infinite;
+}
+
+.orb1{
+  width:310px;
+  height:310px;
   background:
-
-    radial-gradient(
-      circle at 50% 40%,
-      color-mix(
-        in srgb,
-        var(--primary) 35%,
-        transparent
-      ),
-      transparent 38%
-    ),
-
-    linear-gradient(
-      145deg,
-      #181d29,
-      #080a0f
-    );
-
-  font-size:40px;
-
-  font-weight:950;
-
+    radial-gradient(circle at 35% 30%,#fff,transparent 5%),
+    linear-gradient(135deg,var(--primary),transparent);
+  box-shadow:0 0 120px rgba(124,92,255,.4);
 }
 
-
-/* SECTIONS */
-
-.siteSection{
-
-  padding:105px 0;
-
+.orb2{
+  width:190px;
+  height:190px;
+  right:5%;
+  bottom:12%;
+  background:
+    linear-gradient(135deg,var(--accent),transparent);
+  opacity:.7;
+  animation-delay:-2s;
 }
 
+.heroGlass{
+  position:relative;
+  z-index:4;
+  width:270px;
+  padding:30px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(24px);
+  border-radius:24px;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+}
+
+.heroGlass span{
+  display:block;
+  font-size:10px;
+  color:#aeb4c2;
+  letter-spacing:.16em;
+  font-weight:900;
+}
+
+.heroGlass strong{
+  display:block;
+  margin-top:8px;
+  font-size:32px;
+}
+
+.section{
+  padding:100px 7vw;
+  max-width:1450px;
+  margin:auto;
+}
+
+.section.narrow{
+  max-width:1000px;
+}
 
 .sectionHead{
-
-  max-width:780px;
-
-  margin-bottom:40px;
-
+  margin-bottom:35px;
 }
-
-
-.sectionHead span{
-
-  color:var(--primary);
-
-  font-size:10px;
-
-  font-weight:950;
-
-  letter-spacing:.2em;
-
-}
-
 
 .sectionHead h2{
-
-  font-size:
-    clamp(
-      35px,
-      5vw,
-      64px
-    );
-
-  line-height:.98;
-
-  letter-spacing:-.055em;
-
-  margin:12px 0;
-
+  margin:0;
+  font-size:clamp(32px,4vw,54px);
+  line-height:1.05;
+  letter-spacing:-.04em;
 }
 
-
-.sectionHead p{
-
+.sectionDesc{
   color:var(--muted);
-
-  font-size:17px;
-
+  max-width:680px;
+  margin:13px 0 0;
 }
 
-
-/* CARDS */
-
-.cardGrid{
-
+.featureGrid{
   display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
-  gap:18px;
-
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
 }
 
-
-.infoCard{
-
-  padding:24px;
-
-  min-height:190px;
-
-  border-radius:22px;
-
+.featureCard,
+.aboutCard,
+.statCard{
   border:1px solid var(--line);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.06),
-      rgba(255,255,255,.015)
-    );
-
+  background:var(--card);
+  border-radius:20px;
+  padding:25px;
+  transition:.25s;
 }
 
-
-.infoCard img{
-
-  width:100%;
-
-  height:190px;
-
-  object-fit:cover;
-
-  border-radius:15px;
-
-  margin-bottom:17px;
-
+.featureCard:hover,
+.aboutCard:hover,
+.statCard:hover{
+  transform:translateY(-4px);
+  border-color:rgba(255,255,255,.18);
 }
 
-
-.infoCard h3{
-
-  margin:0 0 7px;
-
+.featureNumber{
+  color:var(--primary);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.12em;
 }
 
+.featureCard h3{
+  font-size:21px;
+  margin:50px 0 10px;
+}
 
-.infoCard p{
-
+.featureCard p,
+.aboutText p,
+.statCard span{
   color:var(--muted);
-
+  margin:0;
 }
-
-
-/* PRODUCTS */
 
 .productGrid{
-
   display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
-  gap:18px;
-
+  grid-template-columns:repeat(3,1fr);
+  gap:17px;
 }
-
 
 .productCard{
-
   overflow:hidden;
-
-  border-radius:24px;
-
   border:1px solid var(--line);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.055),
-      rgba(255,255,255,.012)
-    );
-
-  transition:
-    transform .25s,
-    border-color .25s;
-
+  background:rgba(255,255,255,.04);
+  border-radius:20px;
+  cursor:pointer;
+  transition:.25s;
 }
-
 
 .productCard:hover{
-
-  transform:
-    translateY(-6px);
-
-  border-color:
-    color-mix(
-      in srgb,
-      var(--primary) 55%,
-      var(--line)
-    );
-
+  transform:translateY(-6px);
+  border-color:rgba(255,255,255,.22);
+  box-shadow:0 25px 70px rgba(0,0,0,.25);
 }
 
-
-.productCard img,
-.productPlaceholder{
-
-  width:100%;
-
-  height:250px;
-
-  object-fit:cover;
-
-}
-
-
-.productPlaceholder{
-
-  display:grid;
-
-  place-items:center;
-
+.productImage{
+  height:300px;
+  overflow:hidden;
   background:
-    radial-gradient(
-      circle,
-      color-mix(
-        in srgb,
-        var(--primary) 30%,
-        transparent
-      ),
-      #0d1017
-    );
-
-  font-size:70px;
-
-  font-weight:950;
-
+    radial-gradient(circle,var(--primary),transparent 70%),
+    #10121a;
 }
 
+.productImage img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.imgFallback{
+  width:100%;
+  height:100%;
+  min-height:120px;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 30% 20%,rgba(255,255,255,.16),transparent 20%),
+    linear-gradient(135deg,var(--primary),#10121a 65%);
+  color:white;
+  font-weight:900;
+  letter-spacing:.04em;
+}
 
 .productBody{
-
-  padding:22px;
-
+  padding:20px;
 }
 
-
-.productTag{
-
-  color:var(--primary);
-
-  font-size:9px;
-
-  font-weight:950;
-
-  letter-spacing:.16em;
-
+.productMeta{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:#858c9d;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
 }
 
+.productMeta strong{
+  color:white;
+  font-size:13px;
+}
 
 .productBody h3{
-
   font-size:22px;
-
-  margin:7px 0;
-
+  margin:9px 0 6px;
 }
-
 
 .productBody p{
-
   color:var(--muted);
-
-  min-height:55px;
-
+  font-size:13px;
+  min-height:42px;
 }
 
-
-.productBottom{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  gap:10px;
-
-  margin-top:20px;
-
+.productBtn{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  color:white;
+  padding:10px 13px;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:900;
 }
 
-
-.smallBtn{
-
-  border:0;
-
-  background:var(--primary);
-
-  color:#fff;
-
-  border-radius:999px;
-
-  padding:9px 13px;
-
-  font-weight:850;
-
+.aboutGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
 }
 
+.aboutCard{
+  padding:0;
+  overflow:hidden;
+}
 
-/* GALLERY */
+.aboutVisual{
+  height:280px;
+}
+
+.aboutVisual img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.aboutText{
+  padding:25px;
+}
+
+.aboutText>span{
+  color:var(--primary);
+  font-weight:900;
+  font-size:11px;
+}
+
+.aboutText h3{
+  font-size:24px;
+  margin:6px 0 10px;
+}
 
 .galleryGrid{
-
   display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
+  grid-template-columns:2fr 1fr 1fr;
   gap:14px;
-
 }
 
-
-.galleryGrid img{
-
-  width:100%;
-
-  height:280px;
-
-  object-fit:cover;
-
-  border-radius:18px;
-
-  border:1px solid var(--line);
-
-}
-
-
-/* STATS */
-
-.statsGrid{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(4,1fr);
-
-  gap:15px;
-
-}
-
-
-.stat{
-
-  padding:28px;
-
+.galleryItem{
+  min-height:270px;
   border-radius:20px;
-
+  overflow:hidden;
+  position:relative;
   border:1px solid var(--line);
-
-  background:#0d1117;
-
+  background:#11141b;
 }
 
-
-.stat strong{
-
-  display:block;
-
-  font-size:35px;
-
-  letter-spacing:-.04em;
-
-  color:var(--primary);
-
+.galleryItem img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-
-.stat span{
-
-  color:var(--muted);
-
-  font-size:13px;
-
+.galleryCaption{
+  position:absolute;
+  left:15px;
+  bottom:15px;
+  padding:8px 11px;
+  border-radius:8px;
+  background:rgba(0,0,0,.5);
+  backdrop-filter:blur(10px);
+  font-weight:800;
+  font-size:12px;
 }
 
-
-/* FAQ */
-
-.faq{
-
-  border-bottom:
-    1px solid var(--line);
-
+.faqList{
+  border-top:1px solid var(--line);
 }
 
+.faqItem{
+  border-bottom:1px solid var(--line);
+}
 
 .faqQuestion{
-
   width:100%;
-
-  border:0;
-
-  background:none;
-
-  color:#fff;
-
   padding:20px 0;
-
+  border:0;
+  background:transparent;
+  color:white;
   display:flex;
-
-  justify-content:space-between;
-
-  gap:20px;
-
-  text-align:left;
-
-  font-weight:850;
-
-}
-
-
-.faqAnswer{
-
-  display:none;
-
-  color:var(--muted);
-
-  padding:
-    0 0 20px;
-
-}
-
-
-.faq.open
-.faqAnswer{
-
-  display:block;
-
-}
-
-
-/* CTA */
-
-.ctaBlock{
-
-  padding:55px;
-
-  border-radius:30px;
-
-  border:1px solid var(--line);
-
-  background:
-
-    radial-gradient(
-      circle at 80% 20%,
-      color-mix(
-        in srgb,
-        var(--primary) 28%,
-        transparent
-      ),
-      transparent 40%
-    ),
-
-    #10141c;
-
-  display:flex;
-
-  justify-content:space-between;
-
   align-items:center;
-
-  gap:30px;
-
+  justify-content:space-between;
+  text-align:left;
+  font-weight:800;
+  cursor:pointer;
 }
 
-
-.ctaBlock span{
-
+.faqQuestion b{
   color:var(--primary);
-
-  font-size:10px;
-
-  font-weight:950;
-
-  letter-spacing:.2em;
-
+  font-size:22px;
+  transition:.2s;
 }
 
-
-.ctaBlock h2{
-
-  font-size:
-    clamp(
-      35px,
-      5vw,
-      60px
-    );
-
-  line-height:1;
-
-  margin:12px 0;
-
+.faqItem.open .faqQuestion b{
+  transform:rotate(45deg);
 }
 
-
-/* CONTACT */
-
-.contactCards{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
-  gap:15px;
-
-}
-
-
-.contactCard{
-
-  padding:24px;
-
-  border:
-    1px solid var(--line);
-
-  border-radius:18px;
-
-}
-
-
-.contactCard p{
-
-  color:var(--muted);
-
-}
-
-
-/* PAGE ROUTING */
-
-.sitePage{
-
+.faqAnswer{
   display:none;
-
+  padding:0 40px 20px 0;
+  color:var(--muted);
 }
 
-
-.sitePage.active{
-
+.faqItem.open .faqAnswer{
   display:block;
-
 }
 
+.contactBox{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  padding:35px;
+  border:1px solid var(--line);
+  border-radius:25px;
+  background:linear-gradient(
+    135deg,
+    rgba(124,92,255,.12),
+    rgba(255,255,255,.03)
+  );
+}
 
-/* FOOTER */
+.contactDetails{
+  margin-top:25px;
+  color:#b9bfca;
+  display:grid;
+  gap:7px;
+  font-size:13px;
+}
+
+.contactForm{
+  display:grid;
+  gap:10px;
+}
+
+.contactForm input,
+.contactForm textarea{
+  width:100%;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.22);
+  color:white;
+  border-radius:10px;
+  padding:12px;
+  outline:none;
+}
+
+.contactForm textarea{
+  min-height:130px;
+  resize:vertical;
+}
+
+.formStatus{
+  color:#7ce8c1;
+  font-size:11px;
+}
+
+.ctaBox{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:30px;
+  padding:45px;
+  border:1px solid var(--line);
+  border-radius:25px;
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(0,212,255,.15),
+      transparent 35%
+    ),
+    rgba(255,255,255,.04);
+}
+
+.ctaBox h2{
+  margin:0;
+  font-size:40px;
+}
+
+.statsGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.statCard strong{
+  display:block;
+  font-size:25px;
+  margin-bottom:5px;
+}
 
 .siteFooter{
-
-  border-top:
-    1px solid var(--line);
-
-  padding:60px 0;
-
-  color:var(--muted);
-
+  border-top:1px solid var(--line);
+  padding:50px 7vw;
+  color:#858c9d;
 }
-
 
 .footerInner{
-
+  max-width:1450px;
+  margin:auto;
   display:flex;
-
   justify-content:space-between;
-
-  gap:40px;
-
+  gap:30px;
 }
-
 
 .footerBrand{
-
-  color:#fff;
-
+  color:white;
   font-weight:900;
-
 }
 
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(12px);
+}
 
-/* RESPONSIVE */
+.modal.open{
+  display:grid;
+}
+
+.modalBox{
+  width:min(850px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border:1px solid var(--line);
+  background:#11141b;
+  border-radius:24px;
+  box-shadow:0 40px 120px rgba(0,0,0,.55);
+}
+
+.modalImage{
+  height:350px;
+}
+
+.modalImage img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.modalContent{
+  padding:28px;
+}
+
+.modalClose{
+  float:right;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.06);
+  color:white;
+  width:35px;
+  height:35px;
+  border-radius:50%;
+}
+
+.modalContent h2{
+  font-size:35px;
+  margin:0 0 8px;
+}
+
+.modalPrice{
+  color:#b9aaff;
+  font-weight:900;
+  margin-bottom:14px;
+}
+
+[data-animate]{
+  opacity:0;
+  transform:translateY(20px);
+  transition:.7s ease;
+}
+
+[data-animate].visible{
+  opacity:1;
+  transform:none;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-18px) rotate(4deg)}
+}
 
 @media(max-width:900px){
 
-  .siteHero{
-
-    grid-template-columns:1fr;
-
-    padding:70px 0;
-
-    min-height:auto;
-
+  .siteNav{
+    padding:14px 5vw;
   }
 
-
-  .heroImage,
-  .heroVisual{
-
-    height:400px;
-
+  .menuBtn{
+    display:block;
   }
-
-
-  .cardGrid,
-  .productGrid{
-
-    grid-template-columns:
-      1fr 1fr;
-
-  }
-
-
-  .statsGrid{
-
-    grid-template-columns:
-      1fr 1fr;
-
-  }
-
-}
-
-
-@media(max-width:600px){
-
-  .navInner{
-
-    align-items:flex-start;
-
-    padding:14px 0;
-
-    flex-direction:column;
-
-  }
-
 
   .navLinks{
-
-    gap:12px;
-
-  }
-
-
-  .siteHero{
-
-    padding:55px 0;
-
-  }
-
-
-  .heroTitle{
-
-    font-size:52px;
-
-  }
-
-
-  .heroImage,
-  .heroVisual{
-
-    height:330px;
-
-  }
-
-
-  .cardGrid,
-  .productGrid,
-  .galleryGrid,
-  .contactCards,
-  .statsGrid{
-
-    grid-template-columns:1fr;
-
-  }
-
-
-  .ctaBlock{
-
-    padding:30px;
-
+    display:none;
+    position:absolute;
+    top:70px;
+    left:5vw;
+    right:5vw;
+    padding:10px;
     flex-direction:column;
-
-    align-items:flex-start;
-
+    align-items:stretch;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:#101219;
   }
 
+  .navLinks.open{
+    display:flex;
+  }
+
+  .navLinks a{
+    padding:12px;
+  }
+
+  .hero{
+    grid-template-columns:1fr;
+    padding:70px 5vw;
+  }
+
+  .heroVisual{
+    min-height:330px;
+  }
+
+  .heroVisual>img,
+  .heroVisual>.imgFallback{
+    height:330px;
+  }
+
+  .featureGrid,
+  .productGrid,
+  .aboutGrid,
+  .statsGrid{
+    grid-template-columns:1fr;
+  }
+
+  .galleryGrid{
+    grid-template-columns:1fr;
+  }
+
+  .galleryItem{
+    min-height:300px;
+  }
+
+  .contactBox{
+    grid-template-columns:1fr;
+  }
+
+  .ctaBox{
+    flex-direction:column;
+    align-items:flex-start;
+  }
 
   .footerInner{
-
     flex-direction:column;
-
   }
+}
 
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto!important;
+    animation:none!important;
+    transition:none!important;
+  }
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-
 <nav class="siteNav">
 
-<div class="navInner">
+  <a class="brand" href="#home">
 
-<a
-  href="#home"
-  class="siteLogo"
->
-<span>
-${esc(
-  brand.logoText ||
-  brand.name
-)}
-</span>
-</a>
+    <span class="brandLogo">
+      ${esc(brand.logoText || brand.name.slice(0,1))}
+    </span>
 
+    <span>${esc(brand.name)}</span>
 
-<div class="navLinks">
+  </a>
 
-${bp.pages.map(
-  page => `
+  <button class="menuBtn" data-menu>
+    Menu
+  </button>
 
-<a
-  href="#${esc(page.id)}"
-  data-nav="${esc(page.id)}"
->
-${esc(page.name)}
-</a>
+  <div class="navLinks" id="navLinks">
 
-`
-).join("")}
+    ${
+      project.pages.map(page=>`
+        <a href="#${escAttr(page.id)}">
+          ${esc(page.name)}
+        </a>
+      `).join("")
+    }
 
-</div>
-
-</div>
+  </div>
 
 </nav>
 
 
-<main>
+<main id="siteRoot">
 
-${pagesHTML}
+  ${
+    project.pages.map(
+      page=>renderPage(page)
+    ).join("")
+  }
 
 </main>
 
 
 <footer class="siteFooter">
 
-<div class="siteWrap footerInner">
+  <div class="footerInner">
 
-<div>
+    <div>
+      <div class="footerBrand">
+        ${esc(brand.name)}
+      </div>
 
-<div class="footerBrand">
+      <div>
+        ${esc(project.footer.description)}
+      </div>
+    </div>
 
-${esc(brand.name)}
+    <div>
+      ${
+        project.footer.email
+        ? esc(project.footer.email)
+        : ""
+      }
+      <br>
+      ${
+        project.footer.phone
+        ? esc(project.footer.phone)
+        : ""
+      }
+    </div>
 
-</div>
-
-<p>
-${esc(
-  bp.footer?.description ||
-  brand.description
-)}
-
-</p>
-
-</div>
-
-
-<div>
-
-${
-  bp.footer?.email
-  ? esc(bp.footer.email)
-  : ""
-}
-
-<br>
-
-${
-  bp.footer?.phone
-  ? esc(bp.footer.phone)
-  : ""
-}
-
-<br>
-
-${
-  bp.footer?.address
-  ? esc(bp.footer.address)
-  : ""
-}
-
-</div>
-
-</div>
+  </div>
 
 </footer>
 
 
+<div class="modal" id="productModal">
+
+  <div class="modalBox">
+
+    <div class="modalImage" id="modalImage"></div>
+
+    <div class="modalContent">
+
+      <button class="modalClose" data-close-modal>
+        ×
+      </button>
+
+      <h2 id="modalTitle"></h2>
+
+      <div class="modalPrice" id="modalPrice"></div>
+
+      <p id="modalDescription"></p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
 
-function showPage(id){
+const PRODUCTS=${jsonProducts};
+
+function showPage(){
+
+  const page =
+    location.hash.replace("#","") ||
+    "${esc(initialPage)}";
 
   document
     .querySelectorAll(".sitePage")
-    .forEach(
-      page =>
-        page.classList.toggle(
-          "active",
-          page.dataset.page === id
-        )
-    );
-
+    .forEach(el=>{
+      el.style.display=
+        el.dataset.page===page
+          ? "block"
+          : "none";
+    });
 
   document
-    .querySelectorAll("[data-nav]")
-    .forEach(
-      link =>
-        link.classList.toggle(
-          "active",
-          link.dataset.nav === id
-        )
-    );
+    .querySelectorAll(".navLinks a")
+    .forEach(a=>{
+      a.style.color=
+        a.getAttribute("href")==="#"+page
+          ? "white"
+          : "";
+    });
 
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+  setTimeout(()=>{
+    reveal();
+  },30);
 }
 
+function reveal(){
 
-function route(){
+  document
+    .querySelectorAll("[data-animate]")
+    .forEach(el=>{
 
-  const id =
-    (
-      location.hash ||
-      "#home"
-    ).slice(1);
+      const rect=el.getBoundingClientRect();
 
+      if(rect.top<window.innerHeight*.9){
+        el.classList.add("visible");
+      }
 
-  const exists =
-    document.querySelector(
-      '.sitePage[data-page="' +
-      id +
-      '"]'
-    );
-
-
-  showPage(
-    exists
-    ? id
-    : "home"
-  );
-
+    });
 }
 
+function openProduct(id){
 
-document
-  .querySelectorAll(".faqQuestion")
-  .forEach(
-    button => {
+  const p=PRODUCTS[id];
 
-      button.addEventListener(
-        "click",
-        () => {
+  if(!p) return;
 
-          button
-            .parentElement
-            .classList.toggle(
-              "open"
-            );
+  document.getElementById("modalTitle").textContent=p.title;
+  document.getElementById("modalPrice").textContent=p.price || "";
+  document.getElementById("modalDescription").textContent=p.description || "";
 
-        }
-      );
+  const image=document.getElementById("modalImage");
 
+  image.innerHTML="";
+
+  if(p.image){
+
+    const img=document.createElement("img");
+
+    img.src=p.image;
+    img.alt=p.title;
+
+    image.appendChild(img);
+
+  }else{
+
+    image.innerHTML=
+      "<div class='imgFallback'>"+
+      String(p.title||"Product")+
+      "</div>";
+
+  }
+
+  document
+    .getElementById("productModal")
+    .classList.add("open");
+
+  window.parent.postMessage({
+    type:"select-product",
+    productId:id
+  },"*");
+}
+
+document.addEventListener("click",event=>{
+
+  const product=event.target.closest("[data-action='product']");
+
+  if(product){
+
+    const id=product.dataset.productId;
+
+    if(id){
+      openProduct(id);
     }
-  );
 
+    return;
+  }
 
-document
-  .querySelectorAll("[data-product]")
-  .forEach(
-    button => {
+  const faq=event.target.closest(".faqQuestion");
 
-      button.addEventListener(
-        "click",
-        () => {
+  if(faq){
 
-          window.parent.postMessage(
-            {
-              type:"product",
-              index:Number(
-                button.dataset.product
-              )
-            },
-            "*"
-          );
+    const item=faq.closest(".faqItem");
 
-        }
-      );
+    item.classList.toggle("open");
 
+    return;
+  }
+
+  if(event.target.closest("[data-close-modal]")){
+
+    document
+      .getElementById("productModal")
+      .classList.remove("open");
+
+    return;
+  }
+
+  if(event.target.id==="productModal"){
+
+    event.target.classList.remove("open");
+
+    return;
+  }
+
+  const menu=event.target.closest("[data-menu]");
+
+  if(menu){
+
+    document
+      .getElementById("navLinks")
+      .classList.toggle("open");
+
+    return;
+  }
+
+});
+
+document.addEventListener("submit",event=>{
+
+  if(event.target.matches(".contactForm")){
+
+    event.preventDefault();
+
+    const status=
+      event.target.querySelector(".formStatus");
+
+    if(status){
+      status.textContent=
+        "Demo message received. Connect your backend to receive real messages.";
     }
-  );
 
+    event.target.reset();
 
-window.addEventListener(
-  "hashchange",
-  route
-);
+  }
 
+});
 
-route();
+window.addEventListener("hashchange",showPage);
 
-<\/script>
+window.addEventListener("scroll",reveal);
+
+showPage();
+reveal();
+
+</script>
 
 </body>
-
 </html>`;
-
 }
 
 
-/* =====================================================
-   RENDER PAGE
-===================================================== */
-
-function renderPage(
-  page,
-  bp
-){
-
-  const hero =
-    page.hero || {};
-
-
-  const sections =
-    (page.sections || [])
-      .map(
-        (section,index) =>
-          renderSection(
-            section,
-            index
-          )
-      )
-      .join("");
-
-
-  return `
-
-<section
-  class="sitePage"
-  data-page="${esc(page.id)}"
->
-
-<header class="siteHero">
-
-<div>
-
-<div class="heroEyebrow">
-
-${esc(
-  hero.eyebrow ||
-  bp.brand.tagline
-)}
-
-</div>
-
-
-<h1 class="heroTitle">
-
-${esc(
-  hero.title ||
-  page.name
-)}
-
-</h1>
-
-
-<p class="heroDescription">
-
-${esc(
-  hero.description ||
-  bp.brand.description
-)}
-
-</p>
-
-
-<div class="heroActions">
-
-<a
-  class="ctaBtn"
-  href="${esc(
-    hero.buttonLink ||
-    "#products"
-  )}"
->
-${esc(
-  hero.button ||
-  "Explore"
-)}
-</a>
-
-<a
-  class="secondaryBtn"
-  href="#about"
->
-Learn More
-</a>
-
-</div>
-
-</div>
-
-
-${
-  hero.image
-
-  ?
-
-  `
-  <img
-    class="heroImage"
-    src="${esc(hero.image)}"
-    alt="${esc(
-      hero.title ||
-      page.name
-    )}"
-  >
-  `
-
-  :
-
-  `
-  <div class="heroVisual">
-
-    ${esc(
-      bp.brand.logoText ||
-      bp.brand.name
-    )}
-
-  </div>
-  `
-}
-
-</header>
-
-
-${sections}
-
-</section>
-
-`;
-
-}
-
-
-/* =====================================================
-   PAGES UI
-===================================================== */
+/* ============================================================
+   EDITOR UI
+   ============================================================ */
 
 function renderPagesUI(){
 
-  const container =
-    $("pages");
-
+  const el=$("pageList");
 
   if(!state.project){
-
-    container.innerHTML = "";
-
+    el.innerHTML="";
     return;
-
   }
 
+  el.innerHTML=
+    state.project.pages.map(page=>`
+      <button
+        class="pageBtn ${
+          page.id===state.selectedPage
+            ? "active"
+            : ""
+        }"
+        data-page-id="${escAttr(page.id)}">
+        ${esc(page.name)}
+      </button>
+    `).join("");
 
-  container.innerHTML = `
+  el.querySelectorAll("[data-page-id]")
+    .forEach(btn=>{
 
-<div class="pagesTitle">
-PAGES
-</div>
+      btn.onclick=()=>{
 
-${state.project.pages.map(
-  page => `
+        state.selectedPage=
+          btn.dataset.pageId;
 
-<button
-  class="pageBtn ${
-    page.id ===
-    state.selectedPage
-    ? "active"
-    : ""
-  }"
-  data-page="${esc(page.id)}"
->
+        state.selectedProduct=null;
+        state.selectedSection=null;
 
-  ${esc(page.name)}
+        renderAll();
+      };
 
-  <small>
-    ${page.sections.length}
-    sections
-  </small>
-
-</button>
-
-`
-).join("")}
-
-
-<button
-  class="btn secondary"
-  id="addPageBtn"
->
-＋ Add Page
-</button>
-
-`;
-
-
-  container
-    .querySelectorAll(".pageBtn")
-    .forEach(
-      button => {
-
-        button.onclick =
-          () => {
-
-            state.selectedPage =
-              button.dataset.page;
-
-            renderAll();
-
-          };
-
-      }
-    );
-
-
-  $("addPageBtn").onclick =
-    openAddPageModal;
-
+    });
 }
 
 
-/* =====================================================
-   SELECTED PAGE
-===================================================== */
+function renderBrandEditor(){
 
-function selectedPage(){
+  const b=state.project.brand;
 
-  if(!state.project)
-    return null;
+  return `
+    <div class="card">
+
+      <div class="cardTitle">
+        Brand
+        <span class="mini">Global</span>
+      </div>
+
+      <div class="field">
+        <label>Brand name</label>
+        <input
+          id="editBrandName"
+          value="${escAttr(b.name)}">
+      </div>
+
+      <div class="field">
+        <label>Tagline</label>
+        <input
+          id="editBrandTagline"
+          value="${escAttr(b.tagline)}">
+      </div>
+
+      <div class="field">
+        <label>Brand description</label>
+        <textarea id="editBrandDescription">${esc(b.description)}</textarea>
+      </div>
+
+      <div class="colorRow">
+
+        <div>
+          <label>Primary</label>
+          <div class="colorBox">
+            <input
+              type="color"
+              id="colorPrimary"
+              value="${safeColor(b.primary)}">
+            <input
+              id="textPrimary"
+              value="${escAttr(b.primary)}">
+          </div>
+        </div>
+
+        <div>
+          <label>Accent</label>
+          <div class="colorBox">
+            <input
+              type="color"
+              id="colorAccent"
+              value="${safeColor(b.accent)}">
+            <input
+              id="textAccent"
+              value="${escAttr(b.accent)}">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
 
 
-  return state.project.pages.find(
-    page =>
-      page.id ===
-      state.selectedPage
+function renderPageEditor(page){
+
+  const hero=page.hero;
+
+  return `
+    <div class="card">
+
+      <div class="cardTitle">
+        Page
+        <span class="mini">${esc(page.id)}</span>
+      </div>
+
+      <div class="field">
+        <label>Page name</label>
+        <input
+          id="editPageName"
+          value="${escAttr(page.name)}">
+      </div>
+
+    </div>
+
+    <div class="card">
+
+      <div class="cardTitle">
+        Hero
+      </div>
+
+      ${
+        hero.image
+        ? `
+          <img
+            class="imagePreview"
+            src="${escAttr(hero.image)}"
+            alt="">
+        `
+        : ""
+      }
+
+      <div class="field">
+        <label>Eyebrow</label>
+        <input
+          id="heroEyebrow"
+          value="${escAttr(hero.eyebrow)}">
+      </div>
+
+      <div class="field">
+        <label>Hero title</label>
+        <textarea id="heroTitle">${esc(hero.title)}</textarea>
+      </div>
+
+      <div class="field">
+        <label>Hero description</label>
+        <textarea id="heroDescription">${esc(hero.description)}</textarea>
+      </div>
+
+      <div class="field">
+        <label>Button text</label>
+        <input
+          id="heroButton"
+          value="${escAttr(hero.button)}">
+      </div>
+
+      <div class="field">
+        <label>Button link</label>
+        <input
+          id="heroButtonHref"
+          value="${escAttr(hero.buttonHref)}">
+      </div>
+
+      <div class="field">
+        <label>Hero image URL</label>
+        <input
+          id="heroImage"
+          value="${escAttr(hero.image)}"
+          placeholder="https://...">
+      </div>
+
+      <div class="row">
+        <button class="btn btnSmall" id="heroUpload">
+          Upload Image
+        </button>
+
+        <input
+          id="heroFile"
+          type="file"
+          accept="image/*"
+          hidden>
+
+        <button class="btn btnSmall btnDanger" id="heroRemove">
+          Remove
+        </button>
+      </div>
+
+    </div>
+  `;
+}
+
+
+function renderProductEditor(){
+
+  if(state.selectedProduct===null){
+    return "";
+  }
+
+  const product=getProductById(
+    state.selectedProduct
   );
 
-}
+  if(!product){
+    return "";
+  }
 
+  return `
+    <div class="card">
 
-/* =====================================================
-   IMAGE COMPRESSION
-===================================================== */
+      <div class="cardTitle">
+        Product Editor
+        <span class="mini">
+          ${esc(product.id)}
+        </span>
+      </div>
 
-function readImage(
-  file
-){
-
-  return new Promise(
-    (resolve,reject) => {
-
-      if(!file){
-
-        reject(
-          new Error(
-            "No image selected."
-          )
-        );
-
-        return;
-
+      ${
+        product.image
+        ? `
+          <img
+            class="imagePreview"
+            src="${escAttr(product.image)}"
+            alt="">
+        `
+        : ""
       }
 
+      <div class="field">
+        <label>Product name</label>
+        <input
+          id="productTitle"
+          value="${escAttr(product.title)}">
+      </div>
 
-      const reader =
-        new FileReader();
+      <div class="field">
+        <label>Price</label>
+        <input
+          id="productPrice"
+          value="${escAttr(product.price)}">
+      </div>
 
+      <div class="field">
+        <label>Description</label>
+        <textarea id="productDescription">${esc(product.description)}</textarea>
+      </div>
 
-      reader.onload =
-        event => {
+      <div class="field">
+        <label>Button</label>
+        <input
+          id="productButton"
+          value="${escAttr(product.button)}">
+      </div>
 
-          const img =
-            new Image();
+      <div class="field">
+        <label>Image URL</label>
+        <input
+          id="productImage"
+          value="${escAttr(product.image)}"
+          placeholder="https://...">
+      </div>
 
+      <div class="row">
 
-          img.onload =
-            () => {
+        <button
+          class="btn btnSmall"
+          id="productUpload">
+          Upload
+        </button>
 
-              const max =
-                1400;
+        <input
+          id="productFile"
+          type="file"
+          accept="image/*"
+          hidden>
 
+        <button
+          class="btn btnSmall btnDanger"
+          id="productRemove">
+          Remove Image
+        </button>
 
-              let width =
-                img.width;
+      </div>
 
-              let height =
-                img.height;
+      <div style="height:8px"></div>
 
+      <div class="row">
 
-              if(
-                width > max ||
-                height > max
-              ){
+        <button
+          class="btn btnSmall"
+          id="productUp">
+          ↑ Move
+        </button>
 
-                const scale =
-                  Math.min(
-                    max / width,
-                    max / height
-                  );
+        <button
+          class="btn btnSmall"
+          id="productDown">
+          ↓ Move
+        </button>
 
-                width =
-                  Math.round(
-                    width * scale
-                  );
+      </div>
 
-                height =
-                  Math.round(
-                    height * scale
-                  );
+      <div style="height:8px"></div>
 
-              }
+      <button
+        class="btn btnSmall btnDanger"
+        id="productDelete"
+        style="width:100%">
+        Delete Product
+      </button>
 
-
-              const canvas =
-                document.createElement(
-                  "canvas"
-                );
-
-
-              canvas.width =
-                width;
-
-              canvas.height =
-                height;
-
-
-              const ctx =
-                canvas.getContext(
-                  "2d"
-                );
-
-
-              ctx.drawImage(
-                img,
-                0,
-                0,
-                width,
-                height
-              );
-
-
-              resolve(
-                canvas.toDataURL(
-                  "image/jpeg",
-                  .78
-                )
-              );
-
-            };
-
-
-          img.onerror =
-            () =>
-              reject(
-                new Error(
-                  "Could not read image."
-                )
-              );
-
-
-          img.src =
-            event.target.result;
-
-        };
-
-
-      reader.onerror =
-        () =>
-          reject(
-            new Error(
-              "Could not load image."
-            )
-          );
-
-
-      reader.readAsDataURL(file);
-
-    }
-  );
-
+    </div>
+  `;
 }
 
 
-/* =====================================================
-   INSPECTOR
-===================================================== */
+function renderProductList(){
+
+  const products=getAllProducts();
+
+  return `
+    <div class="card">
+
+      <div class="cardTitle">
+        Products
+        <span class="mini">${products.length} total</span>
+      </div>
+
+      <div class="productSelect">
+
+        ${
+          products.map((product,index)=>`
+            <button
+              class="productOption ${
+                state.selectedProduct===product.id
+                  ? "active"
+                  : ""
+              }"
+              data-product-select="${escAttr(product.id)}">
+              ${index+1}. ${esc(product.title || "Untitled")}
+            </button>
+          `).join("")
+        }
+
+      </div>
+
+      <div style="height:8px"></div>
+
+      <button
+        class="btn btnSmall"
+        id="addProduct"
+        style="width:100%">
+        + Add Product
+      </button>
+
+    </div>
+  `;
+}
+
+
+function renderSectionEditor(page){
+
+  return `
+    <div class="card">
+
+      <div class="cardTitle">
+        Sections
+        <span class="mini">${page.sections.length}</span>
+      </div>
+
+      ${
+        page.sections.map((section,index)=>`
+
+          <div class="sectionItem">
+
+            <div class="sectionTop">
+
+              <span class="sectionType">
+                ${esc(section.type)}
+              </span>
+
+              <div class="row" style="flex:0">
+
+                <button
+                  class="btn btnSmall"
+                  data-section-up="${escAttr(section.id)}">
+                  ↑
+                </button>
+
+                <button
+                  class="btn btnSmall"
+                  data-section-down="${escAttr(section.id)}">
+                  ↓
+                </button>
+
+              </div>
+
+            </div>
+
+            <div class="field">
+              <label>Title</label>
+              <input
+                data-section-title="${escAttr(section.id)}"
+                value="${escAttr(section.title)}">
+            </div>
+
+            <div class="field">
+              <label>Description</label>
+              <textarea
+                data-section-description="${escAttr(section.id)}">${esc(section.description)}</textarea>
+            </div>
+
+            ${
+              page.sections.length>1
+              ? `
+                <button
+                  class="btn btnSmall btnDanger"
+                  data-delete-section="${escAttr(section.id)}"
+                  style="width:100%">
+                  Delete Section
+                </button>
+              `
+              : ""
+            }
+
+          </div>
+
+        `).join("")
+      }
+
+      <select id="newSectionType">
+        <option value="features">Features</option>
+        <option value="about">About</option>
+        <option value="gallery">Gallery</option>
+        <option value="faq">FAQ</option>
+        <option value="contact">Contact</option>
+        <option value="cta">CTA</option>
+        <option value="stats">Stats</option>
+      </select>
+
+      <div style="height:7px"></div>
+
+      <button
+        class="btn btnSmall"
+        id="addSection"
+        style="width:100%">
+        + Add Section
+      </button>
+
+    </div>
+  `;
+}
+
+
+function renderFooterEditor(){
+
+  const f=state.project.footer;
+
+  return `
+    <div class="card">
+
+      <div class="cardTitle">
+        Footer / Contact
+      </div>
+
+      <div class="field">
+        <label>Description</label>
+        <textarea id="footerDescription">${esc(f.description)}</textarea>
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input
+          id="footerEmail"
+          value="${escAttr(f.email)}">
+      </div>
+
+      <div class="field">
+        <label>Phone</label>
+        <input
+          id="footerPhone"
+          value="${escAttr(f.phone)}">
+      </div>
+
+      <div class="field">
+        <label>Address</label>
+        <input
+          id="footerAddress"
+          value="${escAttr(f.address)}">
+      </div>
+
+    </div>
+  `;
+}
+
+
+function renderQualityEditor(){
+
+  const report=qualityReport(state.project);
+
+  return `
+    <div class="card">
+
+      <div class="cardTitle">
+        ForgeAI Quality
+        <span class="mini">${report.score}/100</span>
+      </div>
+
+      ${
+        report.issues.length
+        ? report.issues.map(
+            issue=>`<div class="issue">• ${esc(issue)}</div>`
+          ).join("")
+        : `
+          <div style="color:#70e4ba;font-size:10px">
+            No major quality issues detected.
+          </div>
+        `
+      }
+
+    </div>
+  `;
+}
+
 
 function renderInspector(){
 
-  const page =
-    selectedPage();
+  const el=$("inspector");
 
+  if(!state.project){
 
-  if(!page){
-
-    $("inspectorContent")
-      .innerHTML =
-      "Generate a project first.";
+    el.innerHTML=`
+      <div class="card">
+        <div style="color:#7b8292;font-size:12px;line-height:1.6">
+          Generate a website to start editing.
+        </div>
+      </div>
+    `;
 
     return;
-
   }
 
-
-  const products =
-    productItems(page);
-
-
-  $("inspectorContent").innerHTML = `
-
-<!-- PAGE -->
-
-<div class="group">
-
-<div class="groupTitle">
-Page Settings
-</div>
-
-
-<label class="label">
-Page name
-</label>
-
-<input
-  id="pageName"
-  value="${esc(page.name)}"
->
-
-
-<label class="label">
-Hero eyebrow
-</label>
-
-<input
-  id="heroEyebrow"
-  value="${esc(
-    page.hero.eyebrow
-  )}"
->
-
-
-<label class="label">
-Hero title
-</label>
-
-<textarea
-  id="heroTitle"
->${esc(
-  page.hero.title
-)}</textarea>
-
-
-<label class="label">
-Hero description
-</label>
-
-<textarea
-  id="heroDescription"
->${esc(
-  page.hero.description
-)}</textarea>
-
-
-<label class="label">
-Button text
-</label>
-
-<input
-  id="heroButton"
-  value="${esc(
-    page.hero.button
-  )}"
->
-
-
-<label class="label">
-Button link
-</label>
-
-<input
-  id="heroButtonLink"
-  value="${esc(
-    page.hero.buttonLink
-  )}"
->
-
-
-<label class="label">
-Hero image URL
-</label>
-
-<input
-  id="heroImage"
-  value="${esc(
-    page.hero.image
-  )}"
->
-
-
-<label class="label">
-Upload hero image
-</label>
-
-<input
-  id="heroFile"
-  type="file"
-  accept="image/*"
->
-
-
-<button
-  class="btn"
-  id="applyHero"
->
-Apply Page Changes
-</button>
-
-</div>
-
-
-<!-- SECTIONS -->
-
-<div class="group">
-
-<div class="groupTitle">
-Sections
-</div>
-
-<div
-  id="sectionEditors"
-></div>
-
-
-<button
-  class="btn secondary"
-  id="addSectionBtn"
->
-＋ Add Section
-</button>
-
-</div>
-
-
-<!-- PRODUCTS -->
-
-${
-  products.length
-
-  ?
-
-  `
-
-  <div class="group">
-
-    <div class="groupTitle">
-      Products / Services
-    </div>
-
-    <div id="productEditors">
-
-      ${products.map(
-        (item,index) => `
-
-        <div
-          class="productRow"
-        >
-
-          <b>
-            ${index + 1}.
-            ${esc(
-              item.title ||
-              "Item"
-            )}
-          </b>
-
-
-          <input
-            data-product-index="${index}"
-            data-field="title"
-            value="${esc(
-              item.title
-            )}"
-            placeholder="Name"
-          >
-
-
-          <textarea
-            data-product-index="${index}"
-            data-field="description"
-            placeholder="Description"
-          >${esc(
-            item.description
-          )}</textarea>
-
-
-          <input
-            data-product-index="${index}"
-            data-field="price"
-            value="${esc(
-              item.price
-            )}"
-            placeholder="Price / Contact for price"
-          >
-
-
-          <input
-            data-product-index="${index}"
-            data-field="button"
-            value="${esc(
-              item.button
-            )}"
-            placeholder="Button"
-          >
-
-
-          <input
-            data-product-index="${index}"
-            data-field="image"
-            value="${esc(
-              item.image
-            )}"
-            placeholder="Image URL"
-          >
-
-
-          <input
-            type="file"
-            data-product-file="${index}"
-            accept="image/*"
-          >
-
-        </div>
-
-        `
-      ).join("")}
-
-    </div>
-
-    <button
-      class="btn"
-      id="addProductBtn"
-    >
-      ＋ Add Product
-    </button>
-
-    <button
-      class="btn secondary"
-      id="applyProductsBtn"
-    >
-      Apply Product Changes
-    </button>
-
-  </div>
-
-  `
-
-  :
-
-  ""
+  const page=getSelectedPage();
+
+  el.innerHTML=
+    renderBrandEditor()+
+    renderPageEditor(page)+
+    renderSectionEditor(page)+
+    renderProductList()+
+    renderProductEditor()+
+    renderFooterEditor()+
+    renderQualityEditor();
+
+  bindInspectorEvents();
 }
 
 
-<!-- BRAND -->
+/* ============================================================
+   INSPECTOR EVENTS
+   ============================================================ */
+
+function bindInspectorEvents(){
+
+  const project=state.project;
+  const page=getSelectedPage();
+
+  function edit(mutator){
+    pushHistory();
+    mutator();
+    state.project=normalizeBlueprint(state.project);
+    renderAll();
+    saveProject(false);
+  }
+
+  $("editBrandName").onchange=()=>{
+    edit(()=>{
+      project.brand.name=$("editBrandName").value;
+    });
+  };
+
+  $("editBrandTagline").onchange=()=>{
+    edit(()=>{
+      project.brand.tagline=$("editBrandTagline").value;
+    });
+  };
+
+  $("editBrandDescription").onchange=()=>{
+    edit(()=>{
+      project.brand.description=
+        $("editBrandDescription").value;
+    });
+  };
+
+  $("colorPrimary").onchange=()=>{
+    edit(()=>{
+      project.brand.primary=
+        safeColor($("colorPrimary").value);
+    });
+  };
+
+  $("textPrimary").onchange=()=>{
+    edit(()=>{
+      project.brand.primary=
+        safeColor(
+          $("textPrimary").value,
+          project.brand.primary
+        );
+    });
+  };
+
+  $("colorAccent").onchange=()=>{
+    edit(()=>{
+      project.brand.accent=
+        safeColor($("colorAccent").value);
+    });
+  };
+
+  $("textAccent").onchange=()=>{
+    edit(()=>{
+      project.brand.accent=
+        safeColor(
+          $("textAccent").value,
+          project.brand.accent
+        );
+    });
+  };
+
+
+  $("editPageName").onchange=()=>{
+    edit(()=>{
+      page.name=$("editPageName").value;
+    });
+  };
+
+  $("heroEyebrow").onchange=()=>{
+    edit(()=>{
+      page.hero.eyebrow=$("heroEyebrow").value;
+    });
+  };
+
+  $("heroTitle").onchange=()=>{
+    edit(()=>{
+      page.hero.title=$("heroTitle").value;
+    });
+  };
+
+  $("heroDescription").onchange=()=>{
+    edit(()=>{
+      page.hero.description=$("heroDescription").value;
+    });
+  };
+
+  $("heroButton").onchange=()=>{
+    edit(()=>{
+      page.hero.button=$("heroButton").value;
+    });
+  };
+
+  $("heroButtonHref").onchange=()=>{
+    edit(()=>{
+      page.hero.buttonHref=
+        safeHref($("heroButtonHref").value);
+    });
+  };
 
-<div class="group">
+  $("heroImage").onchange=()=>{
+    edit(()=>{
+      page.hero.image=
+        safeImage($("heroImage").value);
+    });
+  };
 
-<div class="groupTitle">
-Brand & Design
-</div>
+  $("heroUpload").onclick=()=>{
+    $("heroFile").click();
+  };
 
+  $("heroFile").onchange=async event=>{
 
-<label class="label">
-Brand name
-</label>
+    const file=event.target.files[0];
 
-<input
-  id="brandName"
-  value="${esc(
-    state.project.brand.name
-  )}"
->
+    if(!file) return;
 
+    try{
 
-<label class="label">
-Tagline
-</label>
+      setStatus("Processing hero image...");
 
-<input
-  id="brandTagline"
-  value="${esc(
-    state.project.brand.tagline
-  )}"
->
+      const data=await imageFileToDataURL(file);
 
+      edit(()=>{
+        page.hero.image=data;
+      });
 
-<label class="label">
-Brand description
-</label>
-
-<textarea
-  id="brandDescription"
->${esc(
-  state.project.brand.description
-)}</textarea>
-
-
-<div class="row">
-
-<div>
-
-<label class="label">
-Primary
-</label>
-
-<input
-  id="brandPrimary"
-  class="color"
-  type="color"
-  value="${esc(
-    state.project.brand.primary
-  )}"
->
-
-</div>
-
-
-<div>
-
-<label class="label">
-Accent
-</label>
-
-<input
-  id="brandAccent"
-  class="color"
-  type="color"
-  value="${esc(
-    state.project.brand.accent
-  )}"
->
-
-</div>
-
-</div>
-
-
-<button
-  class="btn"
-  id="applyBrandBtn"
->
-Apply Brand
-</button>
-
-</div>
-
-
-<!-- SEO -->
-
-<div class="group">
-
-<div class="groupTitle">
-SEO
-</div>
-
-
-<label class="label">
-SEO Title
-</label>
-
-<input
-  id="seoTitle"
-  value="${esc(
-    state.project.seo.title
-  )}"
->
-
-
-<label class="label">
-SEO Description
-</label>
-
-<textarea
-  id="seoDescription"
->${esc(
-  state.project.seo.description
-)}</textarea>
-
-
-<label class="label">
-Keywords
-</label>
-
-<input
-  id="seoKeywords"
-  value="${esc(
-    (
-      state.project.seo.keywords ||
-      []
-    ).join(", ")
-  )}"
->
-
-
-<button
-  class="btn"
-  id="applySeoBtn"
->
-Apply SEO
-</button>
-
-</div>
-
-
-<!-- QUALITY -->
-
-<div class="group">
-
-<div class="groupTitle">
-Website Quality
-</div>
-
-<div
-  id="qualityDetails"
-></div>
-
-<button
-  class="btn secondary"
-  id="runInspectorQuality"
->
-Run Full Check
-</button>
-
-</div>
-
-
-<!-- DELETE -->
-
-<div class="group">
-
-<div class="groupTitle">
-Danger Zone
-</div>
-
-<button
-  class="btn danger"
-  id="deletePageBtn"
->
-Delete This Page
-</button>
-
-</div>
-
-`;
-
-
-  renderSectionEditors();
-
-
-  /*
-   Hero changes
-  */
-
-  $("applyHero").onclick =
-    () => {
-
-      page.name =
-        $("pageName")
-          .value
-          .trim() ||
-        page.name;
-
-
-      page.hero.eyebrow =
-        $("heroEyebrow")
-          .value;
-
-
-      page.hero.title =
-        $("heroTitle")
-          .value;
-
-
-      page.hero.description =
-        $("heroDescription")
-          .value;
-
-
-      page.hero.button =
-        $("heroButton")
-          .value;
-
-
-      page.hero.buttonLink =
-        $("heroButtonLink")
-          .value;
-
-
-      page.hero.image =
-        $("heroImage")
-          .value;
-
-
-      markDirty();
-
-      renderAll();
-
-      toast(
-        "Page changes applied."
+      setStatus(
+        "Hero image uploaded.",
+        "good"
       );
 
-    };
+    }catch(error){
+
+      setStatus(
+        "Image upload failed.",
+        "bad"
+      );
+
+    }
+  };
+
+  $("heroRemove").onclick=()=>{
+    edit(()=>{
+      page.hero.image="";
+    });
+  };
 
 
-  $("heroFile").onchange =
-    async event => {
+  /* SECTIONS */
 
-      try{
+  document
+    .querySelectorAll("[data-section-title]")
+    .forEach(input=>{
 
-        const file =
-          event.target.files?.[0];
+      input.onchange=()=>{
+
+        const section=page.sections.find(
+          s=>s.id===input.dataset.sectionTitle
+        );
+
+        if(!section) return;
+
+        edit(()=>{
+          section.title=input.value;
+        });
+
+      };
+
+    });
+
+  document
+    .querySelectorAll("[data-section-description]")
+    .forEach(input=>{
+
+      input.onchange=()=>{
+
+        const section=page.sections.find(
+          s=>s.id===input.dataset.sectionDescription
+        );
+
+        if(!section) return;
+
+        edit(()=>{
+          section.description=input.value;
+        });
+
+      };
+
+    });
 
 
-        if(!file)
+  document
+    .querySelectorAll("[data-section-up]")
+    .forEach(button=>{
+
+      button.onclick=()=>{
+
+        const id=button.dataset.sectionUp;
+
+        const index=page.sections.findIndex(
+          s=>s.id===id
+        );
+
+        if(index<=0) return;
+
+        edit(()=>{
+          [
+            page.sections[index-1],
+            page.sections[index]
+          ]=[
+            page.sections[index],
+            page.sections[index-1]
+          ];
+        });
+
+      };
+
+    });
+
+
+  document
+    .querySelectorAll("[data-section-down]")
+    .forEach(button=>{
+
+      button.onclick=()=>{
+
+        const id=button.dataset.sectionDown;
+
+        const index=page.sections.findIndex(
+          s=>s.id===id
+        );
+
+        if(index<0 || index>=page.sections.length-1){
           return;
+        }
+
+        edit(()=>{
+          [
+            page.sections[index],
+            page.sections[index+1]
+          ]=[
+            page.sections[index+1],
+            page.sections[index]
+          ];
+        });
+
+      };
+
+    });
 
 
-        status(
-          "Optimizing image..."
-        );
+  document
+    .querySelectorAll("[data-delete-section]")
+    .forEach(button=>{
+
+      button.onclick=()=>{
+
+        const id=button.dataset.deleteSection;
+
+        edit(()=>{
+          page.sections=
+            page.sections.filter(
+              s=>s.id!==id
+            );
+        });
+
+      };
+
+    });
 
 
-        page.hero.image =
-          await readImage(file);
+  $("addSection").onclick=()=>{
+
+    const type=$("newSectionType").value;
+
+    edit(()=>{
+
+      page.sections.push({
+        id:uid("section"),
+        type,
+        title:"New Section",
+        description:"Add your section description.",
+        items:[]
+      });
+
+    });
+
+  };
 
 
-        markDirty();
+  /* PRODUCTS */
 
-        renderAll();
+  document
+    .querySelectorAll("[data-product-select]")
+    .forEach(button=>{
 
-        toast(
-          "Hero image updated."
-        );
+      button.onclick=()=>{
 
-      }
+        state.selectedProduct=
+          button.dataset.productSelect;
 
-      catch(error){
+        renderInspector();
 
-        status(
-          error.message,
-          "error"
-        );
+      };
 
-      }
+    });
 
+
+  $("addProduct").onclick=()=>{
+
+    pushHistory();
+
+    const section=getProductSection();
+
+    const product={
+      id:uid("product"),
+      title:"New Product",
+      description:"Add a product description.",
+      image:"",
+      price:"$0",
+      button:"View Details"
     };
 
+    section.items.push(product);
 
-  /*
-   Product fields
-  */
+    state.selectedProduct=product.id;
 
-  document
-    .querySelectorAll(
-      "[data-product-index][data-field]"
-    )
-    .forEach(
-      input => {
-
-        input.addEventListener(
-          "input",
-          () => {
-
-            const index =
-              Number(
-                input.dataset.productIndex
-              );
-
-            const field =
-              input.dataset.field;
-
-
-            products[index][field] =
-              input.value;
-
-
-            markDirty();
-
-            updatePreviewOnly();
-
-          }
-        );
-
-      }
+    state.project=normalizeBlueprint(
+      state.project
     );
 
+    renderAll();
 
-  document
-    .querySelectorAll(
-      "[data-product-file]"
-    )
-    .forEach(
-      input => {
+    saveProject(false);
 
-        input.onchange =
-          async event => {
-
-            try{
-
-              const file =
-                event.target.files?.[0];
+  };
 
 
-              if(!file)
-                return;
+  if(state.selectedProduct!==null){
 
-
-              const index =
-                Number(
-                  input.dataset.productFile
-                );
-
-
-              products[index].image =
-                await readImage(file);
-
-
-              markDirty();
-
-              renderAll();
-
-              toast(
-                "Product image updated."
-              );
-
-            }
-
-            catch(error){
-
-              status(
-                error.message,
-                "error"
-              );
-
-            }
-
-          };
-
-      }
+    const product=getProductById(
+      state.selectedProduct
     );
 
+    if(product){
 
-  /*
-   Add product
-  */
+      $("productTitle").onchange=()=>{
+        edit(()=>{
+          product.title=
+            $("productTitle").value;
+        });
+      };
 
-  if($("addProductBtn")){
+      $("productPrice").onchange=()=>{
+        edit(()=>{
+          product.price=
+            $("productPrice").value;
+        });
+      };
 
-    $("addProductBtn").onclick =
-      () => {
+      $("productDescription").onchange=()=>{
+        edit(()=>{
+          product.description=
+            $("productDescription").value;
+        });
+      };
 
-        let section =
-          productSections(page)[0];
+      $("productButton").onchange=()=>{
+        edit(()=>{
+          product.button=
+            $("productButton").value;
+        });
+      };
 
+      $("productImage").onchange=()=>{
+        edit(()=>{
+          product.image=
+            safeImage($("productImage").value);
+        });
+      };
 
-        if(!section){
+      $("productUpload").onclick=()=>{
+        $("productFile").click();
+      };
 
-          section =
-            defaultSection(
-              "products"
-            );
+      $("productFile").onchange=async event=>{
 
-          page.sections.push(
-            section
+        const file=event.target.files[0];
+
+        if(!file) return;
+
+        try{
+
+          setStatus("Processing product image...");
+
+          const data=
+            await imageFileToDataURL(file);
+
+          edit(()=>{
+            product.image=data;
+          });
+
+          setStatus(
+            "Product image uploaded.",
+            "good"
+          );
+
+        }catch(error){
+
+          setStatus(
+            "Image upload failed.",
+            "bad"
           );
 
         }
 
-
-        section.items.push(
-          defaultItem("products")
-        );
-
-
-        markDirty();
-
-        renderAll();
-
-        toast(
-          "New item added."
-        );
-
       };
 
-  }
-
-
-  if($("applyProductsBtn")){
-
-    $("applyProductsBtn").onclick =
-      () => {
-
-        markDirty();
-
-        renderAll();
-
-        toast(
-          "Product changes applied."
-        );
-
+      $("productRemove").onclick=()=>{
+        edit(()=>{
+          product.image="";
+        });
       };
 
-  }
+      $("productDelete").onclick=()=>{
 
+        if(getAllProducts().length<=6){
 
-  /*
-   Brand
-  */
-
-  $("applyBrandBtn").onclick =
-    () => {
-
-      state.project.brand.name =
-        $("brandName")
-          .value
-          .trim() ||
-        state.project.brand.name;
-
-
-      state.project.brand.tagline =
-        $("brandTagline")
-          .value;
-
-
-      state.project.brand.description =
-        $("brandDescription")
-          .value;
-
-
-      state.project.brand.primary =
-        $("brandPrimary")
-          .value;
-
-
-      state.project.brand.accent =
-        $("brandAccent")
-          .value;
-
-
-      markDirty();
-
-      renderAll();
-
-      toast(
-        "Brand updated."
-      );
-
-    };
-
-
-  /*
-   SEO
-  */
-
-  $("applySeoBtn").onclick =
-    () => {
-
-      state.project.seo.title =
-        $("seoTitle")
-          .value;
-
-
-      state.project.seo.description =
-        $("seoDescription")
-          .value;
-
-
-      state.project.seo.keywords =
-        $("seoKeywords")
-          .value
-          .split(",")
-          .map(
-            x =>
-              x.trim()
-          )
-          .filter(Boolean);
-
-
-      markDirty();
-
-      renderAll();
-
-      toast(
-        "SEO updated."
-      );
-
-    };
-
-
-  /*
-   Add section
-  */
-
-  $("addSectionBtn").onclick =
-    openAddSectionModal;
-
-
-  /*
-   Quality
-  */
-
-  $("runInspectorQuality").onclick =
-    () => {
-
-      const result =
-        runQualityCheck(
-          state.project
-        );
-
-
-      renderQualityDetails(
-        result
-      );
-
-
-      toast(
-        "Quality check complete."
-      );
-
-    };
-
-
-  renderQualityDetails(
-    state.lastQuality ||
-    runQualityCheck(
-      state.project
-    )
-  );
-
-
-  /*
-   Delete page
-  */
-
-  $("deletePageBtn").onclick =
-    () => {
-
-      if(
-        state.project.pages.length <= 1
-      ){
-
-        toast(
-          "At least one page is required."
-        );
-
-        return;
-
-      }
-
-
-      if(
-        !confirm(
-          "Delete this page?"
-        )
-      )
-        return;
-
-
-      state.project.pages =
-        state.project.pages.filter(
-          p =>
-            p.id !==
-            state.selectedPage
-        );
-
-
-      state.selectedPage =
-        state.project.pages[0].id;
-
-
-      markDirty();
-
-      renderAll();
-
-    };
-
-}
-
-
-/* =====================================================
-   SECTION EDITORS
-===================================================== */
-
-function renderSectionEditors(){
-
-  const page =
-    selectedPage();
-
-
-  const container =
-    $("sectionEditors");
-
-
-  container.innerHTML =
-    page.sections
-      .map(
-        (section,index) => `
-
-        <div
-          class="sectionEditor"
-          data-section="${esc(
-            section.id
-          )}"
-        >
-
-          <div class="sectionHeader">
-
-            <strong>
-              ${esc(
-                section.type
-              )}
-            </strong>
-
-            <button
-              class="iconBtn"
-              data-move-up="${index}"
-              title="Move up"
-            >
-              ↑
-            </button>
-
-            <button
-              class="iconBtn"
-              data-move-down="${index}"
-              title="Move down"
-            >
-              ↓
-            </button>
-
-            <button
-              class="iconBtn"
-              data-delete-section="${index}"
-              title="Delete"
-            >
-              ×
-            </button>
-
-          </div>
-
-
-          <label class="label">
-            Section title
-          </label>
-
-          <input
-            data-section-index="${index}"
-            data-section-field="title"
-            value="${esc(
-              section.title
-            )}"
-          >
-
-
-          <label class="label">
-            Description
-          </label>
-
-          <textarea
-            data-section-index="${index}"
-            data-section-field="description"
-          >${esc(
-            section.description
-          )}</textarea>
-
-
-          ${
-            section.type === "products" ||
-            section.type === "services" ||
-            section.type === "features" ||
-            section.type === "about" ||
-            section.type === "gallery" ||
-            section.type === "faq" ||
-            section.type === "stats" ||
-            section.type === "contact"
-
-            ?
-
-            `
-
-            <div class="small">
-              ${section.items.length}
-              items
-            </div>
-
-            `
-
-            :
-
-            ""
-          }
-
-        </div>
-
-        `
-      )
-      .join("");
-
-
-  /*
-   Section field editing
-  */
-
-  container
-    .querySelectorAll(
-      "[data-section-index][data-section-field]"
-    )
-    .forEach(
-      input => {
-
-        input.addEventListener(
-          "input",
-          () => {
-
-            const index =
-              Number(
-                input.dataset.sectionIndex
-              );
-
-            const field =
-              input.dataset.sectionField;
-
-
-            page.sections[index][field] =
-              input.value;
-
-
-            markDirty();
-
-            updatePreviewOnly();
-
-          }
-        );
-
-      }
-    );
-
-
-  /*
-   Move up
-  */
-
-  container
-    .querySelectorAll(
-      "[data-move-up]"
-    )
-    .forEach(
-      button => {
-
-        button.onclick =
-          () => {
-
-            const index =
-              Number(
-                button.dataset.moveUp
-              );
-
-
-            if(index <= 0)
-              return;
-
-
-            [
-              page.sections[index - 1],
-              page.sections[index]
-            ] =
-            [
-              page.sections[index],
-              page.sections[index - 1]
-            ];
-
-
-            markDirty();
-
-            renderAll();
-
-          };
-
-      }
-    );
-
-
-  /*
-   Move down
-  */
-
-  container
-    .querySelectorAll(
-      "[data-move-down]"
-    )
-    .forEach(
-      button => {
-
-        button.onclick =
-          () => {
-
-            const index =
-              Number(
-                button.dataset.moveDown
-              );
-
-
-            if(
-              index >=
-              page.sections.length - 1
-            )
-              return;
-
-
-            [
-              page.sections[index],
-              page.sections[index + 1]
-            ] =
-            [
-              page.sections[index + 1],
-              page.sections[index]
-            ];
-
-
-            markDirty();
-
-            renderAll();
-
-          };
-
-      }
-    );
-
-
-  /*
-   Delete
-  */
-
-  container
-    .querySelectorAll(
-      "[data-delete-section]"
-    )
-    .forEach(
-      button => {
-
-        button.onclick =
-          () => {
-
-            const index =
-              Number(
-                button.dataset.deleteSection
-              );
-
-
-            if(
-              !confirm(
-                "Delete this section?"
-              )
-            )
-              return;
-
-
-            page.sections.splice(
-              index,
-              1
-            );
-
-
-            markDirty();
-
-            renderAll();
-
-          };
-
-      }
-    );
-
-}
-
-
-/* =====================================================
-   ADD SECTION MODAL
-===================================================== */
-
-function openAddSectionModal(){
-
-  openModal(
-    "Add Section",
-    `
-
-    <div class="row">
-
-      ${[
-        "features",
-        "products",
-        "gallery",
-        "stats",
-        "faq",
-        "contact",
-        "cta",
-        "about"
-      ].map(
-        type => `
-
-        <button
-          class="btn secondary"
-          data-new-section="${type}"
-        >
-          ${type.toUpperCase()}
-        </button>
-
-        `
-      ).join("")}
-
-    </div>
-
-    `
-  );
-
-
-  document
-    .querySelectorAll(
-      "[data-new-section]"
-    )
-    .forEach(
-      button => {
-
-        button.onclick =
-          () => {
-
-            const page =
-              selectedPage();
-
-
-            page.sections.push(
-              defaultSection(
-                button.dataset.newSection
-              )
-            );
-
-
-            markDirty();
-
-            closeModal();
-
-            renderAll();
-
-            toast(
-              "Section added."
-            );
-
-          };
-
-      }
-    );
-
-}
-
-
-/* =====================================================
-   ADD PAGE MODAL
-===================================================== */
-
-function openAddPageModal(){
-
-  openModal(
-    "Add Page",
-    `
-
-    <label class="label">
-      Page name
-    </label>
-
-    <input
-      id="newPageName"
-      placeholder="Contact"
-    >
-
-    <button
-      class="btn"
-      id="createPageBtn"
-    >
-      Create Page
-    </button>
-
-    `
-  );
-
-
-  $("createPageBtn").onclick =
-    () => {
-
-      const name =
-        $("newPageName")
-          .value
-          .trim();
-
-
-      if(!name){
-
-        toast(
-          "Enter a page name."
-        );
-
-        return;
-
-      }
-
-
-      let id =
-        slug(name);
-
-
-      if(
-        state.project.pages.some(
-          p => p.id === id
-        )
-      ){
-
-        id =
-          id +
-          "-" +
-          Math.floor(
-            Math.random() * 999
+          setStatus(
+            "Keep at least 6 products for the website.",
+            "bad"
           );
 
-      }
+          return;
+        }
+
+        pushHistory();
+
+        for(const section of
+          project.pages
+            .find(p=>p.id==="products")
+            .sections
+        ){
+
+          if(section.type==="products"){
+
+            section.items=
+              section.items.filter(
+                p=>p.id!==product.id
+              );
+
+          }
+
+        }
+
+        state.selectedProduct=null;
+
+        renderAll();
+        saveProject(false);
+
+      };
 
 
-      state.project.pages.push({
+      $("productUp").onclick=()=>{
 
-        id:id,
+        moveProduct(product.id,-1);
 
-        name:name,
+      };
 
-        hero:{
-          eyebrow:
-            state.project.brand.tagline,
+      $("productDown").onclick=()=>{
 
-          title:
-            name,
+        moveProduct(product.id,1);
 
-          description:
-            "Tell visitors what this page is about.",
-
-          button:
-            "Explore",
-
-          buttonLink:
-            "#home",
-
-          image:""
-
-        },
-
-        sections:[
-          defaultSection(
-            "features"
-          ),
-
-          defaultSection(
-            "cta"
-          )
-
-        ]
-
-      });
-
-
-      state.selectedPage =
-        id;
-
-
-      markDirty();
-
-      closeModal();
-
-      renderAll();
-
-      toast(
-        "Page created."
-      );
-
-    };
-
-}
-
-
-/* =====================================================
-   MODAL
-===================================================== */
-
-function openModal(
-  title,
-  html
-){
-
-  $("modalTitle")
-    .textContent =
-    title;
-
-
-  $("modalContent")
-    .innerHTML =
-    html;
-
-
-  $("modal")
-    .classList.add(
-      "show"
-    );
-
-}
-
-
-function closeModal(){
-
-  $("modal")
-    .classList.remove(
-      "show"
-    );
-
-}
-
-
-$("closeModal").onclick =
-  closeModal;
-
-
-$("modal").onclick =
-  event => {
-
-    if(
-      event.target ===
-      $("modal")
-    ){
-
-      closeModal();
+      };
 
     }
-
   };
 
 
-/* =====================================================
-   QUALITY ENGINE
-===================================================== */
+  /* FOOTER */
 
-function runQualityCheck(
-  project
-){
+  $("footerDescription").onchange=()=>{
+    edit(()=>{
+      project.footer.description=
+        $("footerDescription").value;
+    });
+  };
 
-  const checks = [];
+  $("footerEmail").onchange=()=>{
+    edit(()=>{
+      project.footer.email=
+        $("footerEmail").value;
+    });
+  };
+
+  $("footerPhone").onchange=()=>{
+    edit(()=>{
+      project.footer.phone=
+        $("footerPhone").value;
+    });
+  };
+
+  $("footerAddress").onchange=()=>{
+    edit(()=>{
+      project.footer.address=
+        $("footerAddress").value;
+    });
+  };
+}
 
 
-  if(!project){
+function moveProduct(id,direction){
 
-    return {
-      score:0,
-      checks:[]
-    };
+  pushHistory();
 
+  const page=
+    state.project.pages.find(
+      p=>p.id==="products"
+    );
+
+  let found=false;
+
+  for(const section of page.sections){
+
+    if(section.type!=="products") continue;
+
+    const index=section.items.findIndex(
+      p=>p.id===id
+    );
+
+    if(index===-1) continue;
+
+    const next=index+direction;
+
+    if(next<0 || next>=section.items.length){
+      continue;
+    }
+
+    [
+      section.items[index],
+      section.items[next]
+    ]=[
+      section.items[next],
+      section.items[index]
+    ];
+
+    found=true;
+    break;
   }
 
+  if(found){
 
-  /*
-   Pages
-  */
+    renderAll();
+    saveProject(false);
 
-  checks.push({
+  }else{
 
-    name:"Page structure",
+    state.history.pop();
 
-    pass:
-      Array.isArray(
-        project.pages
-      ) &&
-      project.pages.length >= 3
-
-  });
-
-
-  /*
-   Brand
-  */
-
-  checks.push({
-
-    name:"Brand identity",
-
-    pass:
-      Boolean(
-        project.brand?.name
-      ) &&
-      Boolean(
-        project.brand?.primary
-      )
-
-  });
-
-
-  /*
-   Hero
-  */
-
-  checks.push({
-
-    name:"Hero content",
-
-    pass:
-      project.pages.every(
-        page =>
-          Boolean(
-            page.hero?.title
-          ) &&
-          Boolean(
-            page.hero?.description
-          )
-
-      )
-
-  });
-
-
-  /*
-   Sections
-  */
-
-  checks.push({
-
-    name:"Content sections",
-
-    pass:
-      project.pages.every(
-        page =>
-          Array.isArray(
-            page.sections
-          ) &&
-          page.sections.length >= 2
-      )
-
-  });
-
-
-  /*
-   Products/services
-  */
-
-  const products =
-    productItems(
-      project.pages.find(
-        page =>
-          page.id === "products"
-      )
-    );
-
-
-  checks.push({
-
-    name:"Catalog",
-
-    pass:
-      products.length >= 6
-
-  });
-
-
-  /*
-   Product names
-  */
-
-  checks.push({
-
-    name:"Catalog data",
-
-    pass:
-      products.length === 0 ||
-      products.every(
-        item =>
-          Boolean(
-            item.title
-          ) &&
-          Boolean(
-            item.description
-          )
-      )
-
-  });
-
-
-  /*
-   SEO
-  */
-
-  checks.push({
-
-    name:"SEO",
-
-    pass:
-      Boolean(
-        project.seo?.title
-      ) &&
-      Boolean(
-        project.seo?.description
-      )
-
-  });
-
-
-  /*
-   Footer
-  */
-
-  checks.push({
-
-    name:"Footer",
-
-    pass:
-      Boolean(
-        project.footer
-      )
-
-  });
-
-
-  /*
-   Navigation IDs
-  */
-
-  checks.push({
-
-    name:"Navigation",
-
-    pass:
-      project.pages.every(
-        page =>
-          Boolean(page.id) &&
-          Boolean(page.name)
-      )
-
-  });
-
-
-  /*
-   Images
-  */
-
-  const allImages =
-    project.pages.flatMap(
-      page => [
-
-        page.hero?.image,
-
-        ...page.sections.flatMap(
-          section =>
-            section.items.map(
-              item =>
-                item.image
-            )
-        )
-
-      ]
-    )
-    .filter(Boolean);
-
-
-  checks.push({
-
-    name:"Visual content",
-
-    pass:
-      allImages.length >= 3
-
-  });
-
-
-  /*
-   Score
-  */
-
-  const passed =
-    checks.filter(
-      check =>
-        check.pass
-    ).length;
-
-
-  const score =
-    Math.round(
-      (
-        passed /
-        checks.length
-      ) *
-      100
-    );
-
-
-  return {
-    score,
-    checks
-  };
-
+  }
 }
 
 
-/* =====================================================
-   QUALITY DETAILS
-===================================================== */
-
-function renderQualityDetails(
-  result
-){
-
-  if(!result)
-    return;
-
-
-  const target =
-    $("qualityDetails");
-
-
-  if(!target)
-    return;
-
-
-  target.innerHTML = `
-
-<div class="qualityBox">
-
-<div class="qualityMetric">
-
-<b>
-${result.score}/100
-</b>
-
-<span>
-Website quality
-</span>
-
-</div>
-
-
-<div class="qualityMetric">
-
-<b>
-${
-  result.checks.filter(
-    x => x.pass
-  ).length
-}/
-${result.checks.length}
-</b>
-
-<span>
-Checks passed
-</span>
-
-</div>
-
-</div>
-
-
-<div class="notice">
-
-${
-  result.checks.map(
-    check =>
-      (
-        check.pass
-        ? "✓ "
-        : "✕ "
-      ) +
-      check.name
-  ).join("<br>")
-}
-
-</div>
-
-`;
-
-}
-
-
-/* =====================================================
-   UPDATE PREVIEW
-===================================================== */
-
-function updatePreviewOnly(){
-
-  if(!state.project)
-    return;
-
-
-  $("preview").srcdoc =
-    renderSite(
-      state.project
-    );
-
-
-  $("scorePill")
-    .textContent =
-      "Quality " +
-      runQualityCheck(
-        state.project
-      ).score +
-      "/100";
-
-}
-
-
-/* =====================================================
-   RENDER EVERYTHING
-===================================================== */
+/* ============================================================
+   RENDER ALL
+   ============================================================ */
 
 function renderAll(){
 
   if(!state.project){
-
+    $("topProjectName").textContent="ForgeAI";
+    $("scorePill").textContent="0/100";
+    $("pagePill").textContent="No project";
     renderPagesUI();
-
-    $("inspectorContent")
-      .innerHTML =
-      "Generate a project first.";
-
+    renderInspector();
     return;
-
   }
 
+  $("projectName").value=
+    state.project.projectName;
+
+  $("topProjectName").textContent=
+    state.project.projectName;
+
+  const page=getSelectedPage();
+
+  $("pagePill").textContent=
+    page?.name || "Page";
+
+  const report=qualityReport(
+    state.project
+  );
+
+  $("scorePill").textContent=
+    report.score+"/100";
 
   renderPagesUI();
-
   renderInspector();
 
-  updatePreviewOnly();
-
-
-  const page =
-    selectedPage();
-
-
-  $("pagePill")
-    .textContent =
-    page?.name ||
-    "Home";
-
-
-  state.lastQuality =
-    runQualityCheck(
-      state.project
+  state.html=
+    renderSite(
+      state.project,
+      state.selectedPage
     );
 
+  $("preview").srcdoc=state.html;
 
-  $("scorePill")
-    .textContent =
-      "Quality " +
-      state.lastQuality.score +
-      "/100";
-
+  $("preview").classList.toggle(
+    "mobile",
+    state.previewMode==="mobile"
+  );
 }
 
 
-/* =====================================================
-   DIRTY STATE
-===================================================== */
+/* ============================================================
+   SAVE / LOAD
+   ============================================================ */
 
-function markDirty(){
+function saveProject(showStatus=true){
 
-  state.dirty =
-    true;
-
-}
-
-
-/* =====================================================
-   GENERATE
-===================================================== */
-
-async function generate(){
+  if(!state.project) return;
 
   try{
 
-    $("generateBtn")
-      .disabled =
-      true;
-
-
-    status(
-      "AI is designing your website..."
-    );
-
-
-    const raw =
-      await gemini(
-        blueprintPrompt()
-      );
-
-
-    status(
-      "AI blueprint received. Validating..."
-    );
-
-
-    const blueprint =
-      normalizeBlueprint(
-        parseJSON(raw)
-      );
-
-
-    state.project =
-      blueprint;
-
-
-    state.selectedPage =
-      "home";
-
-
-    state.dirty =
-      true;
-
-
-    status(
-      "Building visual editor and preview..."
-    );
-
-
-    renderAll();
-
-
-    const quality =
-      runQualityCheck(
-        state.project
-      );
-
-
-    state.lastQuality =
-      quality;
-
-
-    status(
-      "Website generated successfully. Quality: " +
-      quality.score +
-      "/100",
-      quality.score >= 80
-      ? "good"
-      : ""
-    );
-
-
-    toast(
-      "ForgeAI website generated."
-    );
-
-  }
-
-  catch(error){
-
-    console.error(error);
-
-    status(
-      "Generation error: " +
-      error.message,
-      "error"
-    );
-
-  }
-
-  finally{
-
-    $("generateBtn")
-      .disabled =
-      false;
-
-  }
-
-}
-
-
-/* =====================================================
-   AI IMPROVE
-===================================================== */
-
-async function improve(){
-
-  if(!state.project){
-
-    toast(
-      "Generate a project first."
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    $("improveBtn")
-      .disabled =
-      true;
-
-
-    status(
-      "AI is analyzing your existing website..."
-    );
-
-
-    /*
-     IMPORTANT:
-
-     AI is instructed to improve content
-     while preserving IDs and editable values.
-
-     It does NOT receive permission to
-     randomly rebuild the whole project.
-    */
-
-    const current =
-      JSON.stringify(
-        state.project,
-        null,
-        2
-      );
-
-
-    const prompt = `
-
-You are ForgeAI's senior conversion designer.
-
-Here is the CURRENT WEBSITE BLUEPRINT:
-
-${current}
-
-
-Improve the website professionally.
-
-IMPORTANT:
-
-- Preserve all page IDs.
-- Preserve all existing product names unless they are clearly poor.
-- Preserve manually entered prices.
-- Preserve manually uploaded image data.
-- Preserve existing images.
-- Preserve brand colors.
-- Preserve user-entered contact details.
-- Do not delete sections.
-- Do not reduce the number of products.
-- Do not invent awards.
-- Do not invent certifications.
-- Do not invent revenue.
-- Do not invent customer counts.
-- Do not invent fake reviews.
-- Improve copy, section titles and descriptions.
-- Improve conversion quality.
-- Improve clarity.
-- Improve professionalism.
-- Keep exactly the same JSON schema.
-- Return complete JSON only.
-
-`;
-
-
-    const improved =
-      normalizeBlueprint(
-        parseJSON(
-          await gemini(
-            prompt
-          )
-        )
-      );
-
-
-    /*
-     Preserve user-owned values
-     from current project.
-    */
-
-    improved.brand.primary =
-      state.project.brand.primary;
-
-    improved.brand.accent =
-      state.project.brand.accent;
-
-    improved.brand.secondary =
-      state.project.brand.secondary;
-
-
-    improved.pages.forEach(
-      newPage => {
-
-        const oldPage =
-          state.project.pages.find(
-            page =>
-              page.id ===
-              newPage.id
-          );
-
-
-        if(!oldPage)
-          return;
-
-
-        /*
-         Preserve images.
-        */
-
-        if(
-          oldPage.hero?.image
-        ){
-
-          newPage.hero.image =
-            oldPage.hero.image;
-
-        }
-
-
-        /*
-         Preserve product images,
-         prices and names.
-        */
-
-        const oldItems =
-          productItems(
-            oldPage
-          );
-
-        const newItems =
-          productItems(
-            newPage
-          );
-
-
-        newItems.forEach(
-          (item,index) => {
-
-            const old =
-              oldItems[index];
-
-
-            if(!old)
-              return;
-
-
-            if(old.image)
-              item.image =
-                old.image;
-
-
-            if(old.price)
-              item.price =
-                old.price;
-
-
-            if(old.title)
-              item.title =
-                old.title;
-
-          }
+    const serialized=
+      JSON.stringify(state.project);
+
+    if(serialized.length>4_500_000){
+
+      if(showStatus){
+        setStatus(
+          "Project is very large. Reduce uploaded image sizes.",
+          "bad"
         );
-
       }
+
+      return;
+    }
+
+    localStorage.setItem(
+      CONFIG.storageProject,
+      serialized
     );
 
+    if(showStatus){
+      setStatus(
+        "Project saved on this device.",
+        "good"
+      );
+    }
 
-    state.project =
-      improved;
+  }catch(error){
 
-
-    markDirty();
-
-    renderAll();
-
-
-    status(
-      "AI improvement completed without removing your important edits.",
-      "good"
-    );
-
-
-    toast(
-      "AI improvement complete."
-    );
+    if(showStatus){
+      setStatus(
+        "Could not save project. Browser storage may be full.",
+        "bad"
+      );
+    }
 
   }
-
-  catch(error){
-
-    console.error(error);
-
-    status(
-      "AI Improve error: " +
-      error.message,
-      "error"
-    );
-
-  }
-
-  finally{
-
-    $("improveBtn")
-      .disabled =
-      false;
-
-  }
-
 }
 
+function loadProject(){
 
-/* =====================================================
-   QUALITY BUTTON
-===================================================== */
+  try{
 
-$("qualityBtn").onclick =
-  () => {
+    const raw=
+      localStorage.getItem(
+        CONFIG.storageProject
+      );
 
-    if(!state.project){
+    if(!raw){
 
-      toast(
-        "Generate a project first."
+      setStatus(
+        "No saved project found.",
+        "bad"
       );
 
       return;
-
     }
 
-
-    const result =
-      runQualityCheck(
-        state.project
+    state.project=
+      normalizeBlueprint(
+        JSON.parse(raw)
       );
 
+    state.selectedPage="home";
+    state.selectedProduct=null;
+    state.history=[];
+    state.future=[];
 
-    state.lastQuality =
-      result;
+    renderAll();
 
-
-    renderQualityDetails(
-      result
+    setStatus(
+      "Saved project loaded.",
+      "good"
     );
 
+  }catch(error){
 
-    status(
-      "Quality check: " +
-      result.score +
-      "/100",
-      result.score >= 80
-      ? "good"
-      : ""
+    setStatus(
+      "Saved project could not be loaded.",
+      "bad"
     );
-
-  };
-
-
-/* =====================================================
-   DOWNLOAD
-===================================================== */
-
-function download(){
-
-  if(!state.project){
-
-    toast(
-      "Generate a website first."
-    );
-
-    return;
 
   }
+}
 
 
-  const html =
-    renderSite(
-      state.project
-    );
+/* ============================================================
+   EXPORT PROJECT
+   ============================================================ */
 
+function downloadText(filename,text,type="text/plain"){
 
-  const blob =
-    new Blob(
-      [html],
-      {
-        type:
-          "text/html;charset=utf-8"
-      }
-    );
+  const blob=new Blob(
+    [text],
+    {type}
+  );
 
+  const url=URL.createObjectURL(blob);
 
-  const url =
-    URL.createObjectURL(
-      blob
-    );
+  const a=document.createElement("a");
 
-
-  const a =
-    document.createElement(
-      "a"
-    );
-
-
-  a.href =
-    url;
-
-
-  a.download =
-    (
-      state.project.brand.name ||
-      "forgeai-website"
-    )
-      .replace(
-        /[^a-z0-9]+/gi,
-        "-"
-      )
-      .replace(
-        /^-+|-+$/g,
-        ""
-      )
-      .toLowerCase() +
-    ".html";
-
+  a.href=url;
+  a.download=filename;
 
   document.body.appendChild(a);
 
@@ -6438,271 +5214,267 @@ function download(){
 
   a.remove();
 
-
-  setTimeout(
-    () =>
-      URL.revokeObjectURL(url),
-    1000
-  );
-
-
-  toast(
-    "HTML downloaded."
-  );
-
+  setTimeout(()=>{
+    URL.revokeObjectURL(url);
+  },1000);
 }
 
-
-/* =====================================================
-   SAVE
-===================================================== */
-
-function save(){
+function exportProject(){
 
   if(!state.project){
-
-    toast(
-      "Nothing to save."
-    );
-
+    setStatus("No project to export.","bad");
     return;
-
   }
 
+  downloadText(
+    slug(state.project.projectName || "forgeai-project")+".json",
+    JSON.stringify(state.project,null,2),
+    "application/json"
+  );
 
-  try{
+  setStatus(
+    "Project JSON exported.",
+    "good"
+  );
+}
 
-    localStorage.setItem(
-      "forgeai-v4-project",
-      JSON.stringify(
-        state.project
-      )
-    );
+function importProject(){
 
-
-    state.dirty =
-      false;
-
-
-    status(
-      "Project saved on this device.",
-      "good"
-    );
-
-
-    toast(
-      "Project saved."
-    );
-
-  }
-
-  catch(error){
-
-    status(
-      "Could not save project. Your images may be too large.",
-      "error"
-    );
-
-  }
+  $("importFile").click();
 
 }
 
+$("importFile").addEventListener(
+  "change",
+  async event=>{
 
-/* =====================================================
-   LOAD
-===================================================== */
+    const file=event.target.files[0];
 
-function load(){
+    if(!file) return;
 
-  try{
+    try{
 
-    const raw =
-      localStorage.getItem(
-        "forgeai-v4-project"
-      );
+      const text=
+        await file.text();
 
+      const parsed=
+        JSON.parse(text);
 
-    if(!raw)
-      return;
+      pushHistory();
 
+      state.project=
+        normalizeBlueprint(parsed);
 
-    state.project =
-      normalizeBlueprint(
-        JSON.parse(raw)
-      );
-
-
-    state.selectedPage =
-      "home";
-
-
-    renderAll();
-
-
-    status(
-      "Saved project loaded.",
-      "good"
-    );
-
-  }
-
-  catch(error){
-
-    console.warn(error);
-
-    localStorage.removeItem(
-      "forgeai-v4-project"
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   NEW PROJECT
-===================================================== */
-
-$("newBtn").onclick =
-  () => {
-
-    if(
-      state.project &&
-      state.dirty
-    ){
-
-      if(
-        !confirm(
-          "You have unsaved changes. Start a new project?"
-        )
-      )
-        return;
-
-    }
-
-
-    state.project =
-      null;
-
-
-    state.selectedPage =
-      "home";
-
-
-    state.lastQuality =
-      null;
-
-
-    $("preview")
-      .srcdoc =
-      "";
-
-
-    $("pagePill")
-      .textContent =
-      "Home";
-
-
-    $("scorePill")
-      .textContent =
-      "No project";
-
-
-    $("inspectorContent")
-      .innerHTML =
-      "Generate a project first.";
-
-
-    $("pages")
-      .innerHTML =
-      "";
-
-
-    status(
-      "Ready for a new project."
-    );
-
-  };
-
-
-/* =====================================================
-   PREVIEW
-===================================================== */
-
-$("desktopBtn").onclick =
-  () => {
-
-    state.previewMode =
-      "desktop";
-
-
-    $("preview")
-      .classList.remove(
-        "mobile"
-      );
-
-
-    $("previewSize")
-      .textContent =
-      "Desktop preview";
-
-  };
-
-
-$("mobileBtn").onclick =
-  () => {
-
-    state.previewMode =
-      "mobile";
-
-
-    $("preview")
-      .classList.add(
-        "mobile"
-      );
-
-
-    $("previewSize")
-      .textContent =
-      "390px mobile preview";
-
-  };
-
-
-$("refreshBtn").onclick =
-  () => {
-
-    updatePreviewOnly();
-
-    toast(
-      "Preview refreshed."
-    );
-
-  };
-
-
-/* =====================================================
-   PREVIEW MESSAGE
-===================================================== */
-
-window.addEventListener(
-  "message",
-  event => {
-
-    if(
-      event.data?.type ===
-      "product"
-    ){
-
-      state.selectedPage =
-        "products";
-
+      state.selectedPage="home";
+      state.selectedProduct=null;
 
       renderAll();
 
+      saveProject(false);
 
-      toast(
-        "Product selected in editor."
+      setStatus(
+        "Project imported.",
+        "good"
+      );
+
+    }catch(error){
+
+      setStatus(
+        "Invalid ForgeAI project JSON.",
+        "bad"
+      );
+
+    }
+
+    event.target.value="";
+
+  }
+);
+
+
+/* ============================================================
+   EXPORT HTML
+   ============================================================ */
+
+function downloadHTML(){
+
+  if(!state.project){
+    setStatus("No website to download.","bad");
+    return;
+  }
+
+  const html=
+    renderSite(
+      state.project,
+      "home"
+    );
+
+  downloadText(
+    slug(
+      state.project.projectName ||
+      "forgeai-website"
+    )+".html",
+    html,
+    "text/html"
+  );
+
+  setStatus(
+    "HTML downloaded.",
+    "good"
+  );
+}
+
+async function copyHTML(){
+
+  if(!state.project){
+    setStatus("No website to copy.","bad");
+    return;
+  }
+
+  const html=
+    renderSite(
+      state.project,
+      "home"
+    );
+
+  try{
+
+    await navigator.clipboard.writeText(html);
+
+    setStatus(
+      "Full HTML copied to clipboard.",
+      "good"
+    );
+
+  }catch(error){
+
+    setStatus(
+      "Clipboard permission was blocked.",
+      "bad"
+    );
+
+  }
+}
+
+function openNewTab(){
+
+  if(!state.project){
+    setStatus("No website to preview.","bad");
+    return;
+  }
+
+  const html=
+    renderSite(
+      state.project,
+      "home"
+    );
+
+  const blob=new Blob(
+    [html],
+    {type:"text/html"}
+  );
+
+  const url=
+    URL.createObjectURL(blob);
+
+  window.open(url,"_blank");
+
+  setTimeout(()=>{
+    URL.revokeObjectURL(url);
+  },10000);
+}
+
+
+/* ============================================================
+   PROJECT NAME
+   ============================================================ */
+
+$("projectName").addEventListener(
+  "change",
+  ()=>{
+
+    if(!state.project) return;
+
+    pushHistory();
+
+    state.project.projectName=
+      $("projectName").value.trim() ||
+      "ForgeAI Project";
+
+    renderAll();
+    saveProject(false);
+
+  }
+);
+
+
+/* ============================================================
+   API KEY MEMORY
+   ============================================================ */
+
+function loadKeySettings(){
+
+  const remember=
+    localStorage.getItem(
+      CONFIG.storageRemember
+    )==="1";
+
+  $("rememberKey").checked=remember;
+
+  if(remember){
+
+    $("apiKey").value=
+      localStorage.getItem(
+        CONFIG.storageKey
+      ) || "";
+
+  }
+}
+
+$("rememberKey").addEventListener(
+  "change",
+  ()=>{
+
+    if($("rememberKey").checked){
+
+      localStorage.setItem(
+        CONFIG.storageRemember,
+        "1"
+      );
+
+      if($("apiKey").value.trim()){
+
+        localStorage.setItem(
+          CONFIG.storageKey,
+          $("apiKey").value.trim()
+        );
+
+      }
+
+    }else{
+
+      localStorage.removeItem(
+        CONFIG.storageRemember
+      );
+
+      localStorage.removeItem(
+        CONFIG.storageKey
+      );
+
+    }
+
+  }
+);
+
+$("apiKey").addEventListener(
+  "change",
+  ()=>{
+
+    if($("rememberKey").checked){
+
+      localStorage.setItem(
+        CONFIG.storageKey,
+        $("apiKey").value.trim()
       );
 
     }
@@ -6711,31 +5483,244 @@ window.addEventListener(
 );
 
 
-/* =====================================================
-   EVENTS
-===================================================== */
+/* ============================================================
+   BUTTONS
+   ============================================================ */
 
-$("generateBtn").onclick =
-  generate;
+$("generateBtn").onclick=generate;
+$("aiEditBtn").onclick=aiEdit;
+$("improveBtn").onclick=improve;
+
+$("saveBtn").onclick=()=>{
+  saveProject(true);
+};
+
+$("loadBtn").onclick=loadProject;
+
+$("exportProjectBtn").onclick=
+  exportProject;
+
+$("importProjectBtn").onclick=
+  importProject;
+
+$("downloadBtn").onclick=
+  downloadHTML;
+
+$("copyBtn").onclick=
+  copyHTML;
+
+$("newTabBtn").onclick=
+  openNewTab;
+
+$("undoBtn").onclick=
+  undo;
+
+$("redoBtn").onclick=
+  redo;
+
+$("refreshBtn").onclick=()=>{
+  renderAll();
+
+  setStatus(
+    "Preview refreshed.",
+    "good"
+  );
+};
+
+$("qualityBtn").onclick=()=>{
+
+  if(!state.project){
+    setStatus(
+      "Generate a website first.",
+      "bad"
+    );
+
+    return;
+  }
+
+  const report=
+    qualityReport(
+      state.project
+    );
+
+  if(report.issues.length){
+
+    setStatus(
+      "Quality: "+
+      report.score+
+      "/100 · "+
+      report.issues.length+
+      " improvement(s).",
+      ""
+    );
+
+  }else{
+
+    setStatus(
+      "Quality: "+
+      report.score+
+      "/100 · No major issues.",
+      "good"
+    );
+
+  }
+
+  renderInspector();
+};
 
 
-$("improveBtn").onclick =
-  improve;
+/* ============================================================
+   PREVIEW MODES
+   ============================================================ */
+
+$("desktopBtn").onclick=()=>{
+
+  state.previewMode="desktop";
+
+  $("desktopBtn").classList.add("active");
+  $("mobileBtn").classList.remove("active");
+
+  $("preview").classList.remove("mobile");
+
+};
+
+$("mobileBtn").onclick=()=>{
+
+  state.previewMode="mobile";
+
+  $("mobileBtn").classList.add("active");
+  $("desktopBtn").classList.remove("active");
+
+  $("preview").classList.add("mobile");
+
+};
 
 
-$("downloadBtn").onclick =
-  download;
+/* ============================================================
+   PREVIEW -> EDITOR COMMUNICATION
+   ============================================================ */
+
+window.addEventListener(
+  "message",
+  event=>{
+
+    const iframe=$("preview");
+
+    if(event.source!==iframe.contentWindow){
+      return;
+    }
+
+    const data=event.data || {};
+
+    if(data.type==="select-product"){
+
+      state.selectedPage="products";
+      state.selectedProduct=data.productId;
+
+      renderAll();
+
+      setStatus(
+        "Product selected in visual editor.",
+        "good"
+      );
+
+    }
+
+  }
+);
 
 
-$("saveBtn").onclick =
-  save;
+/* ============================================================
+   AUTOSAVE
+   ============================================================ */
+
+const autosave=
+  debounce(
+    ()=>saveProject(false),
+    800
+  );
+
+const originalRenderAll=renderAll;
 
 
-/* =====================================================
+/* ============================================================
+   KEYBOARD SHORTCUTS
+   ============================================================ */
+
+document.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      (event.ctrlKey || event.metaKey) &&
+      event.key.toLowerCase()==="z"
+    ){
+
+      event.preventDefault();
+
+      if(event.shiftKey){
+        redo();
+      }else{
+        undo();
+      }
+
+    }
+
+    if(
+      (event.ctrlKey || event.metaKey) &&
+      event.key.toLowerCase()==="s"
+    ){
+
+      event.preventDefault();
+
+      saveProject(true);
+
+    }
+
+  }
+);
+
+
+/* ============================================================
    START
-===================================================== */
+   ============================================================ */
 
-load();
+loadKeySettings();
+
+const saved=
+  localStorage.getItem(
+    CONFIG.storageProject
+  );
+
+if(saved){
+
+  try{
+
+    state.project=
+      normalizeBlueprint(
+        JSON.parse(saved)
+      );
+
+  }catch(error){
+
+    state.project=
+      createDefaultProject();
+
+  }
+
+}else{
+
+  state.project=
+    createDefaultProject();
+
+}
+
+renderAll();
+
+setStatus(
+  "ForgeAI Studio ready.",
+  "good"
+);
 
 </script>
 
