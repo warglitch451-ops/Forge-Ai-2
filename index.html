@@ -2,1364 +2,107 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#08090d">
-<meta name="description" content="ForgeAI — Private AI Website Production Platform for Agencies">
-<title>ForgeAI — Private Agency Edition</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ForgeAI V2</title>
 
 <style>
-/* =========================================================
-   FORGEAI — SINGLE FILE AGENCY EDITION
-   ========================================================= */
-
-:root{
-  --bg:#07080c;
-  --panel:#0d0f15;
-  --panel2:#11141c;
-  --panel3:#161a24;
-  --border:rgba(255,255,255,.09);
-  --border2:rgba(255,255,255,.14);
-  --text:#f5f7fb;
-  --muted:#9299a8;
-  --muted2:#697080;
-  --accent:#8b7cff;
-  --accent2:#6d5dfc;
-  --success:#39d98a;
-  --warning:#f5bd4f;
-  --danger:#ff6374;
-  --shadow:0 20px 70px rgba(0,0,0,.35);
-  --radius:16px;
-  --sidebar:248px;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-html,body{
+*{box-sizing:border-box}
+body{
   margin:0;
-  width:100%;
-  height:100%;
-  background:var(--bg);
-  color:var(--text);
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family:Inter,Arial,sans-serif;
+  background:#08090d;
+  color:#fff;
 }
-
-button,
-input,
-textarea,
-select{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-::-webkit-scrollbar{
-  width:8px;
-  height:8px;
-}
-
-::-webkit-scrollbar-thumb{
-  background:#252a35;
-  border-radius:20px;
-}
-
-::-webkit-scrollbar-track{
-  background:transparent;
-}
-
-/* ================= APP ================= */
-
 .app{
   min-height:100vh;
-  display:flex;
-  overflow:hidden;
+  display:grid;
+  grid-template-columns:360px 1fr;
 }
-
-/* ================= SIDEBAR ================= */
-
 .sidebar{
-  position:fixed;
-  inset:0 auto 0 0;
-  width:var(--sidebar);
-  background:
-    linear-gradient(180deg,#0b0d12 0%,#090a0f 100%);
-  border-right:1px solid var(--border);
-  display:flex;
-  flex-direction:column;
-  z-index:50;
+  padding:24px;
+  background:#101218;
+  border-right:1px solid #252833;
 }
-
-.brand{
-  height:76px;
-  padding:0 20px;
-  display:flex;
-  align-items:center;
-  gap:11px;
-  border-bottom:1px solid var(--border);
-}
-
 .logo{
-  width:36px;
-  height:36px;
-  border-radius:11px;
-  display:grid;
-  place-items:center;
+  font-size:25px;
   font-weight:900;
-  color:white;
-  background:
-    linear-gradient(135deg,#9c8fff,#5747ee);
-  box-shadow:0 10px 30px rgba(112,91,255,.3);
+  margin-bottom:25px;
 }
-
-.brand-name{
-  font-weight:800;
-  letter-spacing:-.5px;
+.logo span{color:#7c5cff}
+label{
+  display:block;
+  margin:16px 0 7px;
+  color:#aeb3c2;
+  font-size:13px;
 }
-
-.brand-sub{
-  font-size:10px;
-  color:var(--muted);
-  margin-top:2px;
-  text-transform:uppercase;
-  letter-spacing:.8px;
-}
-
-.nav{
-  padding:18px 12px;
-  flex:1;
-  overflow:auto;
-}
-
-.nav-label{
-  font-size:10px;
-  font-weight:700;
-  color:#555c6b;
-  text-transform:uppercase;
-  letter-spacing:1.2px;
-  padding:0 10px 9px;
-}
-
-.nav-item{
+textarea,input,select{
   width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:11px 12px;
-  margin-bottom:4px;
-  border:1px solid transparent;
-  border-radius:11px;
-  color:#aeb4c0;
-  background:transparent;
-  text-align:left;
-  transition:.18s;
-}
-
-.nav-item:hover{
-  color:white;
-  background:rgba(255,255,255,.045);
-}
-
-.nav-item.active{
-  color:white;
-  background:rgba(139,124,255,.12);
-  border-color:rgba(139,124,255,.2);
-}
-
-.nav-icon{
-  width:18px;
-  text-align:center;
-  opacity:.9;
-}
-
-.sidebar-bottom{
-  padding:14px;
-  border-top:1px solid var(--border);
-}
-
-.engine-status{
-  border:1px solid rgba(57,217,138,.15);
-  background:rgba(57,217,138,.045);
-  padding:12px;
-  border-radius:12px;
-}
-
-.status-line{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:12px;
-  font-weight:700;
-}
-
-.status-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--success);
-  box-shadow:0 0 12px rgba(57,217,138,.8);
-}
-
-.status-note{
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.45;
-  margin-top:6px;
-}
-
-/* ================= MAIN ================= */
-
-.main{
-  margin-left:var(--sidebar);
-  width:calc(100% - var(--sidebar));
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:30;
-  min-height:76px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 22px;
-  border-bottom:1px solid var(--border);
-  background:rgba(7,8,12,.86);
-  backdrop-filter:blur(18px);
-}
-
-.top-title{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.mobile-menu{
-  display:none;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:white;
-  width:38px;
-  height:38px;
-  border-radius:10px;
-}
-
-.page-title{
-  font-size:15px;
-  font-weight:800;
-}
-
-.page-subtitle{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:3px;
-}
-
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-/* ================= BUTTONS ================= */
-
-.btn{
-  border:1px solid var(--border);
-  background:var(--panel2);
-  color:#dfe3eb;
-  padding:9px 13px;
-  border-radius:10px;
-  font-size:12px;
-  font-weight:700;
-  transition:.18s;
-}
-
-.btn:hover{
-  border-color:var(--border2);
-  background:var(--panel3);
-  color:white;
-  transform:translateY(-1px);
-}
-
-.btn.primary{
-  color:white;
-  border-color:rgba(139,124,255,.5);
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  box-shadow:0 8px 25px rgba(109,93,252,.22);
-}
-
-.btn.success{
-  color:#07150e;
-  background:var(--success);
-  border-color:var(--success);
-}
-
-.btn.danger{
+  border:1px solid #303441;
+  background:#171922;
   color:#fff;
-  border-color:rgba(255,99,116,.25);
-  background:rgba(255,99,116,.08);
-}
-
-.btn.small{
-  padding:7px 9px;
-  font-size:11px;
-}
-
-.btn:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-  transform:none;
-}
-
-/* ================= CONTENT ================= */
-
-.content{
-  padding:22px;
-  flex:1;
-  min-width:0;
-}
-
-.view{
-  display:none;
-}
-
-.view.active{
-  display:block;
-}
-
-/* ================= DASHBOARD ================= */
-
-.hero{
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:26px;
-  background:
-    radial-gradient(circle at 80% 10%,rgba(139,124,255,.14),transparent 32%),
-    linear-gradient(135deg,#11131b,#0b0d12);
-  box-shadow:var(--shadow);
-  margin-bottom:18px;
-}
-
-.eyebrow{
-  color:#a79cff;
-  text-transform:uppercase;
-  font-size:10px;
-  letter-spacing:1.5px;
-  font-weight:800;
-}
-
-.hero h1{
-  margin:9px 0 8px;
-  font-size:clamp(25px,4vw,40px);
-  line-height:1.05;
-  letter-spacing:-1.8px;
-}
-
-.hero p{
-  color:var(--muted);
-  max-width:690px;
-  line-height:1.65;
-  font-size:13px;
-  margin:0 0 18px;
-}
-
-.hero-actions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-/* ================= STATS ================= */
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-bottom:18px;
-}
-
-.stat{
-  padding:17px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  border-radius:15px;
-}
-
-.stat-label{
-  color:var(--muted);
-  font-size:11px;
-}
-
-.stat-value{
-  margin-top:8px;
-  font-size:23px;
-  font-weight:850;
-  letter-spacing:-.8px;
-}
-
-.stat-note{
-  color:#6e7583;
-  font-size:10px;
-  margin-top:4px;
-}
-
-/* ================= CARDS ================= */
-
-.card{
-  border:1px solid var(--border);
-  background:var(--panel);
-  border-radius:16px;
-  overflow:hidden;
-}
-
-.card-header{
-  padding:15px 17px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.card-title{
-  font-size:13px;
-  font-weight:800;
-}
-
-.card-sub{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:3px;
-}
-
-.card-body{
-  padding:16px;
-}
-
-/* ================= PROJECTS ================= */
-
-.toolbar{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-bottom:14px;
-  flex-wrap:wrap;
-}
-
-.search{
-  flex:1;
-  min-width:200px;
-  position:relative;
-}
-
-.search input{
-  width:100%;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:white;
-  padding:11px 13px;
-  border-radius:10px;
-  outline:none;
-}
-
-.search input:focus,
-.field input:focus,
-.field textarea:focus,
-.field select:focus{
-  border-color:rgba(139,124,255,.55);
-  box-shadow:0 0 0 3px rgba(139,124,255,.08);
-}
-
-.project-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px;
-}
-
-.project-card{
-  border:1px solid var(--border);
-  background:var(--panel);
-  border-radius:15px;
-  overflow:hidden;
-  transition:.18s;
-}
-
-.project-card:hover{
-  transform:translateY(-2px);
-  border-color:var(--border2);
-}
-
-.project-preview{
-  height:145px;
-  background:
-    linear-gradient(135deg,#1d2130,#10121a);
-  position:relative;
-  overflow:hidden;
-}
-
-.project-preview::before{
-  content:"";
-  position:absolute;
-  inset:18px;
-  border-radius:10px;
-  background:linear-gradient(135deg,#282d40,#151824);
-  border:1px solid rgba(255,255,255,.07);
-}
-
-.project-info{
+  border-radius:12px;
   padding:13px;
+  outline:none;
 }
-
-.project-name{
+textarea{min-height:180px;resize:vertical}
+button{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  padding:14px;
+  margin-top:15px;
+  cursor:pointer;
+  color:white;
+  background:#7c5cff;
   font-weight:800;
+}
+button:hover{filter:brightness(1.1)}
+button.secondary{background:#20232d}
+.status{
+  margin-top:18px;
+  padding:12px;
+  border-radius:10px;
+  background:#171922;
+  color:#aeb3c2;
   font-size:13px;
 }
-
-.project-client{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-.project-footer{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-top:12px;
-}
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  padding:4px 7px;
-  border-radius:6px;
-  font-size:9px;
-  font-weight:800;
-  border:1px solid var(--border);
-  color:#b9bfca;
-}
-
-.badge.green{
-  color:#6fe5a8;
-  background:rgba(57,217,138,.06);
-  border-color:rgba(57,217,138,.14);
-}
-
-/* ================= STUDIO ================= */
-
-.studio{
-  display:grid;
-  grid-template-columns:340px minmax(0,1fr);
-  gap:15px;
-  min-height:calc(100vh - 120px);
-}
-
-.left-stack,
-.right-stack{
+.workspace{
   display:flex;
   flex-direction:column;
-  gap:14px;
   min-width:0;
 }
-
-.field{
-  margin-bottom:12px;
-}
-
-.field:last-child{
-  margin-bottom:0;
-}
-
-.field label{
-  display:block;
-  color:#aeb4c0;
-  font-size:10px;
-  font-weight:800;
-  margin-bottom:6px;
-}
-
-.field input,
-.field textarea,
-.field select{
-  width:100%;
-  border:1px solid var(--border);
-  background:#090b10;
-  color:#f1f3f7;
-  padding:10px 11px;
-  border-radius:9px;
-  outline:none;
-  resize:vertical;
-}
-
-.field textarea{
-  min-height:110px;
-  line-height:1.5;
-}
-
-.field input::placeholder,
-.field textarea::placeholder{
-  color:#555c6a;
-}
-
-.generate-box{
-  background:
-    radial-gradient(circle at 80% 0%,rgba(139,124,255,.12),transparent 45%),
-    var(--panel);
-}
-
-.generate-actions{
-  display:flex;
-  gap:8px;
-}
-
-.generate-actions .btn{
-  flex:1;
-}
-
-/* ================= PREVIEW ================= */
-
-.preview-card{
-  min-height:600px;
-  display:flex;
-  flex-direction:column;
-}
-
-.preview-toolbar{
-  padding:11px;
+.topbar{
+  height:70px;
+  padding:15px 22px;
+  border-bottom:1px solid #252833;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:8px;
-  border-bottom:1px solid var(--border);
-  background:#0b0d12;
 }
-
-.device-switch{
-  display:flex;
-  border:1px solid var(--border);
-  border-radius:9px;
-  overflow:hidden;
+.badge{
+  padding:7px 11px;
+  border-radius:999px;
+  background:#171922;
+  color:#aaa;
+  font-size:12px;
 }
-
-.device-switch button{
-  border:0;
-  border-right:1px solid var(--border);
-  background:transparent;
-  color:#777e8c;
-  padding:7px 10px;
-  font-size:10px;
-}
-
-.device-switch button:last-child{
-  border-right:0;
-}
-
-.device-switch button.active{
-  background:#1a1e29;
-  color:white;
-}
-
-.preview-actions{
-  display:flex;
-  gap:5px;
-}
-
-.preview-stage{
+.preview{
   flex:1;
-  min-height:540px;
-  background:
-    repeating-linear-gradient(
-      45deg,
-      #0b0d12,
-      #0b0d12 10px,
-      #0d0f14 10px,
-      #0d0f14 20px
-    );
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  padding:20px;
-  overflow:auto;
+  padding:18px;
+  min-height:0;
 }
-
-.preview-frame{
-  width:100%;
-  height:650px;
-  border:1px solid #292e3a;
-  border-radius:10px;
-  background:white;
-  box-shadow:0 25px 70px rgba(0,0,0,.45);
-  transition:.25s;
-  overflow:hidden;
-}
-
-.preview-frame.tablet{
-  width:768px;
-  max-width:100%;
-}
-
-.preview-frame.mobile{
-  width:390px;
-  max-width:100%;
-}
-
-.preview-frame iframe{
+iframe{
   width:100%;
   height:100%;
-  border:0;
+  min-height:calc(100vh - 106px);
+  border:1px solid #292d39;
+  border-radius:16px;
   background:white;
 }
-
-.preview-empty{
-  width:100%;
-  min-height:500px;
-  display:grid;
-  place-items:center;
-  text-align:center;
-  color:#646b78;
-}
-
-.empty-icon{
-  width:52px;
-  height:52px;
-  border-radius:14px;
-  margin:auto;
-  display:grid;
-  place-items:center;
-  background:#131620;
-  border:1px solid var(--border);
-  font-size:22px;
-}
-
-.empty-title{
-  color:#aeb4c0;
-  font-weight:800;
-  margin-top:12px;
-}
-
-.empty-text{
-  max-width:320px;
-  font-size:11px;
-  line-height:1.6;
-  margin:6px auto 0;
-}
-
-/* ================= AI PANELS ================= */
-
-.ai-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-
-.chat{
-  height:430px;
-  display:flex;
-  flex-direction:column;
-}
-
-.chat-messages{
-  flex:1;
-  padding:14px;
-  overflow:auto;
-}
-
-.message{
-  max-width:90%;
-  margin-bottom:11px;
-}
-
-.message.ai{
-  margin-right:auto;
-}
-
-.message.user{
-  margin-left:auto;
-}
-
-.message-bubble{
-  padding:10px 11px;
-  border-radius:11px;
-  font-size:11px;
-  line-height:1.55;
-  white-space:pre-wrap;
-}
-
-.message.ai .message-bubble{
-  background:#151822;
-  border:1px solid var(--border);
-  color:#c9ced7;
-}
-
-.message.user .message-bubble{
-  background:rgba(139,124,255,.16);
-  border:1px solid rgba(139,124,255,.2);
-  color:#eeeaff;
-}
-
-.chat-input{
-  padding:10px;
-  border-top:1px solid var(--border);
-  display:flex;
-  gap:7px;
-}
-
-.chat-input textarea{
-  flex:1;
-  min-height:42px;
-  max-height:110px;
-  resize:none;
-  border:1px solid var(--border);
-  border-radius:9px;
-  background:#090b10;
-  color:white;
-  padding:9px;
-  outline:none;
-  font-size:11px;
-}
-
-/* ================= STRATEGY ================= */
-
-.recommendations{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.recommendation{
-  padding:12px;
-  border:1px solid var(--border);
-  background:#0a0c11;
-  border-radius:11px;
-}
-
-.rec-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.rec-title{
-  font-size:11px;
-  font-weight:800;
-}
-
-.priority{
-  font-size:8px;
-  padding:3px 5px;
-  border-radius:5px;
-  border:1px solid var(--border);
-}
-
-.priority.high{
-  color:#ff8794;
-  background:rgba(255,99,116,.06);
-}
-
-.priority.medium{
-  color:#f4c76b;
-  background:rgba(245,189,79,.06);
-}
-
-.priority.low{
-  color:#70e5ac;
-  background:rgba(57,217,138,.06);
-}
-
-.rec-text{
-  color:#858c99;
-  font-size:10px;
-  line-height:1.5;
-  margin:7px 0 10px;
-}
-
-/* ================= VERSIONS ================= */
-
-.version-list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.version{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  border:1px solid var(--border);
-  padding:10px;
-  border-radius:10px;
-  background:#0a0c11;
-}
-
-.version-name{
-  font-size:11px;
-  font-weight:800;
-}
-
-.version-meta{
-  color:#6f7684;
-  font-size:9px;
-  margin-top:3px;
-}
-
-/* ================= CODE ================= */
-
-.code-view{
-  background:#07090d;
-  border:1px solid var(--border);
-  border-radius:12px;
-  overflow:auto;
-  max-height:500px;
-}
-
-.code-view pre{
-  margin:0;
-  padding:16px;
-  color:#bfc5d0;
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
-  font-size:10px;
-  line-height:1.55;
-  white-space:pre-wrap;
-  word-break:break-word;
-}
-
-/* ================= CLIENTS ================= */
-
-.client-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px;
-}
-
-.client-card{
-  padding:16px;
-  border:1px solid var(--border);
-  border-radius:15px;
-  background:var(--panel);
-}
-
-.avatar{
-  width:38px;
-  height:38px;
-  border-radius:10px;
-  display:grid;
-  place-items:center;
-  font-weight:900;
-  background:#1b1e2a;
-  color:#c8c2ff;
-  margin-bottom:12px;
-}
-
-.client-name{
-  font-weight:800;
-  font-size:13px;
-}
-
-.client-email{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-/* ================= TEMPLATES ================= */
-
-.template-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px;
-}
-
-.template-card{
-  padding:0;
-  overflow:hidden;
-  border:1px solid var(--border);
-  background:var(--panel);
-  border-radius:15px;
-}
-
-.template-thumb{
-  height:155px;
-  background:
-    linear-gradient(135deg,#222638,#11131b);
-  display:grid;
-  place-items:center;
-  color:#666d7b;
-}
-
-.template-info{
-  padding:13px;
-}
-
-.template-name{
-  font-weight:800;
-  font-size:12px;
-}
-
-/* ================= SETTINGS ================= */
-
-.settings-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-
-.setting{
-  padding:16px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  border-radius:15px;
-}
-
-.setting h3{
-  font-size:13px;
-  margin:0 0 5px;
-}
-
-.setting p{
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.5;
-  margin:0 0 13px;
-}
-
-.key-row{
-  display:flex;
-  gap:7px;
-}
-
-.key-row input{
-  flex:1;
-  border:1px solid var(--border);
-  background:#090b10;
-  color:white;
-  border-radius:9px;
-  padding:9px;
-  outline:none;
-}
-
-/* ================= MODAL ================= */
-
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:rgba(0,0,0,.7);
-  backdrop-filter:blur(8px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.modal.show{
-  display:flex;
-}
-
-.modal-box{
-  width:min(620px,100%);
-  max-height:90vh;
-  overflow:auto;
-  border:1px solid var(--border2);
-  background:#0d0f15;
-  border-radius:18px;
-  box-shadow:var(--shadow);
-}
-
-.modal-header{
-  padding:17px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid var(--border);
-}
-
-.modal-title{
-  font-size:14px;
-  font-weight:850;
-}
-
-.modal-body{
-  padding:17px;
-}
-
-.close{
-  border:0;
-  background:transparent;
-  color:#858c99;
-  font-size:20px;
-}
-
-/* ================= TOAST ================= */
-
-.toast-container{
-  position:fixed;
-  right:18px;
-  bottom:18px;
-  z-index:300;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.toast{
-  min-width:230px;
-  max-width:340px;
-  padding:12px 14px;
-  border:1px solid var(--border2);
-  background:#11141b;
-  border-radius:11px;
-  box-shadow:var(--shadow);
-  color:#e7eaf0;
-  font-size:11px;
-  animation:toastIn .2s ease;
-}
-
-.toast.success{
-  border-color:rgba(57,217,138,.25);
-}
-
-.toast.error{
-  border-color:rgba(255,99,116,.25);
-}
-
-@keyframes toastIn{
-  from{
-    opacity:0;
-    transform:translateY(8px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
-}
-
-/* ================= LOADING ================= */
-
-.loading-overlay{
-  position:fixed;
-  inset:0;
-  z-index:200;
-  background:rgba(5,6,9,.76);
-  backdrop-filter:blur(7px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-
-.loading-overlay.show{
-  display:flex;
-}
-
-.loader-box{
-  width:min(390px,calc(100% - 30px));
-  padding:24px;
-  border:1px solid var(--border2);
-  border-radius:18px;
-  background:#10131a;
-  text-align:center;
-  box-shadow:var(--shadow);
-}
-
-.spinner{
-  width:34px;
-  height:34px;
-  margin:0 auto 13px;
-  border:3px solid #252a35;
-  border-top-color:var(--accent);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-.loader-title{
-  font-weight:850;
-  font-size:13px;
-}
-
-.loader-text{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:5px;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:1100px){
-  .project-grid,
-  .client-grid,
-  .template-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .studio{
-    grid-template-columns:300px minmax(0,1fr);
-  }
-
-  .stats{
-    grid-template-columns:repeat(2,1fr);
-  }
-}
-
-@media(max-width:850px){
-  :root{
-    --sidebar:0px;
-  }
-
-  .sidebar{
-    width:260px;
-    transform:translateX(-100%);
-    transition:.25s;
-    box-shadow:30px 0 80px rgba(0,0,0,.5);
-  }
-
-  .sidebar.open{
-    transform:translateX(0);
-  }
-
-  .main{
-    margin-left:0;
-    width:100%;
-  }
-
-  .mobile-menu{
-    display:block;
-  }
-
-  .top-title{
-    gap:8px;
-  }
-
-  .content{
-    padding:14px;
-  }
-
-  .studio{
-    grid-template-columns:1fr;
-  }
-
-  .preview-card{
-    min-height:520px;
-  }
-
-  .preview-stage{
-    min-height:430px;
-  }
-
-  .preview-frame{
-    height:550px;
-  }
-
-  .ai-grid,
-  .settings-grid{
-    grid-template-columns:1fr;
-  }
-}
-
-@media(max-width:600px){
-  .topbar{
-    padding:0 12px;
-  }
-
-  .page-subtitle{
-    display:none;
-  }
-
-  .top-actions .hide-mobile{
-    display:none;
-  }
-
-  .hero{
-    padding:20px;
-  }
-
-  .hero h1{
-    font-size:28px;
-  }
-
-  .stats{
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-  }
-
-  .stat{
-    padding:13px;
-  }
-
-  .stat-value{
-    font-size:19px;
-  }
-
-  .project-grid,
-  .client-grid,
-  .template-grid{
-    grid-template-columns:1fr;
-  }
-
-  .content{
-    padding:10px;
-  }
-
-  .card-body{
-    padding:12px;
-  }
-
-  .preview-toolbar{
-    flex-wrap:wrap;
-  }
-
-  .preview-actions{
-    width:100%;
-  }
-
-  .preview-actions .btn{
-    flex:1;
-  }
-
-  .generate-actions{
-    flex-direction:column;
-  }
-
-  .hero-actions{
-    flex-direction:column;
-  }
-
-  .hero-actions .btn{
-    width:100%;
-  }
-
-  .toast-container{
-    left:10px;
-    right:10px;
-    bottom:10px;
-  }
-
-  .toast{
-    max-width:none;
-    width:100%;
-  }
+@media(max-width:800px){
+  .app{grid-template-columns:1fr}
+  .sidebar{border-right:0;border-bottom:1px solid #252833}
+  iframe{min-height:650px}
 }
 </style>
 </head>
@@ -1368,984 +111,93 @@ button{
 
 <div class="app">
 
-<!-- ======================================================
-     SIDEBAR
-====================================================== -->
+<aside class="sidebar">
 
-<aside class="sidebar" id="sidebar">
+<div class="logo">Forge<span>AI</span> V2</div>
 
-  <div class="brand">
-    <div class="logo">F</div>
-    <div>
-      <div class="brand-name">ForgeAI</div>
-      <div class="brand-sub">Private Agency Edition</div>
-    </div>
-  </div>
+<label>Gemini API Key</label>
+<input id="apiKey" type="password" placeholder="Paste API key for testing">
 
-  <nav class="nav">
+<label>Website description</label>
+<textarea id="prompt"
+placeholder="Example: Create a premium luxury electric car website called Voltaris. Dark futuristic design, animated hero, features, specifications, pricing, FAQ and contact section."></textarea>
 
-    <div class="nav-label">Workspace</div>
+<label>Business type</label>
+<select id="business">
+<option>Auto</option>
+<option>SaaS</option>
+<option>Agency</option>
+<option>Restaurant</option>
+<option>Real Estate</option>
+<option>E-commerce</option>
+<option>Portfolio</option>
+<option>Finance</option>
+<option>Technology</option>
+</select>
 
-    <button class="nav-item active" data-view="dashboard">
-      <span class="nav-icon">⌂</span>
-      Dashboard
-    </button>
+<button id="generate">Generate Website</button>
+<button id="redesign" class="secondary">Improve Current Website</button>
+<button id="download" class="secondary">Download HTML</button>
 
-    <button class="nav-item" data-view="studio">
-      <span class="nav-icon">✦</span>
-      AI Studio
-    </button>
-
-    <button class="nav-item" data-view="projects">
-      <span class="nav-icon">▣</span>
-      Projects
-    </button>
-
-    <button class="nav-item" data-view="clients">
-      <span class="nav-icon">♙</span>
-      Clients
-    </button>
-
-    <div class="nav-label" style="margin-top:18px">Resources</div>
-
-    <button class="nav-item" data-view="templates">
-      <span class="nav-icon">◫</span>
-      Templates
-    </button>
-
-    <button class="nav-item" data-view="brandkits">
-      <span class="nav-icon">◈</span>
-      Brand Kits
-    </button>
-
-    <button class="nav-item" data-view="settings">
-      <span class="nav-icon">⚙</span>
-      Settings
-    </button>
-
-  </nav>
-
-  <div class="sidebar-bottom">
-    <div class="engine-status">
-      <div class="status-line">
-        <span class="status-dot"></span>
-        AI Engine
-      </div>
-      <div class="status-note">
-        Prototype engine ready. Production deployments should use a secure backend.
-      </div>
-    </div>
-  </div>
+<div id="status" class="status">
+Ready.
+</div>
 
 </aside>
 
-<!-- ======================================================
-     MAIN
-====================================================== -->
-
-<main class="main">
-
-<header class="topbar">
-
-  <div class="top-title">
-
-    <button class="mobile-menu" id="mobileMenu">☰</button>
-
-    <div>
-      <div class="page-title" id="pageTitle">
-        AI Studio
-      </div>
-
-      <div class="page-subtitle" id="pageSubtitle">
-        Turn client briefs into production-ready websites.
-      </div>
-    </div>
-
-  </div>
-
-  <div class="top-actions">
-
-    <button class="btn hide-mobile" id="saveTopBtn">
-      Save Version
-    </button>
-
-    <button class="btn primary" id="topExport">
-      Export
-    </button>
-
-  </div>
-
-</header>
-
-<div class="content">
-
-<!-- ======================================================
-     DASHBOARD
-====================================================== -->
-
-<section class="view active" id="view-dashboard">
-
-  <div class="hero">
-
-    <div class="eyebrow">Private Agency Edition</div>
-
-    <h1>Build client websites<br>with AI.</h1>
-
-    <p>
-      ForgeAI turns client briefs into responsive websites and gives your
-      team an AI designer, strategy assistant, version control and export
-      workflow in one workspace.
-    </p>
-
-    <div class="hero-actions">
-
-      <button class="btn primary" id="heroNewProject">
-        ✦ Create New Website
-      </button>
-
-      <button class="btn" data-view-target="projects">
-        View Projects
-      </button>
-
-    </div>
-
-  </div>
-
-  <div class="stats">
-
-    <div class="stat">
-      <div class="stat-label">Projects</div>
-      <div class="stat-value" id="statProjects">0</div>
-      <div class="stat-note">Saved locally</div>
-    </div>
-
-    <div class="stat">
-      <div class="stat-label">Clients</div>
-      <div class="stat-value" id="statClients">0</div>
-      <div class="stat-note">Workspace records</div>
-    </div>
-
-    <div class="stat">
-      <div class="stat-label">Versions</div>
-      <div class="stat-value" id="statVersions">0</div>
-      <div class="stat-note">Website snapshots</div>
-    </div>
-
-    <div class="stat">
-      <div class="stat-label">AI Status</div>
-      <div class="stat-value" style="font-size:17px">Ready</div>
-      <div class="stat-note">Waiting for a project</div>
-    </div>
-
-  </div>
-
-  <div class="card">
-
-    <div class="card-header">
-
-      <div>
-        <div class="card-title">Recent Projects</div>
-        <div class="card-sub">
-          Your latest website work.
-        </div>
-      </div>
-
-      <button class="btn small" data-view-target="projects">
-        View All
-      </button>
-
-    </div>
-
-    <div class="card-body" id="recentProjects"></div>
-
-  </div>
-
-</section>
-
-<!-- ======================================================
-     AI STUDIO
-====================================================== -->
-
-<section class="view" id="view-studio">
-
-  <div class="studio">
-
-    <!-- LEFT -->
-    <div class="left-stack">
-
-      <div class="card generate-box">
-
-        <div class="card-header">
-          <div>
-            <div class="card-title">Client Brief</div>
-            <div class="card-sub">
-              Describe what you want to build.
-            </div>
-          </div>
-        </div>
-
-        <div class="card-body">
-
-          <div class="field">
-            <label>PROJECT NAME</label>
-            <input id="projectName" placeholder="e.g. Aurelia Architecture">
-          </div>
-
-          <div class="field">
-            <label>CLIENT</label>
-            <input id="clientName" placeholder="e.g. Aurelia Studio">
-          </div>
-
-          <div class="field">
-            <label>WEBSITE TYPE</label>
-            <select id="siteType">
-              <option>Business Website</option>
-              <option>Agency Website</option>
-              <option>Restaurant</option>
-              <option>Portfolio</option>
-              <option>SaaS</option>
-              <option>E-commerce</option>
-              <option>Landing Page</option>
-              <option>Real Estate</option>
-              <option>Healthcare</option>
-              <option>Hotel</option>
-              <option>Custom</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>CLIENT BRIEF</label>
-            <textarea
-              id="brief"
-              placeholder="Describe the business, audience, goals, sections, style, colors, features and anything the client requested..."
-            ></textarea>
-          </div>
-
-          <div class="field">
-            <label>OPTIONAL GEMINI API KEY — PROTOTYPE ONLY</label>
-            <input
-              id="apiKey"
-              type="password"
-              placeholder="Enter your API key for local testing"
-              autocomplete="off"
-            >
-          </div>
-
-          <div class="generate-actions">
-
-            <button class="btn primary" id="generateBtn">
-              ✦ Generate Website
-            </button>
-
-            <button class="btn" id="clearBrief">
-              Clear
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- QUICK ACTIONS -->
-
-      <div class="card">
-
-        <div class="card-header">
-
-          <div>
-            <div class="card-title">AI Quick Actions</div>
-            <div class="card-sub">
-              Work with the current website.
-            </div>
-          </div>
-
-        </div>
-
-        <div class="card-body">
-
-          <div style="display:grid;gap:7px">
-
-            <button class="btn" data-redesign="Make the website feel more premium and sophisticated. Improve hierarchy, spacing, typography and visual polish.">
-              ✨ Make More Premium
-            </button>
-
-            <button class="btn" data-redesign="Improve the mobile experience. Fix responsive layout, spacing, navigation and typography for small screens.">
-              📱 Improve Mobile
-            </button>
-
-            <button class="btn" data-redesign="Improve the primary conversion CTA and make the call to action more visually prominent without making the design aggressive.">
-              🎯 Improve CTA
-            </button>
-
-            <button class="btn" data-redesign="Improve the website's visual hierarchy, spacing, typography and section transitions while preserving the existing brand direction.">
-              ◇ Improve Visual Hierarchy
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- RIGHT -->
-
-    <div class="right-stack">
-
-      <div class="card preview-card">
-
-        <div class="preview-toolbar">
-
-          <div class="device-switch">
-
-            <button class="active" data-device="desktop">
-              Desktop
-            </button>
-
-            <button data-device="tablet">
-              Tablet
-            </button>
-
-            <button data-device="mobile">
-              Mobile
-            </button>
-
-          </div>
-
-          <div class="preview-actions">
-
-            <button class="btn small" id="fullscreenBtn">
-              Fullscreen
-            </button>
-
-            <button class="btn small" id="newTabBtn">
-              New Tab
-            </button>
-
-          </div>
-
-        </div>
-
-        <div class="preview-stage">
-
-          <div class="preview-frame" id="previewFrame">
-
-            <div class="preview-empty" id="previewEmpty">
-
-              <div>
-                <div class="empty-icon">✦</div>
-
-                <div class="empty-title">
-                  Your website appears here
-                </div>
-
-                <div class="empty-text">
-                  Enter a client brief and generate your first website.
-                  You can then redesign, audit, version and export it.
-                </div>
-
-              </div>
-
-            </div>
-
-            <iframe
-              id="previewIframe"
-              title="ForgeAI Website Preview"
-              style="display:none"
-            ></iframe>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- CODE -->
-
-      <div class="card">
-
-        <div class="card-header">
-
-          <div>
-            <div class="card-title">Generated HTML</div>
-            <div class="card-sub">
-              Current website source.
-            </div>
-          </div>
-
-          <div style="display:flex;gap:6px">
-
-            <button class="btn small" id="copyCode">
-              Copy
-            </button>
-
-            <button class="btn small" id="downloadCode">
-              Download
-            </button>
-
-          </div>
-
-        </div>
-
-        <div class="card-body">
-
-          <div class="code-view">
-            <pre id="codeOutput">No website generated yet.</pre>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- AI TOOLS -->
-
-  <div style="margin-top:15px">
-
-    <div class="ai-grid">
-
-      <!-- DESIGNER -->
-
-      <div class="card chat">
-
-        <div class="card-header">
-
-          <div>
-            <div class="card-title">💬 AI Designer</div>
-            <div class="card-sub">
-              Tell AI how you want the current website changed.
-            </div>
-          </div>
-
-        </div>
-
-        <div class="chat-messages" id="designerMessages">
-
-          <div class="message ai">
-            <div class="message-bubble">
-              I'm your AI Designer. Generate a website first, then tell me
-              what you'd like changed.
-            </div>
-          </div>
-
-        </div>
-
-        <div class="chat-input">
-
-          <textarea
-            id="designerInput"
-            placeholder="e.g. Make the hero more premium and improve the CTA..."
-          ></textarea>
-
-          <button class="btn primary" id="designerSend">
-            Send
-          </button>
-
-        </div>
-
-      </div>
-
-      <!-- STRATEGIST -->
-
-      <div class="card chat">
-
-        <div class="card-header">
-
-          <div>
-            <div class="card-title">🧠 AI Strategist</div>
-            <div class="card-sub">
-              Analyze the current website and identify improvements.
-            </div>
-          </div>
-
-          <button class="btn small" id="auditBtn">
-            Analyze
-          </button>
-
-        </div>
-
-        <div class="chat-messages">
-
-          <div id="strategyIntro">
-
-            <div class="message ai">
-
-              <div class="message-bubble">
-                I'll review the current website across conversion,
-                mobile UX, accessibility, SEO and visual hierarchy.
-              </div>
-
-            </div>
-
-          </div>
-
-          <div
-            class="recommendations"
-            id="recommendations"
-          ></div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- VERSIONS -->
-
-  <div class="card" style="margin-top:14px">
-
-    <div class="card-header">
-
-      <div>
-        <div class="card-title">Version History</div>
-        <div class="card-sub">
-          Save and restore website snapshots.
-        </div>
-      </div>
-
-      <button class="btn small" id="saveVersionBtn">
-        + Save Version
-      </button>
-
-    </div>
-
-    <div class="card-body">
-
-      <div class="version-list" id="versionList">
-
-        <div style="color:#666d79;font-size:11px">
-          No versions saved yet.
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-<!-- ======================================================
-     PROJECTS
-====================================================== -->
-
-<section class="view" id="view-projects">
-
-  <div class="toolbar">
-
-    <div class="search">
-      <input
-        id="projectSearch"
-        placeholder="Search projects..."
-      >
-    </div>
-
-    <button class="btn primary" id="newProjectBtn">
-      + New Project
-    </button>
-
-  </div>
-
-  <div class="project-grid" id="projectGrid"></div>
-
-</section>
-
-<!-- ======================================================
-     CLIENTS
-====================================================== -->
-
-<section class="view" id="view-clients">
-
-  <div class="toolbar">
-
-    <div class="search">
-      <input
-        id="clientSearch"
-        placeholder="Search clients..."
-      >
-    </div>
-
-    <button class="btn primary" id="newClientBtn">
-      + Add Client
-    </button>
-
-  </div>
-
-  <div class="client-grid" id="clientGrid"></div>
-
-</section>
-
-<!-- ======================================================
-     TEMPLATES
-====================================================== -->
-
-<section class="view" id="view-templates">
-
-  <div class="hero" style="margin-bottom:15px">
-
-    <div class="eyebrow">Reusable Systems</div>
-
-    <h1 style="font-size:28px">
-      Start faster.
-    </h1>
-
-    <p>
-      Save successful structures as internal agency templates and reuse
-      them across future projects.
-    </p>
-
-    <button class="btn primary" id="templateUseBtn">
-      Use Template Workflow
-    </button>
-
-  </div>
-
-  <div class="template-grid">
-
-    <div class="template-card">
-
-      <div class="template-thumb">
-        PREMIUM BUSINESS
-      </div>
-
-      <div class="template-info">
-        <div class="template-name">
-          Premium Business
-        </div>
-
-        <button
-          class="btn small"
-          style="margin-top:10px"
-          data-template="Premium Business"
-        >
-          Use
-        </button>
-      </div>
-
-    </div>
-
-    <div class="template-card">
-
-      <div class="template-thumb">
-        CREATIVE AGENCY
-      </div>
-
-      <div class="template-info">
-        <div class="template-name">
-          Creative Agency
-        </div>
-
-        <button
-          class="btn small"
-          style="margin-top:10px"
-          data-template="Creative Agency"
-        >
-          Use
-        </button>
-      </div>
-
-    </div>
-
-    <div class="template-card">
-
-      <div class="template-thumb">
-        SAAS PRODUCT
-      </div>
-
-      <div class="template-info">
-        <div class="template-name">
-          SaaS Product
-        </div>
-
-        <button
-          class="btn small"
-          style="margin-top:10px"
-          data-template="SaaS Product"
-        >
-          Use
-        </button>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-<!-- ======================================================
-     BRAND KITS
-====================================================== -->
-
-<section class="view" id="view-brandkits">
-
-  <div class="card">
-
-    <div class="card-header">
-
-      <div>
-        <div class="card-title">Agency Brand Kit</div>
-        <div class="card-sub">
-          Define defaults for AI-generated websites.
-        </div>
-      </div>
-
-      <button class="btn primary" id="saveBrandKit">
-        Save Brand Kit
-      </button>
-
-    </div>
-
-    <div class="card-body">
-
-      <div class="settings-grid">
-
-        <div class="setting">
-
-          <h3>Brand Name</h3>
-
-          <p>
-            Used as your internal agency identity.
-          </p>
-
-          <input
-            class="field"
-            id="brandName"
-            style="width:100%;padding:10px;border-radius:9px;background:#090b10;border:1px solid var(--border);color:white"
-            placeholder="Your Agency"
-          >
-
-        </div>
-
-        <div class="setting">
-
-          <h3>Default Design Direction</h3>
-
-          <p>
-            Tell the AI how your agency prefers websites to feel.
-          </p>
-
-          <textarea
-            id="brandDirection"
-            style="width:100%;min-height:100px;padding:10px;border-radius:9px;background:#090b10;border:1px solid var(--border);color:white;resize:vertical"
-            placeholder="Premium, modern, editorial, spacious..."
-          ></textarea>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-<!-- ======================================================
-     SETTINGS
-====================================================== -->
-
-<section class="view" id="view-settings">
-
-  <div class="settings-grid">
-
-    <div class="setting">
-
-      <h3>AI Engine</h3>
-
-      <p>
-        Prototype mode uses the API key locally in this browser.
-        Production should use a server-side API.
-      </p>
-
-      <div class="key-row">
-
-        <input
-          id="settingsKey"
-          type="password"
-          placeholder="Gemini API key"
-          autocomplete="off"
-        >
-
-        <button class="btn primary" id="saveKey">
-          Save
-        </button>
-
-      </div>
-
-      <button
-        class="btn danger small"
-        style="margin-top:8px"
-        id="clearKey"
-      >
-        Remove Local Key
-      </button>
-
-    </div>
-
-    <div class="setting">
-
-      <h3>Workspace Data</h3>
-
-      <p>
-        Projects, versions and settings are stored locally in this
-        browser for the prototype.
-      </p>
-
-      <button class="btn danger" id="clearData">
-        Clear Local Workspace
-      </button>
-
-    </div>
-
-    <div class="setting">
-
-      <h3>Production Architecture</h3>
-
-      <p>
-        For a real agency deployment, connect this frontend to a
-        secure backend so the AI provider secret never reaches the browser.
-      </p>
-
-      <span class="badge green">
-        Backend Recommended
-      </span>
-
-    </div>
-
-    <div class="setting">
-
-      <h3>ForgeAI Version</h3>
-
-      <p>
-        Private Agency Edition · Single-file prototype.
-      </p>
-
-      <span class="badge">
-        v2.0 Prototype
-      </span>
-
-    </div>
-
-  </div>
-
-</section>
-
+<main class="workspace">
+
+<div class="topbar">
+<strong>AI Website Builder</strong>
+<div id="score" class="badge">No website</div>
 </div>
+
+<div class="preview">
+<iframe id="preview"></iframe>
+</div>
+
 </main>
 
 </div>
 
-<!-- ======================================================
-     MODAL
-====================================================== -->
-
-<div class="modal" id="projectModal">
-
-  <div class="modal-box">
-
-    <div class="modal-header">
-
-      <div class="modal-title">
-        New Client Project
-      </div>
-
-      <button class="close" id="closeModal">
-        ×
-      </button>
-
-    </div>
-
-    <div class="modal-body">
-
-      <div class="field">
-        <label>PROJECT NAME</label>
-        <input id="modalProjectName" placeholder="Project name">
-      </div>
-
-      <div class="field">
-        <label>CLIENT</label>
-        <input id="modalClientName" placeholder="Client name">
-      </div>
-
-      <div class="field">
-        <label>BRIEF</label>
-        <textarea
-          id="modalBrief"
-          placeholder="What does the client need?"
-        ></textarea>
-      </div>
-
-      <button class="btn primary" style="width:100%" id="modalCreate">
-        Create Project
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- ======================================================
-     LOADING
-====================================================== -->
-
-<div class="loading-overlay" id="loading">
-
-  <div class="loader-box">
-
-    <div class="spinner"></div>
-
-    <div class="loader-title" id="loadingTitle">
-      ForgeAI is working...
-    </div>
-
-    <div class="loader-text" id="loadingText">
-      Generating your website.
-    </div>
-
-  </div>
-
-</div>
-
-<div class="toast-container" id="toasts"></div>
-
 <script>
+
 /* =========================================================
-   FORGEAI APPLICATION
-   ========================================================= */
+   FORGEAI V2
+   Architecture:
 
-const MODEL = "gemini-3-flash-preview";
+   USER PROMPT
+       ↓
+   GEMINI BLUEPRINT
+       ↓
+   VALIDATE BLUEPRINT
+       ↓
+   FORGEAI RENDERER
+       ↓
+   HTML
+       ↓
+   VALIDATE HTML
+       ↓
+   AUTO REPAIR
+       ↓
+   PREVIEW
+========================================================= */
 
-const STORAGE = {
-  projects: "forgeai_projects_v2",
-  clients: "forgeai_clients_v2",
-  key: "forgeai_api_key_v2",
-  brand: "forgeai_brand_v2",
-  versions: "forgeai_versions_v2"
+const CONFIG = {
+  model: "gemini-3-flash-preview",
+  apiBase:
+    "https://generativelanguage.googleapis.com/v1beta/models/"
 };
 
 const state = {
-  currentHTML: "",
-  currentProjectId: null,
-  currentProjectName: "",
-  currentClient: "",
-  versions: [],
-  currentDevice: "desktop"
+  html: "",
+  blueprint: null
 };
 
-/* =========================================================
-   HELPERS
-========================================================= */
+const $ = id => document.getElementById(id);
 
-function $(id){
-  return document.getElementById(id);
+function setStatus(text){
+  $("status").textContent = text;
 }
 
 function escapeHTML(value){
@@ -2357,96 +209,25 @@ function escapeHTML(value){
     .replace(/'/g,"&#039;");
 }
 
-function getJSON(key, fallback){
-  try{
-    const value = localStorage.getItem(key);
-    return value ? JSON.parse(value) : fallback;
-  }catch{
-    return fallback;
-  }
-}
-
-function setJSON(key, value){
-  localStorage.setItem(key, JSON.stringify(value));
-}
-
-function showToast(message,type=""){
-  const box = document.createElement("div");
-  box.className = "toast " + type;
-  box.textContent = message;
-
-  $("toasts").appendChild(box);
-
-  setTimeout(()=>{
-    box.remove();
-  },3200);
-}
-
-function setLoading(show,title="",text=""){
-  $("loading").classList.toggle("show",show);
-
-  if(title) $("loadingTitle").textContent = title;
-  if(text) $("loadingText").textContent = text;
-}
-
-function cleanAIResponse(text){
-  let output = String(text || "").trim();
-
-  output = output
-    .replace(/^```html\s*/i,"")
-    .replace(/^```\s*/i,"")
-    .replace(/\s*```$/i,"")
-    .trim();
-
-  const start = output.search(/<!doctype html>|<html[\s>]/i);
-
-  if(start >= 0){
-    output = output.slice(start);
-  }
-
-  return output.trim();
-}
-
-function isValidHTML(html){
-  if(!html) return false;
-
-  const lower = html.toLowerCase();
-
-  return (
-    lower.includes("<html") &&
-    lower.includes("<head") &&
-    lower.includes("<body") &&
-    lower.includes("</html>")
-  );
-}
-
 /* =========================================================
-   API
+   GEMINI
 ========================================================= */
-
-function getAPIKey(){
-  return localStorage.getItem(STORAGE.key) ||
-         $("apiKey").value.trim() ||
-         $("settingsKey").value.trim();
-}
 
 async function callGemini(prompt){
 
-  const key = getAPIKey();
+  const key = $("apiKey").value.trim();
 
   if(!key){
-    throw new Error(
-      "No Gemini API key found. Add your key in Settings or the Client Brief for prototype testing."
-    );
+    throw new Error("Gemini API key is required.");
   }
 
-  const endpoint =
-    "https://generativelanguage.googleapis.com/v1beta/models/" +
-    encodeURIComponent(MODEL) +
+  const url =
+    CONFIG.apiBase +
+    encodeURIComponent(CONFIG.model) +
     ":generateContent?key=" +
     encodeURIComponent(key);
 
-  const response = await fetch(endpoint,{
+  const response = await fetch(url,{
     method:"POST",
     headers:{
       "Content-Type":"application/json"
@@ -2456,37 +237,28 @@ async function callGemini(prompt){
         {
           role:"user",
           parts:[
-            {
-              text:prompt
-            }
+            {text:prompt}
           ]
         }
       ],
       generationConfig:{
-        temperature:.65,
-        maxOutputTokens:30000
+        temperature:.35,
+        maxOutputTokens:18000,
+        responseMimeType:"application/json"
       }
     })
   });
 
   if(!response.ok){
-    let message = "Gemini request failed.";
-
-    try{
-      const error = await response.json();
-      message =
-        error?.error?.message ||
-        message;
-    }catch{}
-
-    throw new Error(message);
+    const error = await response.text();
+    throw new Error("Gemini API error: " + error);
   }
 
   const data = await response.json();
 
   const text =
     data?.candidates?.[0]?.content?.parts
-      ?.map(part => part.text || "")
+      ?.map(x=>x.text || "")
       .join("") || "";
 
   if(!text){
@@ -2497,587 +269,1201 @@ async function callGemini(prompt){
 }
 
 /* =========================================================
-   PROMPTS
+   BLUEPRINT
 ========================================================= */
 
-function generationPrompt(){
+function blueprintPrompt(userPrompt,business){
 
-  const brand = getJSON(STORAGE.brand,{});
+return `
+You are ForgeAI's website architect.
 
-  return `
-You are ForgeAI, a senior creative director, UX designer,
-conversion strategist and expert frontend engineer working for
-a professional web agency.
+The user wants:
 
-Generate ONE complete production-quality website.
+${userPrompt}
 
-CLIENT PROJECT:
-${$("projectName").value.trim() || "Untitled Project"}
+Business type:
+${business}
 
-CLIENT:
-${$("clientName").value.trim() || "Client"}
+DO NOT generate HTML.
 
-WEBSITE TYPE:
-${$("siteType").value}
-
-CLIENT BRIEF:
-${$("brief").value.trim()}
-
-AGENCY BRAND DIRECTION:
-${brand.direction || "Premium, modern, polished, conversion-focused."}
-
-REQUIREMENTS:
-
-1. Return ONLY complete HTML.
-2. Include <!DOCTYPE html>.
-3. Include html, head and body.
-4. Use semantic HTML.
-5. Use responsive CSS.
-6. Mobile must work at 320px+.
-7. Desktop must look excellent at 1440px+.
-8. Use modern typography and spacing.
-9. Create a strong visual hierarchy.
-10. Create a professional hero section.
-11. Create clear CTAs.
-12. Include realistic copy based on the brief.
-13. Do NOT use lorem ipsum.
-14. Do NOT invent awards, certifications, statistics,
-    testimonials or claims that are not supported by the brief.
-15. If testimonials are needed, label them clearly as examples
-    or avoid them.
-16. Navigation must work.
-17. Buttons must perform sensible actions.
-18. Mobile navigation must work.
-19. Forms must have usable interactions.
-20. FAQ interactions should work if FAQ exists.
-21. Avoid unnecessary external dependencies.
-22. Prefer inline CSS and vanilla JavaScript.
-23. Do not use TODO comments.
-24. Do not leave broken placeholder sections.
-25. Make the site feel like a real premium client delivery.
-26. Use accessible contrast and keyboard-friendly controls.
-27. Add useful title and meta description.
-28. Add smooth but restrained interactions.
-29. Avoid excessive animations.
-30. Every section must have a purpose.
-
-The result will be rendered directly inside an iframe.
-
-Return ONLY the HTML.
-`;
-}
-
-function redesignPrompt(instruction){
-
-  return `
-You are ForgeAI AI Designer.
-
-You are editing an existing website for a professional agency.
-
-USER REQUEST:
-${instruction}
-
-CURRENT WEBSITE:
-${state.currentHTML}
-
-TASK:
-
-Return the FULL updated HTML document.
-
-Rules:
-
-- Preserve useful existing content unless the request requires changing it.
-- Actually implement the requested design changes.
-- Do not return explanations.
-- Do not return markdown.
-- Return only complete HTML.
-- Keep <!DOCTYPE html>.
-- Keep html/head/body.
-- Keep responsive behavior.
-- Keep working interactions.
-- Fix obvious visual or responsive problems you notice.
-- Do not introduce fake testimonials, awards or statistics.
-- Do not remove important sections without a reason.
-- Do not use TODO placeholders.
-- Maintain premium professional agency quality.
-`;
-}
-
-function strategyPrompt(){
-
-  return `
-You are ForgeAI Strategy AI for a professional web agency.
-
-Analyze this website:
-
-${state.currentHTML}
-
-Return ONLY valid JSON.
-
-Use exactly this structure:
+Return ONLY valid JSON matching this exact structure:
 
 {
-  "summary": "short overall assessment",
-  "recommendations": [
+  "site":{
+    "name":"",
+    "tagline":"",
+    "description":"",
+    "businessType":"",
+    "primaryColor":"",
+    "secondaryColor":"",
+    "accentColor":"",
+    "theme":"dark"
+  },
+
+  "seo":{
+    "title":"",
+    "description":"",
+    "keywords":[]
+  },
+
+  "navbar":{
+    "logo":"",
+    "links":[]
+  },
+
+  "hero":{
+    "eyebrow":"",
+    "title":"",
+    "description":"",
+    "primaryButton":"",
+    "secondaryButton":"",
+    "visual":""
+  },
+
+  "sections":[
     {
-      "title": "short title",
-      "category": "Conversion|UX|Mobile|SEO|Accessibility|Design|Content",
-      "priority": "High|Medium|Low",
-      "reason": "why this matters",
-      "action": "specific improvement that should be made"
+      "type":"features",
+      "title":"",
+      "description":"",
+      "items":[
+        {
+          "title":"",
+          "description":"",
+          "icon":""
+        }
+      ]
     }
-  ]
+  ],
+
+  "cta":{
+    "title":"",
+    "description":"",
+    "button":""
+  },
+
+  "footer":{
+    "description":"",
+    "links":[]
+  }
 }
 
 Rules:
 
-- Maximum 8 recommendations.
-- Be specific.
-- Do not invent business facts.
-- Focus on practical improvements.
-- Recommendations should be actionable by an AI designer.
+1. Create a coherent real website.
+2. Maximum 7 main sections.
+3. Use realistic copy.
+4. Never invent statistics, awards, customer counts or certifications.
+5. No fake testimonials.
+6. No lorem ipsum.
+7. Navigation links must correspond to actual section IDs.
+8. Use accessible labels.
+9. Keep content concise.
+10. Choose a professional visual direction.
+11. The "visual" field should describe the hero visual, not contain HTML.
+12. Section types may be:
+   features
+   services
+   about
+   stats
+   pricing
+   testimonials
+   gallery
+   faq
+   contact
+13. For pricing, never claim fake prices unless the user requested prices.
+14. Return JSON only.
 `;
+}
+
+/* =========================================================
+   JSON CLEANER
+========================================================= */
+
+function parseJSON(text){
+
+  let clean = String(text)
+    .trim()
+    .replace(/^```json/i,"")
+    .replace(/^```/,"")
+    .replace(/```$/,"")
+    .trim();
+
+  const start = clean.indexOf("{");
+  const end = clean.lastIndexOf("}");
+
+  if(start === -1 || end === -1){
+    throw new Error("Gemini did not return valid JSON.");
+  }
+
+  clean = clean.slice(start,end + 1);
+
+  try{
+    return JSON.parse(clean);
+  }catch(error){
+    throw new Error("Blueprint JSON is invalid.");
+  }
+}
+
+/* =========================================================
+   BLUEPRINT VALIDATION
+========================================================= */
+
+function validateBlueprint(bp){
+
+  if(!bp || typeof bp !== "object")
+    return false;
+
+  if(!bp.site?.name)
+    return false;
+
+  if(!bp.hero?.title)
+    return false;
+
+  if(!Array.isArray(bp.navbar?.links))
+    return false;
+
+  if(!Array.isArray(bp.sections))
+    return false;
+
+  return true;
+}
+
+/* =========================================================
+   ICONS
+========================================================= */
+
+const icons = {
+  star:"★",
+  bolt:"⚡",
+  shield:"◈",
+  rocket:"🚀",
+  check:"✓",
+  globe:"◎",
+  spark:"✦",
+  lock:"🔒",
+  users:"◉"
+};
+
+function icon(value){
+  return icons[String(value || "").toLowerCase()] || "✦";
+}
+
+/* =========================================================
+   SECTION RENDERER
+========================================================= */
+
+function renderSection(section,index){
+
+  const type = section.type || "features";
+  const id =
+    type.replace(/[^a-z0-9]/gi,"-") +
+    "-" + index;
+
+  if(type === "features" || type === "services"){
+
+    const items = Array.isArray(section.items)
+      ? section.items : [];
+
+    return `
+<section class="section" id="${id}">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">FEATURES</div>
+      <h2>${escapeHTML(section.title)}</h2>
+      <p>${escapeHTML(section.description)}</p>
+    </div>
+
+    <div class="grid">
+      ${items.map(item => `
+        <article class="card">
+          <div class="icon">${icon(item.icon)}</div>
+          <h3>${escapeHTML(item.title)}</h3>
+          <p>${escapeHTML(item.description)}</p>
+        </article>
+      `).join("")}
+    </div>
+  </div>
+</section>`;
+  }
+
+  if(type === "about"){
+
+    return `
+<section class="section" id="${id}">
+  <div class="container about">
+    <div>
+      <div class="kicker">ABOUT</div>
+      <h2>${escapeHTML(section.title)}</h2>
+    </div>
+    <p>${escapeHTML(section.description)}</p>
+  </div>
+</section>`;
+  }
+
+  if(type === "stats"){
+
+    const items = Array.isArray(section.items)
+      ? section.items : [];
+
+    return `
+<section class="section" id="${id}">
+ <div class="container">
+  <div class="section-head">
+   <div class="kicker">OVERVIEW</div>
+   <h2>${escapeHTML(section.title)}</h2>
+   <p>${escapeHTML(section.description)}</p>
+  </div>
+
+  <div class="stats">
+   ${items.map(x=>`
+    <div class="stat">
+      <strong>${escapeHTML(x.title)}</strong>
+      <span>${escapeHTML(x.description)}</span>
+    </div>
+   `).join("")}
+  </div>
+ </div>
+</section>`;
+  }
+
+  if(type === "pricing"){
+
+    const items = Array.isArray(section.items)
+      ? section.items : [];
+
+    return `
+<section class="section" id="${id}">
+ <div class="container">
+  <div class="section-head">
+   <div class="kicker">PLANS</div>
+   <h2>${escapeHTML(section.title)}</h2>
+   <p>${escapeHTML(section.description)}</p>
+  </div>
+
+  <div class="grid">
+   ${items.map(x=>`
+    <article class="card price">
+      <h3>${escapeHTML(x.title)}</h3>
+      <p>${escapeHTML(x.description)}</p>
+      <button>Get Started</button>
+    </article>
+   `).join("")}
+  </div>
+ </div>
+</section>`;
+  }
+
+  if(type === "faq"){
+
+    const items = Array.isArray(section.items)
+      ? section.items : [];
+
+    return `
+<section class="section" id="${id}">
+ <div class="container faq">
+  <div class="section-head">
+   <div class="kicker">FAQ</div>
+   <h2>${escapeHTML(section.title)}</h2>
+   <p>${escapeHTML(section.description)}</p>
+  </div>
+
+  ${items.map(x=>`
+   <details>
+    <summary>${escapeHTML(x.title)}</summary>
+    <p>${escapeHTML(x.description)}</p>
+   </details>
+  `).join("")}
+ </div>
+</section>`;
+  }
+
+  return `
+<section class="section" id="${id}">
+ <div class="container">
+  <div class="section-head">
+   <div class="kicker">DISCOVER</div>
+   <h2>${escapeHTML(section.title)}</h2>
+   <p>${escapeHTML(section.description)}</p>
+  </div>
+ </div>
+</section>`;
+}
+
+/* =========================================================
+   FORGEAI HTML RENDERER
+========================================================= */
+
+function renderWebsite(bp){
+
+  const site = bp.site;
+  const hero = bp.hero;
+
+  const sections = bp.sections
+    .map(renderSection)
+    .join("");
+
+  const nav =
+    bp.navbar.links.map((link,index)=>`
+      <a href="#${link.target || "section-" + index}">
+        ${escapeHTML(link.label || link)}
+      </a>
+    `).join("");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<title>${escapeHTML(bp.seo?.title || site.name)}</title>
+
+<meta name="description"
+content="${escapeHTML(bp.seo?.description || site.description)}">
+
+<meta name="keywords"
+content="${escapeHTML((bp.seo?.keywords || []).join(", "))}">
+
+<meta name="theme-color"
+content="${escapeHTML(site.primaryColor || "#7c5cff")}">
+
+<style>
+
+:root{
+  --primary:${escapeHTML(site.primaryColor || "#7c5cff")};
+  --secondary:${escapeHTML(site.secondaryColor || "#10121a")};
+  --accent:${escapeHTML(site.accentColor || "#ffffff")};
+  --bg:#07080c;
+  --text:#f5f7ff;
+  --muted:#9ca3b5;
+  --border:rgba(255,255,255,.09);
+  --max:1180px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(124,92,255,.2),transparent 35%),
+    var(--bg);
+  color:var(--text);
+  font-family:
+    Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.6;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.container{
+  width:min(var(--max),92%);
+  margin:auto;
+}
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:100;
+  backdrop-filter:blur(18px);
+  background:rgba(7,8,12,.72);
+  border-bottom:1px solid var(--border);
+}
+
+.nav-inner{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:25px;
+}
+
+.logo{
+  font-size:20px;
+  font-weight:900;
+}
+
+.logo span{
+  color:var(--primary);
+}
+
+.links{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
+
+.links a{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.links a:hover{
+  color:white;
+}
+
+.hero{
+  min-height:720px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero:before,
+.hero:after{
+  content:"";
+  position:absolute;
+  width:320px;
+  height:320px;
+  border-radius:50%;
+  background:var(--primary);
+  opacity:.13;
+  filter:blur(80px);
+  animation:float 8s ease-in-out infinite;
+}
+
+.hero:after{
+  right:-100px;
+  bottom:-100px;
+  animation-delay:-3s;
+}
+
+@keyframes float{
+  50%{transform:translateY(-35px) scale(1.08)}
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:900px;
+}
+
+.kicker{
+  color:var(--primary);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+.hero h1{
+  font-size:clamp(46px,8vw,94px);
+  line-height:.98;
+  letter-spacing:-.055em;
+  margin:18px 0;
+}
+
+.hero p{
+  max-width:700px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:19px;
+}
+
+.buttons{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:32px;
+}
+
+button,
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  padding:0 22px;
+  border:0;
+  border-radius:999px;
+  cursor:pointer;
+  background:var(--primary);
+  color:white;
+  font-weight:800;
+}
+
+.btn.secondary{
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--border);
+}
+
+.section{
+  padding:110px 0;
+}
+
+.section-head{
+  max-width:720px;
+  margin-bottom:45px;
+}
+
+.section h2{
+  font-size:clamp(35px,5vw,58px);
+  line-height:1;
+  letter-spacing:-.04em;
+  margin:12px 0 18px;
+}
+
+.section-head p,
+.card p,
+.about p{
+  color:var(--muted);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.card{
+  padding:28px;
+  min-height:210px;
+  border:1px solid var(--border);
+  background:linear-gradient(
+    145deg,
+    rgba(255,255,255,.055),
+    rgba(255,255,255,.018)
+  );
+  border-radius:24px;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-7px);
+  border-color:rgba(124,92,255,.5);
+}
+
+.icon{
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:rgba(124,92,255,.15);
+  color:var(--primary);
+  font-size:21px;
+}
+
+.card h3{
+  margin:22px 0 7px;
+}
+
+.about{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:70px;
+  align-items:center;
+}
+
+.about p{
+  font-size:19px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.stat{
+  padding:30px;
+  border:1px solid var(--border);
+  border-radius:20px;
+}
+
+.stat strong{
+  display:block;
+  font-size:30px;
+}
+
+.stat span{
+  color:var(--muted);
+}
+
+.price{
+  display:flex;
+  flex-direction:column;
+}
+
+.price button{
+  margin-top:auto;
+}
+
+.faq details{
+  border-bottom:1px solid var(--border);
+  padding:20px 0;
+}
+
+.faq summary{
+  cursor:pointer;
+  font-weight:800;
+}
+
+.faq p{
+  color:var(--muted);
+}
+
+.cta{
+  padding:90px 0;
+}
+
+.cta-box{
+  padding:65px;
+  text-align:center;
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(124,92,255,.3),transparent 55%),
+    rgba(255,255,255,.04);
+  border:1px solid var(--border);
+}
+
+footer{
+  padding:50px 0;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+}
+
+@media(max-width:850px){
+
+  .links{
+    display:none;
+  }
+
+  .hero{
+    min-height:620px;
+  }
+
+  .grid,
+  .stats,
+  .about{
+    grid-template-columns:1fr;
+  }
+
+  .section{
+    padding:75px 0;
+  }
+
+  .cta-box{
+    padding:40px 22px;
+  }
+}
+
+.reveal{
+  opacity:0;
+  transform:translateY(25px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+
+.reveal.visible{
+  opacity:1;
+  transform:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+
+<div class="container nav-inner">
+
+<a class="logo" href="#">
+${escapeHTML(site.name)}
+</a>
+
+<div class="links">
+${nav}
+</div>
+
+</div>
+
+</nav>
+
+<header class="hero">
+
+<div class="hero-content reveal">
+
+<div class="kicker">
+${escapeHTML(hero.eyebrow || site.businessType)}
+</div>
+
+<h1>
+${escapeHTML(hero.title)}
+</h1>
+
+<p>
+${escapeHTML(hero.description)}
+</p>
+
+<div class="buttons">
+
+<a class="btn" href="#contact">
+${escapeHTML(hero.primaryButton || "Get Started")}
+</a>
+
+<a class="btn secondary" href="#about">
+${escapeHTML(hero.secondaryButton || "Explore")}
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+<main>
+
+${sections}
+
+<section class="cta" id="contact">
+
+<div class="container">
+
+<div class="cta-box reveal">
+
+<div class="kicker">GET STARTED</div>
+
+<h2>
+${escapeHTML(bp.cta?.title || "Ready to get started?")}
+</h2>
+
+<p>
+${escapeHTML(bp.cta?.description || "")}
+</p>
+
+<a class="btn" href="mailto:hello@example.com">
+${escapeHTML(bp.cta?.button || "Contact Us")}
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+<div class="container">
+
+<strong>${escapeHTML(site.name)}</strong>
+
+<p>
+${escapeHTML(bp.footer?.description || site.description)}
+</p>
+
+</div>
+
+</footer>
+
+<script>
+
+document.querySelectorAll(".reveal")
+.forEach(el => {
+
+  const observer = new IntersectionObserver(entries => {
+
+    entries.forEach(entry => {
+
+      if(entry.isIntersecting){
+
+        entry.target.classList.add("visible");
+
+        observer.unobserve(entry.target);
+
+      }
+
+    });
+
+  },{threshold:.1});
+
+  observer.observe(el);
+
+});
+
+document.querySelectorAll('a[href^="#"]')
+.forEach(link => {
+
+  link.addEventListener("click",event => {
+
+    const target =
+      document.querySelector(link.getAttribute("href"));
+
+    if(target){
+
+      event.preventDefault();
+
+      target.scrollIntoView({
+        behavior:"smooth"
+      });
+
+    }
+
+  });
+
+});
+
+<\/script>
+
+</body>
+</html>`;
+}
+
+/* =========================================================
+   HTML VALIDATOR
+========================================================= */
+
+function validateHTML(html){
+
+  const errors=[];
+
+  if(!html)
+    errors.push("Empty HTML.");
+
+  if((html.match(/<html/gi)||[]).length !== 1)
+    errors.push("Multiple HTML documents detected.");
+
+  if((html.match(/<head/gi)||[]).length !== 1)
+    errors.push("Invalid head structure.");
+
+  if((html.match(/<body/gi)||[]).length !== 1)
+    errors.push("Invalid body structure.");
+
+  if(!/<\/html>/i.test(html))
+    errors.push("Missing closing html tag.");
+
+  if(!/<meta[^>]+viewport/i.test(html))
+    errors.push("Missing viewport meta.");
+
+  if(!/<title>/i.test(html))
+    errors.push("Missing title.");
+
+  if(!/<style>/i.test(html))
+    errors.push("Missing CSS.");
+
+  return errors;
+}
+
+/* =========================================================
+   AUTO REPAIR
+========================================================= */
+
+function repairHTML(html){
+
+  let output = html.trim();
+
+  output = output
+    .replace(/^```html/i,"")
+    .replace(/^```/,"")
+    .replace(/```$/,"")
+    .trim();
+
+  const first = output.search(/<!doctype html>/i);
+
+  if(first > 0){
+    output = output.slice(first);
+  }
+
+  const secondDocument =
+    output.search(/<!doctype html>/ig);
+
+  if(secondDocument && secondDocument.length > 1){
+    output = output.slice(
+      secondDocument[0],
+      secondDocument[1]
+    );
+  }
+
+  return output;
+}
+
+/* =========================================================
+   QUALITY SCORE
+========================================================= */
+
+function calculateScore(html,bp){
+
+  let score=0;
+
+  if(/<!doctype html>/i.test(html)) score+=10;
+  if(/viewport/i.test(html)) score+=10;
+  if(/<title>/i.test(html)) score+=10;
+  if(/meta name="description"/i.test(html)) score+=10;
+  if(/@media/i.test(html)) score+=10;
+  if(/scroll-behavior/i.test(html)) score+=5;
+  if(/IntersectionObserver/i.test(html)) score+=5;
+  if(bp?.sections?.length) score+=15;
+  if(bp?.navbar?.links?.length) score+=10;
+  if(bp?.hero?.title) score+=15;
+
+  return Math.min(score,100);
 }
 
 /* =========================================================
    GENERATE
 ========================================================= */
 
-async function generateWebsite(){
-
-  const brief = $("brief").value.trim();
-
-  if(!brief){
-    showToast("Add a client brief first.","error");
-    $("brief").focus();
-    return;
-  }
+async function generate(){
 
   try{
 
-    setLoading(
-      true,
-      "ForgeAI is generating...",
-      "Building structure, content, styling and interactions."
-    );
+    setStatus("Planning website with Gemini...");
+    $("generate").disabled=true;
 
-    const result = await callGemini(generationPrompt());
+    const userPrompt =
+      $("prompt").value.trim();
 
-    const html = cleanAIResponse(result);
+    if(!userPrompt){
+      throw new Error("Describe the website first.");
+    }
 
-    if(!isValidHTML(html)){
+    const business =
+      $("business").value;
+
+    /* STEP 1 */
+
+    const rawBlueprint =
+      await callGemini(
+        blueprintPrompt(
+          userPrompt,
+          business
+        )
+      );
+
+    setStatus("Validating AI blueprint...");
+
+    const blueprint =
+      parseJSON(rawBlueprint);
+
+    if(!validateBlueprint(blueprint)){
       throw new Error(
-        "The AI response did not contain a complete HTML document. Please regenerate."
+        "Gemini produced an incomplete blueprint."
       );
     }
 
-    state.currentHTML = html;
-    state.currentProjectName =
-      $("projectName").value.trim() || "Untitled Project";
-    state.currentClient =
-      $("clientName").value.trim() || "Client";
+    state.blueprint=blueprint;
 
-    renderPreview();
-    renderCode();
-    saveProject();
+    /* STEP 2 */
 
-    showToast("Website generated successfully.","success");
+    setStatus("ForgeAI is building the website...");
 
-    addDesignerMessage(
-      "Website generated. Tell me what you'd like to redesign."
+    let html =
+      renderWebsite(blueprint);
+
+    /* STEP 3 */
+
+    setStatus("Running quality checks...");
+
+    let errors =
+      validateHTML(html);
+
+    /* STEP 4 */
+
+    if(errors.length){
+
+      setStatus(
+        "Auto-repairing " +
+        errors.length +
+        " issue(s)..."
+      );
+
+      html=repairHTML(html);
+
+      errors=validateHTML(html);
+    }
+
+    if(errors.length){
+      throw new Error(
+        "Website validation failed: " +
+        errors.join(" ")
+      );
+    }
+
+    /* STEP 5 */
+
+    state.html=html;
+
+    $("preview").srcdoc=html;
+
+    const quality =
+      calculateScore(html,blueprint);
+
+    $("score").textContent =
+      "Quality: " + quality + "/100";
+
+    setStatus(
+      "Website generated successfully."
     );
 
   }catch(error){
 
     console.error(error);
 
-    showToast(
-      error.message || "Generation failed.",
-      "error"
+    setStatus(
+      "Error: " + error.message
     );
 
   }finally{
-    setLoading(false);
+
+    $("generate").disabled=false;
+
   }
 }
 
 /* =========================================================
-   REDESIGN
+   AI REDESIGN
 ========================================================= */
 
-async function redesignWebsite(instruction){
+async function redesign(){
 
-  if(!state.currentHTML){
-    showToast("Generate a website first.","error");
+  if(!state.blueprint){
+
+    setStatus(
+      "Generate a website first."
+    );
+
     return;
   }
 
-  if(!instruction){
-    return;
-  }
+  const instruction =
+    prompt(
+      "What do you want to change?"
+    );
 
-  addDesignerMessage(instruction,"user");
+  if(!instruction) return;
 
   try{
 
-    setLoading(
-      true,
-      "AI Designer is redesigning...",
-      "Applying your requested changes to the current website."
+    setStatus(
+      "Planning redesign..."
     );
+
+    const request=`
+
+You are editing an existing website blueprint.
+
+CURRENT BLUEPRINT:
+
+${JSON.stringify(
+  state.blueprint,
+  null,
+  2
+)}
+
+USER CHANGE:
+
+${instruction}
+
+Return ONLY the complete updated JSON blueprint.
+
+Do not remove existing useful content unless necessary.
+
+Do not generate HTML.
+`;
 
     const result =
-      await callGemini(
-        redesignPrompt(instruction)
-      );
+      await callGemini(request);
 
-    const html = cleanAIResponse(result);
+    const updated =
+      parseJSON(result);
 
-    if(!isValidHTML(html)){
+    if(!validateBlueprint(updated)){
       throw new Error(
-        "AI Designer returned invalid HTML."
+        "Redesign returned an invalid blueprint."
       );
     }
 
-    state.currentHTML = html;
+    state.blueprint=updated;
 
-    renderPreview();
-    renderCode();
-    saveProject();
-
-    addDesignerMessage(
-      "Done. I applied the requested redesign. Review the preview and save a version if you want to keep it."
+    setStatus(
+      "Rebuilding and validating..."
     );
 
-    showToast("Redesign applied.","success");
+    let html=
+      renderWebsite(updated);
 
-  }catch(error){
+    html=
+      repairHTML(html);
 
-    console.error(error);
+    const errors=
+      validateHTML(html);
 
-    addDesignerMessage(
-      "I couldn't apply that change. " +
-      (error.message || "Please try again.")
-    );
-
-    showToast(
-      error.message || "Redesign failed.",
-      "error"
-    );
-
-  }finally{
-
-    setLoading(false);
-
-  }
-}
-
-/* =========================================================
-   STRATEGY
-========================================================= */
-
-async function runAudit(){
-
-  if(!state.currentHTML){
-    showToast("Generate a website first.","error");
-    return;
-  }
-
-  try{
-
-    setLoading(
-      true,
-      "AI Strategist is analyzing...",
-      "Reviewing conversion, UX, mobile, SEO and accessibility."
-    );
-
-    const result =
-      await callGemini(
-        strategyPrompt()
-      );
-
-    let parsed;
-
-    try{
-      parsed = JSON.parse(
-        result.replace(/^```json\s*/i,"")
-          .replace(/\s*```$/i,"")
-          .trim()
-      );
-    }catch{
+    if(errors.length){
       throw new Error(
-        "Strategy AI returned invalid JSON."
+        errors.join(" ")
       );
     }
 
-    renderRecommendations(parsed);
+    state.html=html;
 
-    showToast("Website analysis complete.","success");
+    $("preview").srcdoc=html;
+
+    $("score").textContent=
+      "Quality: " +
+      calculateScore(html,updated) +
+      "/100";
+
+    setStatus(
+      "Redesign completed."
+    );
 
   }catch(error){
 
-    console.error(error);
-
-    showToast(
-      error.message || "Analysis failed.",
-      "error"
+    setStatus(
+      "Redesign error: " +
+      error.message
     );
 
-  }finally{
-
-    setLoading(false);
-
   }
-}
-
-function renderRecommendations(data){
-
-  const box = $("recommendations");
-
-  box.innerHTML = "";
-
-  if(data.summary){
-
-    const summary = document.createElement("div");
-
-    summary.className = "message ai";
-
-    summary.innerHTML =
-      `<div class="message-bubble">${escapeHTML(data.summary)}</div>`;
-
-    box.appendChild(summary);
-  }
-
-  const recommendations =
-    Array.isArray(data.recommendations)
-      ? data.recommendations
-      : [];
-
-  if(!recommendations.length){
-
-    box.innerHTML +=
-      `<div style="color:#697080;font-size:11px">
-        No recommendations returned.
-      </div>`;
-
-    return;
-  }
-
-  recommendations.forEach((rec,index)=>{
-
-    const el = document.createElement("div");
-
-    el.className = "recommendation";
-
-    const priority =
-      ["High","Medium","Low"].includes(rec.priority)
-        ? rec.priority
-        : "Medium";
-
-    el.innerHTML = `
-      <div class="rec-top">
-
-        <div class="rec-title">
-          ${escapeHTML(rec.title || "Improvement")}
-        </div>
-
-        <div class="priority ${priority.toLowerCase()}">
-          ${priority}
-        </div>
-
-      </div>
-
-      <div class="rec-text">
-        <strong>${escapeHTML(rec.category || "Website")}:</strong>
-        ${escapeHTML(rec.reason || "")}
-        <br><br>
-        ${escapeHTML(rec.action || "")}
-      </div>
-
-      <button
-        class="btn small primary apply-rec"
-        data-index="${index}"
-      >
-        Apply Improvement
-      </button>
-    `;
-
-    box.appendChild(el);
-
-  });
-
-  box.querySelectorAll(".apply-rec").forEach(btn=>{
-
-    btn.addEventListener("click",()=>{
-
-      const rec = recommendations[
-        Number(btn.dataset.index)
-      ];
-
-      const instruction =
-        `${rec.title}. ${rec.action}. ` +
-        `Reason: ${rec.reason}`;
-
-      redesignWebsite(instruction);
-
-    });
-
-  });
 
 }
 
 /* =========================================================
-   PREVIEW
+   DOWNLOAD
 ========================================================= */
-
-function renderPreview(){
-
-  if(!state.currentHTML){
-
-    $("previewEmpty").style.display="grid";
-    $("previewIframe").style.display="none";
-
-    return;
-  }
-
-  $("previewEmpty").style.display="none";
-  $("previewIframe").style.display="block";
-
-  $("previewIframe").srcdoc =
-    state.currentHTML;
-}
-
-function setDevice(device){
-
-  state.currentDevice = device;
-
-  const frame = $("previewFrame");
-
-  frame.classList.remove(
-    "tablet",
-    "mobile"
-  );
-
-  if(device === "tablet"){
-    frame.classList.add("tablet");
-  }
-
-  if(device === "mobile"){
-    frame.classList.add("mobile");
-  }
-
-  document
-    .querySelectorAll("[data-device]")
-    .forEach(button=>{
-      button.classList.toggle(
-        "active",
-        button.dataset.device === device
-      );
-    });
-}
-
-function openFullscreen(){
-
-  const frame = $("previewFrame");
-
-  if(frame.requestFullscreen){
-    frame.requestFullscreen();
-  }
-}
-
-function openNewTab(){
-
-  if(!state.currentHTML){
-    showToast("Generate a website first.","error");
-    return;
-  }
-
-  const blob =
-    new Blob(
-      [state.currentHTML],
-      {type:"text/html"}
-    );
-
-  const url =
-    URL.createObjectURL(blob);
-
-  window.open(url,"_blank");
-
-  setTimeout(()=>{
-    URL.revokeObjectURL(url);
-  },10000);
-}
-
-/* =========================================================
-   CODE
-========================================================= */
-
-function renderCode(){
-
-  $("codeOutput").textContent =
-    state.currentHTML ||
-    "No website generated yet.";
-}
-
-async function copyHTML(){
-
-  if(!state.currentHTML){
-    showToast("Nothing to copy.","error");
-    return;
-  }
-
-  try{
-
-    await navigator.clipboard.writeText(
-      state.currentHTML
-    );
-
-    showToast(
-      "HTML copied to clipboard.",
-      "success"
-    );
-
-  }catch{
-
-    showToast(
-      "Clipboard access failed.",
-      "error"
-    );
-
-  }
-}
 
 function downloadHTML(){
 
-  if(!state.currentHTML){
-    showToast("Generate a website first.","error");
+  if(!state.html){
+
+    setStatus(
+      "Generate a website first."
+    );
+
     return;
   }
 
   const blob =
     new Blob(
-      [state.currentHTML],
-      {type:"text/html;charset=utf-8"}
+      [state.html],
+      {type:"text/html"}
     );
 
-  const url =
+  const url=
     URL.createObjectURL(blob);
 
-  const a =
+  const a=
     document.createElement("a");
 
-  const safeName =
-    (
-      state.currentProjectName ||
-      "forgeai-website"
-    )
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g,"-")
-      .replace(/^-|-$/g,"");
-
-  a.href = url;
-  a.download =
-    `${safeName || "forgeai-website"}.html`;
+  a.href=url;
+  a.download="forgeai-website.html";
 
   document.body.appendChild(a);
 
@@ -3085,1222 +1471,30 @@ function downloadHTML(){
 
   a.remove();
 
-  setTimeout(()=>{
-    URL.revokeObjectURL(url);
-  },1000);
-
-  showToast(
-    "Website downloaded.",
-    "success"
-  );
+  URL.revokeObjectURL(url);
 }
 
 /* =========================================================
-   VERSIONS
+   EVENTS
 ========================================================= */
 
-function loadVersions(){
-
-  state.versions =
-    getJSON(STORAGE.versions,[]);
-
-  renderVersions();
-}
-
-function saveVersion(){
-
-  if(!state.currentHTML){
-    showToast("Generate a website first.","error");
-    return;
-  }
-
-  const versions =
-    getJSON(STORAGE.versions,[]);
-
-  const version = {
-    id:Date.now(),
-    projectId:state.currentProjectId,
-    project:state.currentProjectName,
-    client:state.currentClient,
-    html:state.currentHTML,
-    createdAt:new Date().toLocaleString()
-  };
-
-  versions.unshift(version);
-
-  setJSON(
-    STORAGE.versions,
-    versions.slice(0,30)
-  );
-
-  state.versions = versions.slice(0,30);
-
-  renderVersions();
-  updateStats();
-
-  showToast(
-    "Version saved.",
-    "success"
-  );
-}
-
-function renderVersions(){
-
-  const box = $("versionList");
-
-  if(!state.versions.length){
-
-    box.innerHTML =
-      `<div style="color:#666d79;font-size:11px">
-        No versions saved yet.
-      </div>`;
-
-    return;
-  }
-
-  box.innerHTML = "";
-
-  state.versions
-    .filter(v =>
-      !state.currentProjectId ||
-      v.projectId === state.currentProjectId
-    )
-    .forEach((version,index)=>{
-
-      const el =
-        document.createElement("div");
-
-      el.className = "version";
-
-      el.innerHTML = `
-        <div>
-          <div class="version-name">
-            Version ${state.versions.length - index}
-          </div>
-
-          <div class="version-meta">
-            ${escapeHTML(version.project || "Project")}
-            ·
-            ${escapeHTML(version.createdAt)}
-          </div>
-        </div>
-
-        <div style="display:flex;gap:5px">
-
-          <button
-            class="btn small restore-version"
-            data-id="${version.id}"
-          >
-            Restore
-          </button>
-
-        </div>
-      `;
-
-      box.appendChild(el);
-
-    });
-
-  box
-    .querySelectorAll(".restore-version")
-    .forEach(btn=>{
-
-      btn.addEventListener("click",()=>{
-
-        const id =
-          Number(btn.dataset.id);
-
-        const version =
-          state.versions.find(
-            v => v.id === id
-          );
-
-        if(!version) return;
-
-        state.currentHTML =
-          version.html;
-
-        state.currentProjectName =
-          version.project || state.currentProjectName;
-
-        state.currentClient =
-          version.client || state.currentClient;
-
-        renderPreview();
-        renderCode();
-
-        showToast(
-          "Version restored.",
-          "success"
-        );
-
-      });
-
-    });
-}
-
-/* =========================================================
-   PROJECTS
-========================================================= */
-
-function saveProject(){
-
-  if(!state.currentHTML){
-    return;
-  }
-
-  const projects =
-    getJSON(STORAGE.projects,[]);
-
-  const project = {
-    id:
-      state.currentProjectId ||
-      Date.now(),
-
-    name:
-      state.currentProjectName ||
-      "Untitled Project",
-
-    client:
-      state.currentClient ||
-      "Client",
-
-    type:
-      $("siteType").value,
-
-    brief:
-      $("brief").value.trim(),
-
-    html:
-      state.currentHTML,
-
-    updatedAt:
-      new Date().toLocaleString()
-  };
-
-  state.currentProjectId =
-    project.id;
-
-  const existing =
-    projects.findIndex(
-      p => p.id === project.id
-    );
-
-  if(existing >= 0){
-    projects[existing] = project;
-  }else{
-    projects.unshift(project);
-  }
-
-  setJSON(
-    STORAGE.projects,
-    projects.slice(0,100)
-  );
-
-  renderProjects();
-  updateStats();
-}
-
-function loadProject(project){
-
-  state.currentProjectId =
-    project.id;
-
-  state.currentProjectName =
-    project.name;
-
-  state.currentClient =
-    project.client;
-
-  state.currentHTML =
-    project.html || "";
-
-  $("projectName").value =
-    project.name || "";
-
-  $("clientName").value =
-    project.client || "";
-
-  $("siteType").value =
-    project.type || "Business Website";
-
-  $("brief").value =
-    project.brief || "";
-
-  renderPreview();
-  renderCode();
-
-  navigate("studio");
-
-  showToast(
-    "Project loaded.",
-    "success"
-  );
-}
-
-function renderProjects(){
-
-  const projects =
-    getJSON(STORAGE.projects,[]);
-
-  const search =
-    ($("projectSearch")?.value || "")
-      .toLowerCase()
-      .trim();
-
-  const filtered =
-    projects.filter(project =>
-      `${project.name} ${project.client}`
-        .toLowerCase()
-        .includes(search)
-    );
-
-  const grid =
-    $("projectGrid");
-
-  if(!grid) return;
-
-  if(!filtered.length){
-
-    grid.innerHTML = `
-      <div class="card" style="grid-column:1/-1">
-        <div class="card-body">
-          <div class="empty-icon">▣</div>
-          <div class="empty-title">No projects yet</div>
-          <div class="empty-text">
-            Create your first client website to start building your workspace.
-          </div>
-        </div>
-      </div>
-    `;
-
-    return;
-  }
-
-  grid.innerHTML = "";
-
-  filtered.forEach(project=>{
-
-    const card =
-      document.createElement("div");
-
-    card.className = "project-card";
-
-    card.innerHTML = `
-      <div class="project-preview"></div>
-
-      <div class="project-info">
-
-        <div class="project-name">
-          ${escapeHTML(project.name)}
-        </div>
-
-        <div class="project-client">
-          ${escapeHTML(project.client)}
-        </div>
-
-        <div class="project-footer">
-
-          <span class="badge green">
-            Saved
-          </span>
-
-          <button
-            class="btn small open-project"
-            data-id="${project.id}"
-          >
-            Open
-          </button>
-
-        </div>
-
-      </div>
-    `;
-
-    grid.appendChild(card);
-
-  });
-
-  grid
-    .querySelectorAll(".open-project")
-    .forEach(btn=>{
-
-      btn.addEventListener("click",()=>{
-
-        const projects =
-          getJSON(STORAGE.projects,[]);
-
-        const project =
-          projects.find(
-            p => p.id === Number(btn.dataset.id)
-          );
-
-        if(project){
-          loadProject(project);
-        }
-
-      });
-
-    });
-}
-
-/* =========================================================
-   CLIENTS
-========================================================= */
-
-function renderClients(){
-
-  const projects =
-    getJSON(STORAGE.projects,[]);
-
-  const unique = {};
-
-  projects.forEach(project=>{
-
-    const name =
-      project.client ||
-      "Client";
-
-    unique[name] = {
-      name,
-      projects:
-        (unique[name]?.projects || 0) + 1
-    };
-
-  });
-
-  const clients =
-    Object.values(unique);
-
-  const search =
-    ($("clientSearch")?.value || "")
-      .toLowerCase()
-      .trim();
-
-  const filtered =
-    clients.filter(client =>
-      client.name
-        .toLowerCase()
-        .includes(search)
-    );
-
-  const grid =
-    $("clientGrid");
-
-  if(!grid) return;
-
-  if(!filtered.length){
-
-    grid.innerHTML = `
-      <div class="card" style="grid-column:1/-1">
-        <div class="card-body">
-          <div class="empty-title">
-            No client records yet
-          </div>
-          <div class="empty-text">
-            Clients are created automatically when you create projects.
-          </div>
-        </div>
-      </div>
-    `;
-
-    return;
-  }
-
-  grid.innerHTML = "";
-
-  filtered.forEach(client=>{
-
-    const card =
-      document.createElement("div");
-
-    card.className = "client-card";
-
-    const initials =
-      client.name
-        .split(/\s+/)
-        .slice(0,2)
-        .map(x => x[0])
-        .join("")
-        .toUpperCase();
-
-    card.innerHTML = `
-
-      <div class="avatar">
-        ${escapeHTML(initials)}
-      </div>
-
-      <div class="client-name">
-        ${escapeHTML(client.name)}
-      </div>
-
-      <div class="client-email">
-        ${client.projects}
-        project${client.projects === 1 ? "" : "s"}
-      </div>
-
-    `;
-
-    grid.appendChild(card);
-
-  });
-
-}
-
-/* =========================================================
-   DESIGNER CHAT
-========================================================= */
-
-function addDesignerMessage(text,type="ai"){
-
-  const box =
-    $("designerMessages");
-
-  const message =
-    document.createElement("div");
-
-  message.className =
-    "message " +
-    (type === "user" ? "user" : "ai");
-
-  message.innerHTML =
-    `<div class="message-bubble">
-      ${escapeHTML(text)}
-    </div>`;
-
-  box.appendChild(message);
-
-  box.scrollTop =
-    box.scrollHeight;
-}
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-const titles = {
-  dashboard:[
-    "Dashboard",
-    "Your agency workspace."
-  ],
-  studio:[
-    "AI Studio",
-    "Turn client briefs into production-ready websites."
-  ],
-  projects:[
-    "Projects",
-    "Manage your generated client websites."
-  ],
-  clients:[
-    "Clients",
-    "Keep your client workspace organized."
-  ],
-  templates:[
-    "Templates",
-    "Reusable website production systems."
-  ],
-  brandkits:[
-    "Brand Kits",
-    "Control your agency's AI design direction."
-  ],
-  settings:[
-    "Settings",
-    "Workspace and AI configuration."
-  ]
-};
-
-function navigate(view){
-
-  document
-    .querySelectorAll(".view")
-    .forEach(section=>{
-      section.classList.remove("active");
-    });
-
-  const target =
-    $("view-" + view);
-
-  if(target){
-    target.classList.add("active");
-  }
-
-  document
-    .querySelectorAll(".nav-item")
-    .forEach(item=>{
-      item.classList.toggle(
-        "active",
-        item.dataset.view === view
-      );
-    });
-
-  const info =
-    titles[view] ||
-    titles.dashboard;
-
-  $("pageTitle").textContent =
-    info[0];
-
-  $("pageSubtitle").textContent =
-    info[1];
-
-  $("sidebar").classList.remove("open");
-
-  if(view === "projects"){
-    renderProjects();
-  }
-
-  if(view === "clients"){
-    renderClients();
-  }
-
-  if(view === "studio"){
-    loadVersions();
-  }
-}
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-function openProjectModal(){
-  $("projectModal").classList.add("show");
-  $("modalProjectName").focus();
-}
-
-function closeProjectModal(){
-  $("projectModal").classList.remove("show");
-}
-
-function createProjectFromModal(){
-
-  const name =
-    $("modalProjectName").value.trim();
-
-  const client =
-    $("modalClientName").value.trim();
-
-  const brief =
-    $("modalBrief").value.trim();
-
-  if(!name){
-    showToast(
-      "Enter a project name.",
-      "error"
-    );
-    return;
-  }
-
-  $("projectName").value = name;
-  $("clientName").value = client;
-  $("brief").value = brief;
-
-  state.currentProjectId = null;
-  state.currentHTML = "";
-
-  renderPreview();
-  renderCode();
-
-  closeProjectModal();
-
-  navigate("studio");
-
-  showToast(
-    "Project workspace created.",
-    "success"
-  );
-}
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-function saveAPIKey(){
-
-  const key =
-    $("settingsKey").value.trim() ||
-    $("apiKey").value.trim();
-
-  if(!key){
-    showToast(
-      "Enter an API key.",
-      "error"
-    );
-    return;
-  }
-
-  localStorage.setItem(
-    STORAGE.key,
-    key
-  );
-
-  $("apiKey").value = key;
-  $("settingsKey").value = key;
-
-  showToast(
-    "Prototype API key saved locally.",
-    "success"
-  );
-}
-
-function clearAPIKey(){
-
-  localStorage.removeItem(
-    STORAGE.key
-  );
-
-  $("apiKey").value = "";
-  $("settingsKey").value = "";
-
-  showToast(
-    "Local API key removed.",
-    "success"
-  );
-}
-
-function saveBrandKit(){
-
-  const data = {
-    name:
-      $("brandName").value.trim(),
-
-    direction:
-      $("brandDirection").value.trim()
-  };
-
-  setJSON(
-    STORAGE.brand,
-    data
-  );
-
-  showToast(
-    "Brand kit saved.",
-    "success"
-  );
-}
-
-function loadBrandKit(){
-
-  const data =
-    getJSON(STORAGE.brand,{});
-
-  $("brandName").value =
-    data.name || "";
-
-  $("brandDirection").value =
-    data.direction || "";
-}
-
-function clearWorkspace(){
-
-  const confirmed =
-    confirm(
-      "This will delete local projects, versions, clients and brand settings. Continue?"
-    );
-
-  if(!confirmed) return;
-
-  Object.values(STORAGE)
-    .forEach(key=>{
-      localStorage.removeItem(key);
-    });
-
-  state.currentHTML = "";
-  state.currentProjectId = null;
-  state.currentProjectName = "";
-  state.currentClient = "";
-  state.versions = [];
-
-  renderPreview();
-  renderCode();
-  renderProjects();
-  renderClients();
-  renderVersions();
-  updateStats();
-
-  showToast(
-    "Local workspace cleared.",
-    "success"
-  );
-}
-
-/* =========================================================
-   STATS
-========================================================= */
-
-function updateStats(){
-
-  const projects =
-    getJSON(STORAGE.projects,[]);
-
-  const versions =
-    getJSON(STORAGE.versions,[]);
-
-  const clients = new Set(
-    projects
-      .map(p => p.client)
-      .filter(Boolean)
-  );
-
-  $("statProjects").textContent =
-    projects.length;
-
-  $("statClients").textContent =
-    clients.size;
-
-  $("statVersions").textContent =
-    versions.length;
-}
-
-function renderRecentProjects(){
-
-  const projects =
-    getJSON(STORAGE.projects,[]);
-
-  const box =
-    $("recentProjects");
-
-  if(!projects.length){
-
-    box.innerHTML = `
-      <div style="text-align:center;padding:25px;color:#666d79;font-size:11px">
-        No projects yet. Create your first client website.
-      </div>
-    `;
-
-    return;
-  }
-
-  box.innerHTML = "";
-
-  projects.slice(0,5).forEach(project=>{
-
-    const row =
-      document.createElement("div");
-
-    row.style.cssText =
-      `
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:11px 0;
-      border-bottom:1px solid var(--border);
-      `;
-
-    row.innerHTML = `
-
-      <div>
-
-        <div style="font-size:12px;font-weight:800">
-          ${escapeHTML(project.name)}
-        </div>
-
-        <div style="font-size:10px;color:#697080;margin-top:3px">
-          ${escapeHTML(project.client)}
-        </div>
-
-      </div>
-
-      <button
-        class="btn small recent-open"
-        data-id="${project.id}"
-      >
-        Open
-      </button>
-    `;
-
-    box.appendChild(row);
-
-  });
-
-  box
-    .querySelectorAll(".recent-open")
-    .forEach(btn=>{
-
-      btn.addEventListener("click",()=>{
-
-        const projects =
-          getJSON(STORAGE.projects,[]);
-
-        const project =
-          projects.find(
-            p => p.id === Number(btn.dataset.id)
-          );
-
-        if(project){
-          loadProject(project);
-        }
-
-      });
-
-    });
-}
-
-/* =========================================================
-   EVENT LISTENERS
-========================================================= */
-
-/* Navigation */
-
-document
-  .querySelectorAll(".nav-item")
-  .forEach(item=>{
-
-    item.addEventListener("click",()=>{
-
-      navigate(
-        item.dataset.view
-      );
-
-    });
-
-  });
-
-document
-  .querySelectorAll("[data-view-target]")
-  .forEach(btn=>{
-
-    btn.addEventListener("click",()=>{
-
-      navigate(
-        btn.dataset.viewTarget
-      );
-
-    });
-
-  });
-
-/* Mobile menu */
-
-$("mobileMenu")
-  .addEventListener("click",()=>{
-
-    $("sidebar")
-      .classList.toggle("open");
-
-  });
-
-/* Hero */
-
-$("heroNewProject")
+$("generate")
   .addEventListener(
     "click",
-    ()=>{
-      navigate("studio");
-      $("projectName").focus();
-    }
+    generate
   );
 
-/* Generate */
-
-$("generateBtn")
+$("redesign")
   .addEventListener(
     "click",
-    generateWebsite
+    redesign
   );
 
-/* Clear */
-
-$("clearBrief")
-  .addEventListener(
-    "click",
-    ()=>{
-
-      $("projectName").value="";
-      $("clientName").value="";
-      $("brief").value="";
-
-      showToast(
-        "Brief cleared."
-      );
-
-    }
-  );
-
-/* Device */
-
-document
-  .querySelectorAll("[data-device]")
-  .forEach(button=>{
-
-    button.addEventListener(
-      "click",
-      ()=>{
-        setDevice(
-          button.dataset.device
-        );
-      }
-    );
-
-  });
-
-/* Preview */
-
-$("fullscreenBtn")
-  .addEventListener(
-    "click",
-    openFullscreen
-  );
-
-$("newTabBtn")
-  .addEventListener(
-    "click",
-    openNewTab
-  );
-
-/* Code */
-
-$("copyCode")
-  .addEventListener(
-    "click",
-    copyHTML
-  );
-
-$("downloadCode")
+$("download")
   .addEventListener(
     "click",
     downloadHTML
   );
-
-$("topExport")
-  .addEventListener(
-    "click",
-    downloadHTML
-  );
-
-/* Save */
-
-$("saveVersionBtn")
-  .addEventListener(
-    "click",
-    saveVersion
-  );
-
-$("saveTopBtn")
-  .addEventListener(
-    "click",
-    saveVersion
-  );
-
-/* Designer */
-
-$("designerSend")
-  .addEventListener(
-    "click",
-    ()=>{
-
-      const input =
-        $("designerInput");
-
-      const text =
-        input.value.trim();
-
-      if(!text) return;
-
-      input.value = "";
-
-      redesignWebsite(text);
-
-    }
-  );
-
-$("designerInput")
-  .addEventListener(
-    "keydown",
-    event=>{
-
-      if(
-        event.key === "Enter" &&
-        !event.shiftKey
-      ){
-
-        event.preventDefault();
-
-        $("designerSend").click();
-
-      }
-
-    }
-  );
-
-/* Quick redesign */
-
-document
-  .querySelectorAll("[data-redesign]")
-  .forEach(button=>{
-
-    button.addEventListener(
-      "click",
-      ()=>{
-        redesignWebsite(
-          button.dataset.redesign
-        );
-      }
-    );
-
-  });
-
-/* Audit */
-
-$("auditBtn")
-  .addEventListener(
-    "click",
-    runAudit
-  );
-
-/* Projects */
-
-$("newProjectBtn")
-  .addEventListener(
-    "click",
-    openProjectModal
-  );
-
-$("closeModal")
-  .addEventListener(
-    "click",
-    closeProjectModal
-  );
-
-$("modalCreate")
-  .addEventListener(
-    "click",
-    createProjectFromModal
-  );
-
-$("projectSearch")
-  .addEventListener(
-    "input",
-    renderProjects
-  );
-
-/* Clients */
-
-$("newClientBtn")
-  .addEventListener(
-    "click",
-    ()=>{
-      showToast(
-        "Create a project with a client name to add a client record."
-      );
-    }
-  );
-
-$("clientSearch")
-  .addEventListener(
-    "input",
-    renderClients
-  );
-
-/* Templates */
-
-document
-  .querySelectorAll("[data-template]")
-  .forEach(button=>{
-
-    button.addEventListener(
-      "click",
-      ()=>{
-
-        const template =
-          button.dataset.template;
-
-        $("siteType").value =
-          template.includes("SaaS")
-            ? "SaaS"
-            : template.includes("Agency")
-              ? "Agency Website"
-              : "Business Website";
-
-        $("brief").value =
-          `Create a ${template} website with a premium agency-quality visual system, strong responsive design, clear navigation, meaningful sections, conversion-focused CTAs and polished interactions.`;
-
-        navigate("studio");
-
-        showToast(
-          `${template} template loaded.`,
-          "success"
-        );
-
-      }
-    );
-
-  });
-
-$("templateUseBtn")
-  .addEventListener(
-    "click",
-    ()=>{
-      $("brief").value =
-        "Create a premium modern website based on the selected client brief.";
-      navigate("studio");
-    }
-  );
-
-/* Brand */
-
-$("saveBrandKit")
-  .addEventListener(
-    "click",
-    saveBrandKit
-  );
-
-/* Settings */
-
-$("saveKey")
-  .addEventListener(
-    "click",
-    saveAPIKey
-  );
-
-$("clearKey")
-  .addEventListener(
-    "click",
-    clearAPIKey
-  );
-
-$("clearData")
-  .addEventListener(
-    "click",
-    clearWorkspace
-  );
-
-/* =========================================================
-   INITIALIZATION
-========================================================= */
-
-function init(){
-
-  const savedKey =
-    localStorage.getItem(
-      STORAGE.key
-    );
-
-  if(savedKey){
-
-    $("apiKey").value =
-      savedKey;
-
-    $("settingsKey").value =
-      savedKey;
-
-  }
-
-  loadBrandKit();
-  loadVersions();
-
-  renderProjects();
-  renderClients();
-  renderRecentProjects();
-  updateStats();
-  renderPreview();
-  renderCode();
-
-  setDevice("desktop");
-
-}
-
-init();
 
 </script>
 
