@@ -3,106 +3,312 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ForgeAI V2</title>
+<title>ForgeAI Studio</title>
 
 <style>
 *{box-sizing:border-box}
+
+:root{
+  --bg:#090b10;
+  --panel:#11141c;
+  --panel2:#171b25;
+  --line:#272c39;
+  --text:#f7f8fc;
+  --muted:#9da5b8;
+  --accent:#7c5cff;
+  --good:#38d39f;
+}
+
 body{
   margin:0;
-  font-family:Inter,Arial,sans-serif;
-  background:#08090d;
-  color:#fff;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 }
+
+button,input,textarea,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
 .app{
   min-height:100vh;
   display:grid;
-  grid-template-columns:360px 1fr;
+  grid-template-columns:310px 1fr;
 }
+
 .sidebar{
-  padding:24px;
-  background:#101218;
-  border-right:1px solid #252833;
+  background:#0d1016;
+  border-right:1px solid var(--line);
+  padding:18px;
+  overflow:auto;
 }
-.logo{
-  font-size:25px;
+
+.brand{
+  font-size:24px;
   font-weight:900;
-  margin-bottom:25px;
+  margin-bottom:18px;
 }
-.logo span{color:#7c5cff}
-label{
+
+.brand span{
+  color:var(--accent);
+}
+
+.label{
   display:block;
-  margin:16px 0 7px;
-  color:#aeb3c2;
-  font-size:13px;
+  font-size:12px;
+  color:var(--muted);
+  margin:14px 0 6px;
 }
-textarea,input,select{
+
+input,
+textarea,
+select{
   width:100%;
-  border:1px solid #303441;
-  background:#171922;
-  color:#fff;
-  border-radius:12px;
-  padding:13px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--text);
+  border-radius:10px;
+  padding:11px;
   outline:none;
 }
-textarea{min-height:180px;resize:vertical}
-button{
+
+textarea{
+  min-height:125px;
+  resize:vertical;
+}
+
+.btn{
   width:100%;
   border:0;
-  border-radius:12px;
-  padding:14px;
-  margin-top:15px;
-  cursor:pointer;
+  border-radius:10px;
+  padding:12px;
+  margin-top:9px;
+  background:var(--accent);
   color:white;
-  background:#7c5cff;
   font-weight:800;
 }
-button:hover{filter:brightness(1.1)}
-button.secondary{background:#20232d}
-.status{
-  margin-top:18px;
-  padding:12px;
-  border-radius:10px;
-  background:#171922;
-  color:#aeb3c2;
-  font-size:13px;
+
+.btn.secondary{
+  background:#202532;
 }
+
+.btn.danger{
+  background:#6d2430;
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.status{
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:12px;
+  line-height:1.45;
+}
+
 .workspace{
+  min-width:0;
   display:flex;
   flex-direction:column;
-  min-width:0;
 }
+
 .topbar{
-  height:70px;
-  padding:15px 22px;
-  border-bottom:1px solid #252833;
+  height:64px;
+  border-bottom:1px solid var(--line);
   display:flex;
   align-items:center;
-  justify-content:space-between;
+  gap:12px;
+  padding:10px 16px;
 }
-.badge{
-  padding:7px 11px;
-  border-radius:999px;
-  background:#171922;
-  color:#aaa;
-  font-size:12px;
-}
-.preview{
+
+.topbar .title{
+  font-weight:800;
   flex:1;
-  padding:18px;
-  min-height:0;
 }
+
+.pill{
+  font-size:11px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  padding:7px 10px;
+  border-radius:999px;
+  color:var(--muted);
+}
+
+.editor{
+  display:grid;
+  grid-template-columns:250px 1fr 310px;
+  min-height:calc(100vh - 64px);
+}
+
+.pages{
+  border-right:1px solid var(--line);
+  background:#0d1016;
+  padding:14px;
+}
+
+.pageBtn{
+  width:100%;
+  text-align:left;
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--muted);
+  padding:12px;
+  border-radius:9px;
+  margin-bottom:6px;
+}
+
+.pageBtn.active{
+  background:#1a1e29;
+  color:#fff;
+  border-color:#343a49;
+}
+
+.previewWrap{
+  padding:14px;
+  min-width:0;
+}
+
 iframe{
   width:100%;
-  height:100%;
-  min-height:calc(100vh - 106px);
-  border:1px solid #292d39;
-  border-radius:16px;
+  height:calc(100vh - 92px);
+  border:1px solid var(--line);
+  border-radius:14px;
   background:white;
 }
-@media(max-width:800px){
-  .app{grid-template-columns:1fr}
-  .sidebar{border-right:0;border-bottom:1px solid #252833}
-  iframe{min-height:650px}
+
+.inspector{
+  border-left:1px solid var(--line);
+  background:#0d1016;
+  padding:15px;
+  overflow:auto;
+}
+
+.inspector h3{
+  font-size:14px;
+  margin:0 0 12px;
+}
+
+.group{
+  border-bottom:1px solid var(--line);
+  padding-bottom:14px;
+  margin-bottom:14px;
+}
+
+.small{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.45;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.color{
+  height:42px;
+  padding:3px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.previewTools{
+  display:flex;
+  gap:7px;
+  margin-bottom:9px;
+}
+
+.previewTools button{
+  width:auto;
+  margin:0;
+  padding:8px 11px;
+}
+
+.productRow{
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:9px;
+  margin-top:8px;
+}
+
+.productRow input{
+  margin-top:5px;
+}
+
+@media(max-width:1050px){
+
+  .editor{
+    grid-template-columns:190px 1fr;
+  }
+
+  .inspector{
+    position:fixed;
+    right:0;
+    top:64px;
+    bottom:0;
+    width:310px;
+    z-index:20;
+    box-shadow:-20px 0 60px #000;
+  }
+
+  .app{
+    grid-template-columns:270px 1fr;
+  }
+}
+
+@media(max-width:720px){
+
+  .app{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    border-right:0;
+    border-bottom:1px solid var(--line);
+  }
+
+  .editor{
+    grid-template-columns:1fr;
+  }
+
+  .pages{
+    display:flex;
+    gap:6px;
+    overflow:auto;
+    border-right:0;
+    border-bottom:1px solid var(--line);
+  }
+
+  .pageBtn{
+    min-width:110px;
+  }
+
+  .inspector{
+    position:static;
+    width:auto;
+    border-left:0;
+  }
+
+  .previewWrap{
+    min-height:720px;
+  }
+
+  iframe{
+    height:700px;
+  }
 }
 </style>
 </head>
@@ -113,1388 +319,2834 @@ iframe{
 
 <aside class="sidebar">
 
-<div class="logo">Forge<span>AI</span> V2</div>
+  <div class="brand">
+    Forge<span>AI</span> Studio
+  </div>
 
-<label>Gemini API Key</label>
-<input id="apiKey" type="password" placeholder="Paste API key for testing">
+  <div class="small">
+    AI website generator + visual editor + multi-page builder.
+  </div>
 
-<label>Website description</label>
-<textarea id="prompt"
-placeholder="Example: Create a premium luxury electric car website called Voltaris. Dark futuristic design, animated hero, features, specifications, pricing, FAQ and contact section."></textarea>
+  <label class="label">
+    Gemini API key
+  </label>
 
-<label>Business type</label>
-<select id="business">
-<option>Auto</option>
-<option>SaaS</option>
-<option>Agency</option>
-<option>Restaurant</option>
-<option>Real Estate</option>
-<option>E-commerce</option>
-<option>Portfolio</option>
-<option>Finance</option>
-<option>Technology</option>
-</select>
+  <input
+    id="apiKey"
+    type="password"
+    placeholder="Testing only"
+  >
 
-<button id="generate">Generate Website</button>
-<button id="redesign" class="secondary">Improve Current Website</button>
-<button id="download" class="secondary">Download HTML</button>
+  <label class="label">
+    Describe your website
+  </label>
 
-<div id="status" class="status">
-Ready.
-</div>
+  <textarea
+    id="prompt"
+    placeholder="Example: Premium electric car brand with Home, Products and About pages..."
+  ></textarea>
+
+  <label class="label">
+    Business
+  </label>
+
+  <select id="business">
+    <option>Automotive</option>
+    <option>E-commerce</option>
+    <option>SaaS</option>
+    <option>Agency</option>
+    <option>Real Estate</option>
+    <option>Restaurant</option>
+    <option>Portfolio</option>
+    <option>Technology</option>
+  </select>
+
+  <button
+    class="btn"
+    id="generateBtn"
+  >
+    Generate 3-Page Website
+  </button>
+
+  <button
+    class="btn secondary"
+    id="improveBtn"
+  >
+    AI Improve
+  </button>
+
+  <button
+    class="btn secondary"
+    id="downloadBtn"
+  >
+    Download HTML
+  </button>
+
+  <button
+    class="btn secondary"
+    id="saveBtn"
+  >
+    Save Project
+  </button>
+
+  <div
+    class="status"
+    id="status"
+  >
+    Ready. Generate a website to start editing.
+  </div>
 
 </aside>
 
+
 <main class="workspace">
 
-<div class="topbar">
-<strong>AI Website Builder</strong>
-<div id="score" class="badge">No website</div>
-</div>
+  <div class="topbar">
 
-<div class="preview">
-<iframe id="preview"></iframe>
-</div>
+    <div class="title">
+      Website Studio
+    </div>
+
+    <div
+      class="pill"
+      id="pagePill"
+    >
+      Home
+    </div>
+
+    <div
+      class="pill"
+      id="scorePill"
+    >
+      No project
+    </div>
+
+  </div>
+
+
+  <div class="editor">
+
+    <aside
+      class="pages"
+      id="pages"
+    ></aside>
+
+
+    <section class="previewWrap">
+
+      <div class="previewTools">
+
+        <button
+          class="btn secondary"
+          id="desktopBtn"
+        >
+          Desktop
+        </button>
+
+        <button
+          class="btn secondary"
+          id="mobileBtn"
+        >
+          Mobile
+        </button>
+
+        <button
+          class="btn secondary"
+          id="refreshBtn"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+      <iframe
+        id="preview"
+        title="Website preview"
+      ></iframe>
+
+    </section>
+
+
+    <aside
+      class="inspector"
+      id="inspector"
+    >
+
+      <h3>
+        Edit selected page
+      </h3>
+
+      <div
+        id="inspectorContent"
+        class="small"
+      >
+        Generate a project first.
+      </div>
+
+    </aside>
+
+  </div>
 
 </main>
 
 </div>
 
+
 <script>
 
-/* =========================================================
-   FORGEAI V2
-   Architecture:
+"use strict";
 
-   USER PROMPT
-       ↓
-   GEMINI BLUEPRINT
-       ↓
-   VALIDATE BLUEPRINT
-       ↓
-   FORGEAI RENDERER
-       ↓
-   HTML
-       ↓
-   VALIDATE HTML
-       ↓
-   AUTO REPAIR
-       ↓
-   PREVIEW
-========================================================= */
+
+/*
+ ForgeAI Studio V3
+
+ IMPORTANT:
+
+ For production, move the Gemini call
+ to your own backend.
+
+ Never ship a production Gemini API key
+ in browser JavaScript.
+*/
+
 
 const CONFIG = {
-  model: "gemini-3-flash-preview",
-  apiBase:
+
+  model:
+    "gemini-3-flash-preview",
+
+  endpoint:
     "https://generativelanguage.googleapis.com/v1beta/models/"
+
 };
+
 
 const state = {
-  html: "",
-  blueprint: null
+
+  project:null,
+
+  selectedPage:"home",
+
+  selectedProduct:0,
+
+  previewMode:"desktop"
+
 };
 
-const $ = id => document.getElementById(id);
 
-function setStatus(text){
-  $("status").textContent = text;
+const $ =
+  id =>
+  document.getElementById(id);
+
+
+const esc =
+  s =>
+  String(s ?? "")
+  .replace(
+    /[&<>"']/g,
+    m =>
+      ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[m])
+  );
+
+
+function status(s){
+
+  $("status").textContent = s;
+
 }
 
-function escapeHTML(value){
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+
+function uid(){
+
+  return Math.random()
+    .toString(36)
+    .slice(2,10);
+
 }
 
-/* =========================================================
+
+/* =====================================================
    GEMINI
-========================================================= */
+===================================================== */
 
-async function callGemini(prompt){
+async function gemini(prompt){
 
-  const key = $("apiKey").value.trim();
+  const key =
+    $("apiKey")
+    .value
+    .trim();
 
   if(!key){
-    throw new Error("Gemini API key is required.");
+
+    throw new Error(
+      "Enter your Gemini API key for this test."
+    );
+
   }
 
+
   const url =
-    CONFIG.apiBase +
+    CONFIG.endpoint +
     encodeURIComponent(CONFIG.model) +
     ":generateContent?key=" +
     encodeURIComponent(key);
 
-  const response = await fetch(url,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify({
-      contents:[
-        {
-          role:"user",
-          parts:[
-            {text:prompt}
-          ]
-        }
-      ],
-      generationConfig:{
-        temperature:.35,
-        maxOutputTokens:18000,
-        responseMimeType:"application/json"
-      }
-    })
-  });
 
-  if(!response.ok){
-    const error = await response.text();
-    throw new Error("Gemini API error: " + error);
+  const r =
+    await fetch(
+      url,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+
+            contents:[
+              {
+                role:"user",
+
+                parts:[
+                  {
+                    text:prompt
+                  }
+                ]
+              }
+            ],
+
+            generationConfig:{
+
+              temperature:.25,
+
+              maxOutputTokens:24000,
+
+              responseMimeType:
+                "application/json"
+
+            }
+
+          })
+
+      }
+    );
+
+
+  if(!r.ok){
+
+    throw new Error(
+      "Gemini API error: " +
+      await r.text()
+    );
+
   }
 
-  const data = await response.json();
+
+  const data =
+    await r.json();
+
 
   const text =
-    data?.candidates?.[0]?.content?.parts
-      ?.map(x=>x.text || "")
-      .join("") || "";
-
-  if(!text){
-    throw new Error("Gemini returned an empty response.");
-  }
-
-  return text;
-}
-
-/* =========================================================
-   BLUEPRINT
-========================================================= */
-
-function blueprintPrompt(userPrompt,business){
-
-return `
-You are ForgeAI's website architect.
-
-The user wants:
-
-${userPrompt}
-
-Business type:
-${business}
-
-DO NOT generate HTML.
-
-Return ONLY valid JSON matching this exact structure:
-
-{
-  "site":{
-    "name":"",
-    "tagline":"",
-    "description":"",
-    "businessType":"",
-    "primaryColor":"",
-    "secondaryColor":"",
-    "accentColor":"",
-    "theme":"dark"
-  },
-
-  "seo":{
-    "title":"",
-    "description":"",
-    "keywords":[]
-  },
-
-  "navbar":{
-    "logo":"",
-    "links":[]
-  },
-
-  "hero":{
-    "eyebrow":"",
-    "title":"",
-    "description":"",
-    "primaryButton":"",
-    "secondaryButton":"",
-    "visual":""
-  },
-
-  "sections":[
-    {
-      "type":"features",
-      "title":"",
-      "description":"",
-      "items":[
-        {
-          "title":"",
-          "description":"",
-          "icon":""
-        }
-      ]
-    }
-  ],
-
-  "cta":{
-    "title":"",
-    "description":"",
-    "button":""
-  },
-
-  "footer":{
-    "description":"",
-    "links":[]
-  }
-}
-
-Rules:
-
-1. Create a coherent real website.
-2. Maximum 7 main sections.
-3. Use realistic copy.
-4. Never invent statistics, awards, customer counts or certifications.
-5. No fake testimonials.
-6. No lorem ipsum.
-7. Navigation links must correspond to actual section IDs.
-8. Use accessible labels.
-9. Keep content concise.
-10. Choose a professional visual direction.
-11. The "visual" field should describe the hero visual, not contain HTML.
-12. Section types may be:
-   features
-   services
-   about
-   stats
-   pricing
-   testimonials
-   gallery
-   faq
-   contact
-13. For pricing, never claim fake prices unless the user requested prices.
-14. Return JSON only.
-`;
-}
-
-/* =========================================================
-   JSON CLEANER
-========================================================= */
-
-function parseJSON(text){
-
-  let clean = String(text)
-    .trim()
-    .replace(/^```json/i,"")
-    .replace(/^```/,"")
-    .replace(/```$/,"")
-    .trim();
-
-  const start = clean.indexOf("{");
-  const end = clean.lastIndexOf("}");
-
-  if(start === -1 || end === -1){
-    throw new Error("Gemini did not return valid JSON.");
-  }
-
-  clean = clean.slice(start,end + 1);
-
-  try{
-    return JSON.parse(clean);
-  }catch(error){
-    throw new Error("Blueprint JSON is invalid.");
-  }
-}
-
-/* =========================================================
-   BLUEPRINT VALIDATION
-========================================================= */
-
-function validateBlueprint(bp){
-
-  if(!bp || typeof bp !== "object")
-    return false;
-
-  if(!bp.site?.name)
-    return false;
-
-  if(!bp.hero?.title)
-    return false;
-
-  if(!Array.isArray(bp.navbar?.links))
-    return false;
-
-  if(!Array.isArray(bp.sections))
-    return false;
-
-  return true;
-}
-
-/* =========================================================
-   ICONS
-========================================================= */
-
-const icons = {
-  star:"★",
-  bolt:"⚡",
-  shield:"◈",
-  rocket:"🚀",
-  check:"✓",
-  globe:"◎",
-  spark:"✦",
-  lock:"🔒",
-  users:"◉"
-};
-
-function icon(value){
-  return icons[String(value || "").toLowerCase()] || "✦";
-}
-
-/* =========================================================
-   SECTION RENDERER
-========================================================= */
-
-function renderSection(section,index){
-
-  const type = section.type || "features";
-  const id =
-    type.replace(/[^a-z0-9]/gi,"-") +
-    "-" + index;
-
-  if(type === "features" || type === "services"){
-
-    const items = Array.isArray(section.items)
-      ? section.items : [];
-
-    return `
-<section class="section" id="${id}">
-  <div class="container">
-    <div class="section-head">
-      <div class="kicker">FEATURES</div>
-      <h2>${escapeHTML(section.title)}</h2>
-      <p>${escapeHTML(section.description)}</p>
-    </div>
-
-    <div class="grid">
-      ${items.map(item => `
-        <article class="card">
-          <div class="icon">${icon(item.icon)}</div>
-          <h3>${escapeHTML(item.title)}</h3>
-          <p>${escapeHTML(item.description)}</p>
-        </article>
-      `).join("")}
-    </div>
-  </div>
-</section>`;
-  }
-
-  if(type === "about"){
-
-    return `
-<section class="section" id="${id}">
-  <div class="container about">
-    <div>
-      <div class="kicker">ABOUT</div>
-      <h2>${escapeHTML(section.title)}</h2>
-    </div>
-    <p>${escapeHTML(section.description)}</p>
-  </div>
-</section>`;
-  }
-
-  if(type === "stats"){
-
-    const items = Array.isArray(section.items)
-      ? section.items : [];
-
-    return `
-<section class="section" id="${id}">
- <div class="container">
-  <div class="section-head">
-   <div class="kicker">OVERVIEW</div>
-   <h2>${escapeHTML(section.title)}</h2>
-   <p>${escapeHTML(section.description)}</p>
-  </div>
-
-  <div class="stats">
-   ${items.map(x=>`
-    <div class="stat">
-      <strong>${escapeHTML(x.title)}</strong>
-      <span>${escapeHTML(x.description)}</span>
-    </div>
-   `).join("")}
-  </div>
- </div>
-</section>`;
-  }
-
-  if(type === "pricing"){
-
-    const items = Array.isArray(section.items)
-      ? section.items : [];
-
-    return `
-<section class="section" id="${id}">
- <div class="container">
-  <div class="section-head">
-   <div class="kicker">PLANS</div>
-   <h2>${escapeHTML(section.title)}</h2>
-   <p>${escapeHTML(section.description)}</p>
-  </div>
-
-  <div class="grid">
-   ${items.map(x=>`
-    <article class="card price">
-      <h3>${escapeHTML(x.title)}</h3>
-      <p>${escapeHTML(x.description)}</p>
-      <button>Get Started</button>
-    </article>
-   `).join("")}
-  </div>
- </div>
-</section>`;
-  }
-
-  if(type === "faq"){
-
-    const items = Array.isArray(section.items)
-      ? section.items : [];
-
-    return `
-<section class="section" id="${id}">
- <div class="container faq">
-  <div class="section-head">
-   <div class="kicker">FAQ</div>
-   <h2>${escapeHTML(section.title)}</h2>
-   <p>${escapeHTML(section.description)}</p>
-  </div>
-
-  ${items.map(x=>`
-   <details>
-    <summary>${escapeHTML(x.title)}</summary>
-    <p>${escapeHTML(x.description)}</p>
-   </details>
-  `).join("")}
- </div>
-</section>`;
-  }
-
-  return `
-<section class="section" id="${id}">
- <div class="container">
-  <div class="section-head">
-   <div class="kicker">DISCOVER</div>
-   <h2>${escapeHTML(section.title)}</h2>
-   <p>${escapeHTML(section.description)}</p>
-  </div>
- </div>
-</section>`;
-}
-
-/* =========================================================
-   FORGEAI HTML RENDERER
-========================================================= */
-
-function renderWebsite(bp){
-
-  const site = bp.site;
-  const hero = bp.hero;
-
-  const sections = bp.sections
-    .map(renderSection)
+    (
+      data
+      ?.candidates?.[0]
+      ?.content?.parts || []
+    )
+    .map(
+      x => x.text || ""
+    )
     .join("");
 
-  const nav =
-    bp.navbar.links.map((link,index)=>`
-      <a href="#${link.target || "section-" + index}">
-        ${escapeHTML(link.label || link)}
-      </a>
-    `).join("");
 
-  return `<!DOCTYPE html>
+  if(!text){
+
+    throw new Error(
+      "Gemini returned no content."
+    );
+
+  }
+
+
+  return text;
+
+}
+
+
+/* =====================================================
+   JSON PARSER
+===================================================== */
+
+function parseJSON(raw){
+
+  let s =
+    String(raw)
+      .trim()
+      .replace(
+        /^```json/i,
+        ""
+      )
+      .replace(
+        /^```/,
+        ""
+      )
+      .replace(
+        /```$/,
+        ""
+      )
+      .trim();
+
+
+  const a =
+    s.indexOf("{");
+
+
+  const b =
+    s.lastIndexOf("}");
+
+
+  if(
+    a < 0 ||
+    b < 0
+  ){
+
+    throw new Error(
+      "AI returned invalid JSON."
+    );
+
+  }
+
+
+  return JSON.parse(
+    s.slice(
+      a,
+      b + 1
+    )
+  );
+
+}
+
+
+/* =====================================================
+   AI BLUEPRINT
+===================================================== */
+
+function blueprintPrompt(){
+
+return `
+
+You are ForgeAI's senior website product architect.
+
+USER REQUEST:
+
+${$("prompt").value.trim()}
+
+BUSINESS TYPE:
+
+${$("business").value}
+
+
+Build a premium 3-page website blueprint.
+
+Return ONLY valid JSON.
+
+
+EXACT SCHEMA:
+
+
+{
+ "brand":{
+   "name":"",
+   "tagline":"",
+   "description":"",
+   "primary":"#000000",
+   "secondary":"#000000",
+   "accent":"#000000",
+   "logoText":""
+ },
+
+ "seo":{
+   "title":"",
+   "description":"",
+   "keywords":[]
+ },
+
+ "pages":[
+
+   {
+     "id":"home",
+     "name":"Home",
+
+     "hero":{
+       "eyebrow":"",
+       "title":"",
+       "description":"",
+       "button":"",
+       "image":""
+     },
+
+     "sections":[
+
+       {
+         "type":
+           "features|products|about|stats|gallery|faq|contact|cta",
+
+         "title":"",
+         "description":"",
+
+         "items":[
+
+           {
+             "title":"",
+             "description":"",
+             "image":"",
+             "price":"",
+             "button":""
+           }
+
+         ]
+       }
+
+     ]
+   },
+
+
+   {
+     "id":"products",
+     "name":"Products",
+
+     "hero":{},
+
+     "sections":[]
+   },
+
+
+   {
+     "id":"about",
+     "name":"About",
+
+     "hero":{},
+
+     "sections":[]
+   }
+
+ ],
+
+ "footer":{
+   "description":"",
+   "email":"",
+   "phone":""
+ }
+
+}
+
+
+RULES:
+
+- Always create exactly 3 pages.
+
+- Home = strong landing page.
+
+- Products = real product/catalog page with at least 6 products when the business sells products.
+
+- For service businesses use services instead.
+
+- About = company story, values, FAQ/contact/CTA.
+
+- Every page needs useful content.
+
+- Use image URLs from Unsplash when useful.
+
+Example:
+
+https://images.unsplash.com/...
+
+- Do not invent awards.
+
+- Do not invent certifications.
+
+- Do not invent customer counts.
+
+- Do not invent revenue.
+
+- Do not invent fake reviews.
+
+- Do not use lorem ipsum.
+
+- Use realistic product names.
+
+- Product descriptions must be concise.
+
+- If prices are not supplied by the user,
+  use "Contact for price" instead of inventing exact prices.
+
+- Make the design premium.
+
+- Make it responsive.
+
+- Make it visually different from a generic template.
+
+- Navigation must have Home, Products and About.
+
+- Return JSON only.
+
+`;
+
+}
+
+
+/* =====================================================
+   BLUEPRINT VALIDATION
+===================================================== */
+
+function ensureBlueprint(bp){
+
+  if(
+    !bp ||
+    !bp.brand ||
+    !Array.isArray(bp.pages) ||
+    bp.pages.length !== 3
+  ){
+
+    throw new Error(
+      "AI returned an incomplete 3-page blueprint."
+    );
+
+  }
+
+
+  const ids =
+    bp.pages.map(
+      p => p.id
+    );
+
+
+  if(
+    !ids.includes("home") ||
+    !ids.includes("products") ||
+    !ids.includes("about")
+  ){
+
+    throw new Error(
+      "Required pages are missing."
+    );
+
+  }
+
+
+  bp.pages.forEach(
+    p => {
+
+      p.sections =
+        Array.isArray(p.sections)
+        ? p.sections
+        : [];
+
+      p.hero =
+        p.hero || {};
+
+    }
+  );
+
+
+  return bp;
+
+}
+
+
+/* =====================================================
+   PRODUCTS
+===================================================== */
+
+function productItems(page){
+
+  return page.sections.flatMap(
+    s =>
+      s.type === "products" &&
+      Array.isArray(s.items)
+      ? s.items
+      : []
+  );
+
+}
+
+
+/* =====================================================
+   PAGE RENDERER
+===================================================== */
+
+function renderPage(
+  page,
+  bp
+){
+
+  const hero =
+    page.hero || {};
+
+
+  const sections =
+    (page.sections || [])
+      .map(
+        (s,i) =>
+          renderSection(
+            s,
+            i,
+            bp
+          )
+      )
+      .join("");
+
+
+  return `
+
+  <section
+    class="page"
+    data-page="${esc(page.id)}"
+  >
+
+    <header class="hero">
+
+      <div class="heroCopy">
+
+        <div class="eyebrow">
+          ${esc(
+            hero.eyebrow ||
+            bp.brand.tagline ||
+            "WELCOME"
+          )}
+        </div>
+
+        <h1>
+          ${esc(
+            hero.title ||
+            page.name
+          )}
+        </h1>
+
+        <p>
+          ${esc(
+            hero.description ||
+            bp.brand.description ||
+            ""
+          )}
+        </p>
+
+        <a
+          class="ctaBtn"
+          href="#products"
+        >
+          ${esc(
+            hero.button ||
+            "Explore"
+          )}
+        </a>
+
+      </div>
+
+
+      ${
+        hero.image
+
+        ?
+
+        `
+        <img
+          class="heroImg"
+          src="${esc(hero.image)}"
+          alt="${esc(
+            hero.title ||
+            page.name
+          )}"
+        >
+        `
+
+        :
+
+        `
+        <div class="heroVisual">
+
+          <span>
+            ${esc(
+              bp.brand.logoText ||
+              bp.brand.name
+            )}
+          </span>
+
+        </div>
+        `
+      }
+
+    </header>
+
+
+    ${sections}
+
+  </section>
+
+  `;
+
+}
+
+
+/* =====================================================
+   SECTION RENDERER
+===================================================== */
+
+function renderSection(
+  s,
+  index,
+  bp
+){
+
+  const id =
+    (s.type || "section") +
+    "-" +
+    index;
+
+
+  const items =
+    Array.isArray(s.items)
+    ? s.items
+    : [];
+
+
+  if(
+    s.type === "products"
+  ){
+
+    return `
+
+    <section
+      class="section"
+      id="${id}"
+    >
+
+      <div class="wrap">
+
+        <div class="sectionHead">
+
+          <span>
+            COLLECTION
+          </span>
+
+          <h2>
+            ${esc(s.title)}
+          </h2>
+
+          <p>
+            ${esc(s.description)}
+          </p>
+
+        </div>
+
+
+        <div class="productGrid">
+
+          ${items.map(
+            (p,i) => `
+
+            <article class="product">
+
+              <img
+                src="${esc(
+                  p.image ||
+                  "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80"
+                )}"
+                alt="${esc(
+                  p.title
+                )}"
+              >
+
+
+              <div class="productBody">
+
+                <h3>
+                  ${esc(p.title)}
+                </h3>
+
+                <p>
+                  ${esc(p.description)}
+                </p>
+
+
+                <div class="productBottom">
+
+                  <strong>
+                    ${esc(
+                      p.price ||
+                      "Contact for price"
+                    )}
+                  </strong>
+
+
+                  <button
+                    onclick="
+                      window.parent.postMessage(
+                        {
+                          type:'product',
+                          index:${i}
+                        },
+                        '*'
+                      )
+                    "
+                  >
+                    ${esc(
+                      p.button ||
+                      "View product"
+                    )}
+                  </button>
+
+                </div>
+
+              </div>
+
+            </article>
+
+          `
+          ).join("")}
+
+        </div>
+
+      </div>
+
+    </section>
+
+    `;
+
+  }
+
+
+  if(
+    s.type === "features" ||
+    s.type === "about" ||
+    s.type === "contact" ||
+    s.type === "faq" ||
+    s.type === "cta" ||
+    s.type === "stats" ||
+    s.type === "gallery"
+  ){
+
+    return `
+
+    <section
+      class="section"
+      id="${id}"
+    >
+
+      <div class="wrap">
+
+        <div class="sectionHead">
+
+          <span>
+            ${esc(
+              s.type.toUpperCase()
+            )}
+          </span>
+
+          <h2>
+            ${esc(s.title)}
+          </h2>
+
+          <p>
+            ${esc(s.description)}
+          </p>
+
+        </div>
+
+
+        <div class="cards">
+
+          ${items.map(
+            x => `
+
+            <article class="card">
+
+              ${
+                x.image
+                ?
+                `
+                <img
+                  src="${esc(x.image)}"
+                  alt="${esc(x.title)}"
+                >
+                `
+                :
+                ""
+              }
+
+
+              <h3>
+                ${esc(x.title)}
+              </h3>
+
+              <p>
+                ${esc(x.description)}
+              </p>
+
+
+              ${
+                x.price
+                ?
+                `
+                <strong>
+                  ${esc(x.price)}
+                </strong>
+                `
+                :
+                ""
+              }
+
+            </article>
+
+          `
+          ).join("")}
+
+        </div>
+
+      </div>
+
+    </section>
+
+    `;
+
+  }
+
+
+  return "";
+
+}
+
+
+/* =====================================================
+   FULL WEBSITE RENDERER
+===================================================== */
+
+function renderSite(bp){
+
+return `
+
+<!doctype html>
+
 <html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
+<meta charset="utf-8">
 
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
 
-<title>${escapeHTML(bp.seo?.title || site.name)}</title>
+<title>
+  ${esc(
+    bp.seo?.title ||
+    bp.brand.name
+  )}
+</title>
 
-<meta name="description"
-content="${escapeHTML(bp.seo?.description || site.description)}">
+<meta
+  name="description"
+  content="${esc(
+    bp.seo?.description ||
+    bp.brand.description
+  )}"
+>
 
-<meta name="keywords"
-content="${escapeHTML((bp.seo?.keywords || []).join(", "))}">
+<meta
+  name="keywords"
+  content="${esc(
+    (bp.seo?.keywords || [])
+      .join(", ")
+  )}"
+>
 
-<meta name="theme-color"
-content="${escapeHTML(site.primaryColor || "#7c5cff")}">
 
 <style>
 
 :root{
-  --primary:${escapeHTML(site.primaryColor || "#7c5cff")};
-  --secondary:${escapeHTML(site.secondaryColor || "#10121a")};
-  --accent:${escapeHTML(site.accentColor || "#ffffff")};
-  --bg:#07080c;
-  --text:#f5f7ff;
-  --muted:#9ca3b5;
-  --border:rgba(255,255,255,.09);
-  --max:1180px;
+
+  --p:
+    ${esc(
+      bp.brand.primary ||
+      "#7c5cff"
+    )};
+
+  --s:
+    ${esc(
+      bp.brand.secondary ||
+      "#0b0d12"
+    )};
+
+  --a:
+    ${esc(
+      bp.brand.accent ||
+      "#fff"
+    )};
+
+  --bg:#08090d;
+
+  --text:#f6f7fb;
+
+  --muted:#9aa3b5;
+
+  --line:
+    rgba(255,255,255,.1);
+
+  --max:1200px;
+
 }
+
 
 *{
   box-sizing:border-box;
 }
 
+
 html{
   scroll-behavior:smooth;
 }
 
+
 body{
+
   margin:0;
+
   background:
-    radial-gradient(circle at 50% -10%,rgba(124,92,255,.2),transparent 35%),
     var(--bg);
-  color:var(--text);
+
+  color:
+    var(--text);
+
   font-family:
-    Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    Inter,
+    system-ui,
+    Arial;
+
   line-height:1.6;
+
 }
+
 
 a{
-  color:inherit;
   text-decoration:none;
+  color:inherit;
 }
 
-.container{
-  width:min(var(--max),92%);
-  margin:auto;
-}
 
-nav{
+/* NAV */
+
+.nav{
+
   position:sticky;
+
   top:0;
-  z-index:100;
-  backdrop-filter:blur(18px);
-  background:rgba(7,8,12,.72);
-  border-bottom:1px solid var(--border);
+
+  z-index:20;
+
+  background:
+    rgba(8,9,13,.78);
+
+  backdrop-filter:
+    blur(18px);
+
+  border-bottom:
+    1px solid var(--line);
+
 }
 
-.nav-inner{
+
+.navIn{
+
+  width:
+    min(
+      var(--max),
+      92%
+    );
+
+  margin:auto;
+
   min-height:72px;
+
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
-  gap:25px;
+
 }
+
 
 .logo{
-  font-size:20px;
-  font-weight:900;
+
+  font-weight:950;
+
+  font-size:21px;
+
 }
 
-.logo span{
-  color:var(--primary);
+
+.logo b{
+  color:var(--p);
 }
 
-.links{
+
+.navLinks{
+
   display:flex;
-  gap:20px;
-  align-items:center;
+
+  gap:22px;
+
 }
 
-.links a{
+
+.navLinks a{
+
   color:var(--muted);
+
   font-size:14px;
+
 }
 
-.links a:hover{
-  color:white;
+
+.navLinks a.active,
+.navLinks a:hover{
+
+  color:#fff;
+
 }
+
+
+/* GENERAL */
+
+.wrap{
+
+  width:
+    min(
+      var(--max),
+      92%
+    );
+
+  margin:auto;
+
+}
+
+
+/* HERO */
 
 .hero{
-  min-height:720px;
+
+  min-height:700px;
+
+  width:
+    min(
+      var(--max),
+      92%
+    );
+
+  margin:auto;
+
   display:grid;
-  place-items:center;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-}
 
-.hero:before,
-.hero:after{
-  content:"";
-  position:absolute;
-  width:320px;
-  height:320px;
-  border-radius:50%;
-  background:var(--primary);
-  opacity:.13;
-  filter:blur(80px);
-  animation:float 8s ease-in-out infinite;
-}
+  grid-template-columns:
+    1.1fr .9fr;
 
-.hero:after{
-  right:-100px;
-  bottom:-100px;
-  animation-delay:-3s;
-}
-
-@keyframes float{
-  50%{transform:translateY(-35px) scale(1.08)}
-}
-
-.hero-content{
-  position:relative;
-  z-index:2;
-  max-width:900px;
-}
-
-.kicker{
-  color:var(--primary);
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-}
-
-.hero h1{
-  font-size:clamp(46px,8vw,94px);
-  line-height:.98;
-  letter-spacing:-.055em;
-  margin:18px 0;
-}
-
-.hero p{
-  max-width:700px;
-  margin:0 auto;
-  color:var(--muted);
-  font-size:19px;
-}
-
-.buttons{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-top:32px;
-}
-
-button,
-.btn{
-  display:inline-flex;
   align-items:center;
-  justify-content:center;
-  min-height:48px;
-  padding:0 22px;
-  border:0;
-  border-radius:999px;
-  cursor:pointer;
-  background:var(--primary);
-  color:white;
-  font-weight:800;
+
+  gap:55px;
+
 }
 
-.btn.secondary{
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--border);
+
+.heroCopy h1{
+
+  font-size:
+    clamp(
+      48px,
+      7vw,
+      92px
+    );
+
+  line-height:.94;
+
+  letter-spacing:-.06em;
+
+  margin:15px 0;
+
 }
+
+
+.heroCopy p{
+
+  font-size:19px;
+
+  color:var(--muted);
+
+  max-width:680px;
+
+}
+
+
+.eyebrow,
+.sectionHead span{
+
+  font-size:11px;
+
+  letter-spacing:.18em;
+
+  font-weight:900;
+
+  color:var(--p);
+
+}
+
+
+.ctaBtn{
+
+  display:inline-flex;
+
+  background:var(--p);
+
+  padding:13px 20px;
+
+  border-radius:999px;
+
+  font-weight:850;
+
+  margin-top:16px;
+
+}
+
+
+.heroImg,
+.heroVisual{
+
+  width:100%;
+
+  height:510px;
+
+  object-fit:cover;
+
+  border-radius:30px;
+
+  border:
+    1px solid var(--line);
+
+  box-shadow:
+    0 30px 100px
+    rgba(0,0,0,.35);
+
+}
+
+
+.heroVisual{
+
+  display:grid;
+
+  place-items:center;
+
+  background:
+
+    radial-gradient(
+      circle at 50% 40%,
+      color-mix(
+        in srgb,
+        var(--p) 35%,
+        transparent
+      ),
+      transparent 45%
+    ),
+
+    linear-gradient(
+      145deg,
+      #151923,
+      #08090d
+    );
+
+  font-size:40px;
+
+  font-weight:950;
+
+}
+
+
+/* SECTIONS */
 
 .section{
-  padding:110px 0;
+
+  padding:105px 0;
+
 }
 
-.section-head{
-  max-width:720px;
-  margin-bottom:45px;
+
+.sectionHead{
+
+  max-width:760px;
+
+  margin-bottom:38px;
+
 }
 
-.section h2{
-  font-size:clamp(35px,5vw,58px);
+
+.sectionHead h2{
+
+  font-size:
+    clamp(
+      35px,
+      5vw,
+      62px
+    );
+
   line-height:1;
-  letter-spacing:-.04em;
-  margin:12px 0 18px;
+
+  letter-spacing:-.045em;
+
+  margin:10px 0;
+
 }
 
-.section-head p,
-.card p,
-.about p{
+
+.sectionHead p{
+
   color:var(--muted);
+
+  font-size:17px;
+
 }
 
-.grid{
+
+/* PRODUCTS */
+
+.productGrid{
+
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+
+  grid-template-columns:
+    repeat(3,1fr);
+
   gap:18px;
+
 }
+
+
+.product,
+.card{
+
+  border:
+    1px solid var(--line);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.055),
+      rgba(255,255,255,.015)
+    );
+
+  border-radius:24px;
+
+  overflow:hidden;
+
+}
+
+
+.product img,
+.card img{
+
+  width:100%;
+
+  height:240px;
+
+  object-fit:cover;
+
+}
+
+
+.productBody,
+.card{
+
+  padding:23px;
+
+}
+
+
+.productBody p,
+.card p{
+
+  color:var(--muted);
+
+}
+
+
+.productBottom{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+}
+
+
+.productBottom button{
+
+  border:0;
+
+  border-radius:999px;
+
+  background:var(--p);
+
+  color:white;
+
+  padding:9px 13px;
+
+  font-weight:800;
+
+}
+
+
+.cards{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:18px;
+
+}
+
 
 .card{
-  padding:28px;
-  min-height:210px;
-  border:1px solid var(--border);
-  background:linear-gradient(
-    145deg,
-    rgba(255,255,255,.055),
-    rgba(255,255,255,.018)
-  );
-  border-radius:24px;
-  transition:.3s;
+
+  min-height:170px;
+
 }
 
-.card:hover{
-  transform:translateY(-7px);
-  border-color:rgba(124,92,255,.5);
-}
-
-.icon{
-  width:48px;
-  height:48px;
-  display:grid;
-  place-items:center;
-  border-radius:14px;
-  background:rgba(124,92,255,.15);
-  color:var(--primary);
-  font-size:21px;
-}
 
 .card h3{
-  margin:22px 0 7px;
+
+  margin-top:0;
+
 }
 
-.about{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:70px;
-  align-items:center;
+
+/* PAGE ROUTING */
+
+.page{
+  display:none;
 }
 
-.about p{
-  font-size:19px;
-}
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-}
-
-.stat{
-  padding:30px;
-  border:1px solid var(--border);
-  border-radius:20px;
-}
-
-.stat strong{
+.page.active{
   display:block;
-  font-size:30px;
 }
 
-.stat span{
-  color:var(--muted);
-}
 
-.price{
-  display:flex;
-  flex-direction:column;
-}
-
-.price button{
-  margin-top:auto;
-}
-
-.faq details{
-  border-bottom:1px solid var(--border);
-  padding:20px 0;
-}
-
-.faq summary{
-  cursor:pointer;
-  font-weight:800;
-}
-
-.faq p{
-  color:var(--muted);
-}
-
-.cta{
-  padding:90px 0;
-}
-
-.cta-box{
-  padding:65px;
-  text-align:center;
-  border-radius:30px;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(124,92,255,.3),transparent 55%),
-    rgba(255,255,255,.04);
-  border:1px solid var(--border);
-}
+/* FOOTER */
 
 footer{
-  padding:50px 0;
-  border-top:1px solid var(--border);
+
+  border-top:
+    1px solid var(--line);
+
+  padding:55px 0;
+
   color:var(--muted);
+
 }
+
+
+footer .wrap{
+
+  display:flex;
+
+  justify-content:
+    space-between;
+
+  gap:30px;
+
+}
+
+
+/* TABLET */
 
 @media(max-width:850px){
 
-  .links{
-    display:none;
-  }
-
   .hero{
-    min-height:620px;
-  }
 
-  .grid,
-  .stats,
-  .about{
     grid-template-columns:1fr;
-  }
 
-  .section{
+    min-height:auto;
+
     padding:75px 0;
+
   }
 
-  .cta-box{
-    padding:40px 22px;
+
+  .heroImg,
+  .heroVisual{
+
+    height:390px;
+
   }
+
+
+  .productGrid,
+  .cards{
+
+    grid-template-columns:
+      1fr 1fr;
+
+  }
+
+
+  .navLinks{
+
+    gap:10px;
+
+  }
+
+
+  .navLinks a{
+
+    font-size:12px;
+
+  }
+
 }
 
-.reveal{
-  opacity:0;
-  transform:translateY(25px);
-  transition:opacity .7s ease,transform .7s ease;
-}
 
-.reveal.visible{
-  opacity:1;
-  transform:none;
+/* MOBILE */
+
+@media(max-width:560px){
+
+  .productGrid,
+  .cards{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .heroCopy h1{
+
+    font-size:53px;
+
+  }
+
+
+  .navIn{
+
+    align-items:flex-start;
+
+    padding:14px 0;
+
+    gap:10px;
+
+  }
+
+
+  .navLinks{
+
+    flex-wrap:wrap;
+
+    justify-content:flex-end;
+
+  }
+
 }
 
 </style>
 
 </head>
 
+
 <body>
 
-<nav>
 
-<div class="container nav-inner">
+<nav class="nav">
 
-<a class="logo" href="#">
-${escapeHTML(site.name)}
-</a>
+  <div class="navIn">
 
-<div class="links">
-${nav}
-</div>
+    <a
+      class="logo"
+      href="#home"
+    >
 
-</div>
+      <b>
+        ${esc(
+          bp.brand.logoText ||
+          bp.brand.name
+        )}
+      </b>
+
+    </a>
+
+
+    <div class="navLinks">
+
+      ${bp.pages.map(
+        p => `
+
+        <a
+          data-nav="${esc(p.id)}"
+          href="#${esc(p.id)}"
+        >
+
+          ${esc(p.name)}
+
+        </a>
+
+        `
+      ).join("")}
+
+    </div>
+
+  </div>
 
 </nav>
 
-<header class="hero">
-
-<div class="hero-content reveal">
-
-<div class="kicker">
-${escapeHTML(hero.eyebrow || site.businessType)}
-</div>
-
-<h1>
-${escapeHTML(hero.title)}
-</h1>
-
-<p>
-${escapeHTML(hero.description)}
-</p>
-
-<div class="buttons">
-
-<a class="btn" href="#contact">
-${escapeHTML(hero.primaryButton || "Get Started")}
-</a>
-
-<a class="btn secondary" href="#about">
-${escapeHTML(hero.secondaryButton || "Explore")}
-</a>
-
-</div>
-
-</div>
-
-</header>
 
 <main>
 
-${sections}
-
-<section class="cta" id="contact">
-
-<div class="container">
-
-<div class="cta-box reveal">
-
-<div class="kicker">GET STARTED</div>
-
-<h2>
-${escapeHTML(bp.cta?.title || "Ready to get started?")}
-</h2>
-
-<p>
-${escapeHTML(bp.cta?.description || "")}
-</p>
-
-<a class="btn" href="mailto:hello@example.com">
-${escapeHTML(bp.cta?.button || "Contact Us")}
-</a>
-
-</div>
-
-</div>
-
-</section>
+  ${bp.pages
+    .map(
+      p =>
+        renderPage(
+          p,
+          bp
+        )
+    )
+    .join("")
+  }
 
 </main>
 
+
 <footer>
 
-<div class="container">
+  <div class="wrap">
 
-<strong>${escapeHTML(site.name)}</strong>
+    <div>
 
-<p>
-${escapeHTML(bp.footer?.description || site.description)}
-</p>
+      <strong>
+        ${esc(
+          bp.brand.name
+        )}
+      </strong>
 
-</div>
+      <p>
+        ${esc(
+          bp.footer?.description ||
+          bp.brand.description
+        )}
+      </p>
+
+    </div>
+
+
+    <div>
+
+      ${esc(
+        bp.footer?.email ||
+        ""
+      )}
+
+    </div>
+
+  </div>
 
 </footer>
 
+
 <script>
 
-document.querySelectorAll(".reveal")
-.forEach(el => {
+function showPage(id){
 
-  const observer = new IntersectionObserver(entries => {
+  document
+    .querySelectorAll(".page")
+    .forEach(
+      x =>
+        x.classList.toggle(
+          "active",
+          x.dataset.page === id
+        )
+    );
 
-    entries.forEach(entry => {
 
-      if(entry.isIntersecting){
+  document
+    .querySelectorAll("[data-nav]")
+    .forEach(
+      x =>
+        x.classList.toggle(
+          "active",
+          x.dataset.nav === id
+        )
+    );
 
-        entry.target.classList.add("visible");
+}
 
-        observer.unobserve(entry.target);
 
-      }
+function route(){
 
-    });
+  const id =
+    (
+      location.hash ||
+      "#home"
+    ).slice(1);
 
-  },{threshold:.1});
 
-  observer.observe(el);
+  showPage(
 
-});
+    document.querySelector(
+      '.page[data-page="' +
+      id +
+      '"]'
+    )
+      ? id
+      : "home"
 
-document.querySelectorAll('a[href^="#"]')
-.forEach(link => {
+  );
 
-  link.addEventListener("click",event => {
+}
 
-    const target =
-      document.querySelector(link.getAttribute("href"));
 
-    if(target){
+window.addEventListener(
+  "hashchange",
+  route
+);
 
-      event.preventDefault();
 
-      target.scrollIntoView({
-        behavior:"smooth"
-      });
-
-    }
-
-  });
-
-});
+route();
 
 <\/script>
 
+
 </body>
-</html>`;
+
+</html>
+
+`;
+
 }
 
-/* =========================================================
-   HTML VALIDATOR
-========================================================= */
 
-function validateHTML(html){
+/* =====================================================
+   PAGE SIDEBAR
+===================================================== */
 
-  const errors=[];
+function renderPagesUI(){
 
-  if(!html)
-    errors.push("Empty HTML.");
+  const pages =
+    $("pages");
 
-  if((html.match(/<html/gi)||[]).length !== 1)
-    errors.push("Multiple HTML documents detected.");
 
-  if((html.match(/<head/gi)||[]).length !== 1)
-    errors.push("Invalid head structure.");
+  if(!state.project){
 
-  if((html.match(/<body/gi)||[]).length !== 1)
-    errors.push("Invalid body structure.");
+    pages.innerHTML="";
 
-  if(!/<\/html>/i.test(html))
-    errors.push("Missing closing html tag.");
+    return;
 
-  if(!/<meta[^>]+viewport/i.test(html))
-    errors.push("Missing viewport meta.");
-
-  if(!/<title>/i.test(html))
-    errors.push("Missing title.");
-
-  if(!/<style>/i.test(html))
-    errors.push("Missing CSS.");
-
-  return errors;
-}
-
-/* =========================================================
-   AUTO REPAIR
-========================================================= */
-
-function repairHTML(html){
-
-  let output = html.trim();
-
-  output = output
-    .replace(/^```html/i,"")
-    .replace(/^```/,"")
-    .replace(/```$/,"")
-    .trim();
-
-  const first = output.search(/<!doctype html>/i);
-
-  if(first > 0){
-    output = output.slice(first);
   }
 
-  const secondDocument =
-    output.search(/<!doctype html>/ig);
 
-  if(secondDocument && secondDocument.length > 1){
-    output = output.slice(
-      secondDocument[0],
-      secondDocument[1]
+  pages.innerHTML =
+    state.project.pages
+      .map(
+        p => `
+
+        <button
+          class="pageBtn
+          ${
+            p.id ===
+            state.selectedPage
+            ? "active"
+            : ""
+          }"
+
+          data-page="${esc(p.id)}"
+        >
+
+          ${esc(p.name)}
+
+        </button>
+
+        `
+      )
+      .join("");
+
+
+  pages
+    .querySelectorAll(
+      ".pageBtn"
+    )
+    .forEach(
+      b => {
+
+        b.onclick=()=>{
+
+          state.selectedPage =
+            b.dataset.page;
+
+          state.selectedProduct=0;
+
+          renderAll();
+
+        };
+
+      }
     );
+
+}
+
+
+/* =====================================================
+   SELECTED PAGE
+===================================================== */
+
+function selected(){
+
+  return state.project.pages.find(
+    p =>
+      p.id ===
+      state.selectedPage
+  );
+
+}
+
+
+/* =====================================================
+   EDITOR / INSPECTOR
+===================================================== */
+
+function renderInspector(){
+
+  const p =
+    selected();
+
+
+  if(!p){
+
+    $("inspectorContent")
+      .innerHTML =
+      "Generate a project first.";
+
+    return;
+
   }
 
-  return output;
+
+  const products =
+    productItems(p);
+
+
+  $("inspectorContent")
+    .innerHTML = `
+
+
+    <div class="group">
+
+      <label class="label">
+        Page name
+      </label>
+
+      <input
+        id="editPageName"
+        value="${esc(p.name)}"
+      >
+
+
+      <label class="label">
+        Hero title
+      </label>
+
+      <textarea
+        id="editHeroTitle"
+      >${esc(
+        p.hero?.title || ""
+      )}</textarea>
+
+
+      <label class="label">
+        Hero description
+      </label>
+
+      <textarea
+        id="editHeroDesc"
+      >${esc(
+        p.hero?.description || ""
+      )}</textarea>
+
+
+      <label class="label">
+        Hero image URL
+      </label>
+
+      <input
+        id="editHeroImage"
+        value="${esc(
+          p.hero?.image || ""
+        )}"
+      >
+
+
+      <label class="label">
+        Upload hero photo
+      </label>
+
+      <input
+        id="heroFile"
+        type="file"
+        accept="image/*"
+      >
+
+
+      <button
+        class="btn"
+        id="applyHero"
+      >
+        Apply Page Edits
+      </button>
+
+    </div>
+
+
+    ${
+      products.length
+
+      ?
+
+      `
+
+      <div class="group">
+
+        <h3>
+          Products
+        </h3>
+
+
+        ${products
+          .map(
+            (x,i) => `
+
+            <div class="productRow">
+
+              <b>
+                Product ${i+1}
+              </b>
+
+
+              <input
+                data-p="${i}"
+                data-k="title"
+                value="${esc(
+                  x.title || ""
+                )}"
+                placeholder="Product name"
+              >
+
+
+              <input
+                data-p="${i}"
+                data-k="price"
+                value="${esc(
+                  x.price || ""
+                )}"
+                placeholder="Price"
+              >
+
+
+              <input
+                data-p="${i}"
+                data-k="image"
+                value="${esc(
+                  x.image || ""
+                )}"
+                placeholder="Image URL"
+              >
+
+
+              <input
+                data-p="${i}"
+                data-k="description"
+                value="${esc(
+                  x.description || ""
+                )}"
+                placeholder="Description"
+              >
+
+
+              <input
+                type="file"
+                data-file="${i}"
+                accept="image/*"
+              >
+
+            </div>
+
+            `
+          )
+          .join("")
+        }
+
+
+        <button
+          class="btn"
+          id="applyProducts"
+        >
+          Apply Product Edits
+        </button>
+
+      </div>
+
+      `
+
+      :
+
+      ""
+
+    }
+
+
+    <div class="group">
+
+      <h3>
+        Brand
+      </h3>
+
+
+      <label class="label">
+        Brand name
+      </label>
+
+      <input
+        id="brandName"
+        value="${esc(
+          state.project.brand.name
+        )}"
+      >
+
+
+      <label class="label">
+        Primary color
+      </label>
+
+      <input
+        id="brandColor"
+        class="color"
+        type="color"
+        value="${esc(
+          state.project.brand.primary ||
+          "#7c5cff"
+        )}"
+      >
+
+
+      <button
+        class="btn"
+        id="applyBrand"
+      >
+        Apply Brand Changes
+      </button>
+
+    </div>
+
+  `;
+
+
+  $("applyHero").onclick=()=>{
+
+    p.name =
+      $("editPageName")
+        .value
+        .trim() ||
+      p.name;
+
+
+    p.hero.title =
+      $("editHeroTitle")
+        .value;
+
+
+    p.hero.description =
+      $("editHeroDesc")
+        .value;
+
+
+    p.hero.image =
+      $("editHeroImage")
+        .value;
+
+
+    renderAll();
+
+  };
+
+
+  $("heroFile").onchange =
+    e => {
+
+      const f =
+        e.target.files?.[0];
+
+
+      if(!f)
+        return;
+
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload=()=>{
+
+        p.hero.image =
+          reader.result;
+
+        renderAll();
+
+      };
+
+
+      reader.readAsDataURL(f);
+
+    };
+
+
+  if(
+    $("applyProducts")
+  ){
+
+    $("applyProducts").onclick=()=>{
+
+      const items =
+        productItems(p);
+
+
+      document
+        .querySelectorAll(
+          "[data-p][data-k]"
+        )
+        .forEach(
+          el => {
+
+            items[
+              Number(
+                el.dataset.p
+              )
+            ][
+              el.dataset.k
+            ] =
+              el.value;
+
+          }
+        );
+
+
+      renderAll();
+
+    };
+
+  }
+
+
+  document
+    .querySelectorAll(
+      "[data-file]"
+    )
+    .forEach(
+      input => {
+
+        input.onchange =
+          e => {
+
+            const f =
+              e.target
+                .files?.[0];
+
+
+            if(!f)
+              return;
+
+
+            const reader =
+              new FileReader();
+
+
+            reader.onload=()=>{
+
+              productItems(p)[
+                Number(
+                  input.dataset.file
+                )
+              ].image =
+                reader.result;
+
+
+              renderAll();
+
+            };
+
+
+            reader.readAsDataURL(f);
+
+          };
+
+      }
+    );
+
+
+  $("applyBrand").onclick=()=>{
+
+    state.project.brand.name =
+      $("brandName").value ||
+      state.project.brand.name;
+
+
+    state.project.brand.primary =
+      $("brandColor").value;
+
+
+    renderAll();
+
+  };
+
 }
 
-/* =========================================================
+
+/* =====================================================
+   RENDER EVERYTHING
+===================================================== */
+
+function renderAll(){
+
+  renderPagesUI();
+
+  renderInspector();
+
+
+  if(state.project){
+
+    $("preview").srcdoc =
+      renderSite(
+        state.project
+      );
+
+
+    $("pagePill").textContent =
+      selected()?.name ||
+      "Home";
+
+
+    $("scorePill").textContent =
+      "Quality " +
+      quality() +
+      "/100";
+
+  }
+
+}
+
+
+/* =====================================================
    QUALITY SCORE
-========================================================= */
+===================================================== */
 
-function calculateScore(html,bp){
+function quality(){
 
-  let score=0;
+  if(!state.project)
+    return 0;
 
-  if(/<!doctype html>/i.test(html)) score+=10;
-  if(/viewport/i.test(html)) score+=10;
-  if(/<title>/i.test(html)) score+=10;
-  if(/meta name="description"/i.test(html)) score+=10;
-  if(/@media/i.test(html)) score+=10;
-  if(/scroll-behavior/i.test(html)) score+=5;
-  if(/IntersectionObserver/i.test(html)) score+=5;
-  if(bp?.sections?.length) score+=15;
-  if(bp?.navbar?.links?.length) score+=10;
-  if(bp?.hero?.title) score+=15;
 
-  return Math.min(score,100);
+  let s=0;
+
+
+  if(
+    state.project.pages.length === 3
+  )
+    s += 20;
+
+
+  if(
+    state.project.pages.every(
+      p =>
+        p.hero?.title
+    )
+  )
+    s += 15;
+
+
+  if(
+    state.project.pages.every(
+      p =>
+        p.sections?.length >= 2
+    )
+  )
+    s += 20;
+
+
+  if(
+    productItems(
+      state.project.pages
+        .find(
+          p =>
+            p.id ===
+            "products"
+        ) || {}
+    ).length >= 6
+  )
+    s += 15;
+
+
+  if(
+    state.project.brand.name
+  )
+    s += 10;
+
+
+  if(
+    state.project.seo?.title
+  )
+    s += 10;
+
+
+  if(
+    state.project.footer?.email
+  )
+    s += 5;
+
+
+  if(
+    state.project.pages.every(
+      p =>
+        p.hero?.image
+    )
+  )
+    s += 5;
+
+
+  return Math.min(
+    100,
+    s
+  );
+
 }
 
-/* =========================================================
+
+/* =====================================================
    GENERATE
-========================================================= */
+===================================================== */
 
 async function generate(){
 
   try{
 
-    setStatus("Planning website with Gemini...");
-    $("generate").disabled=true;
+    $("generateBtn")
+      .disabled=true;
 
-    const userPrompt =
-      $("prompt").value.trim();
 
-    if(!userPrompt){
-      throw new Error("Describe the website first.");
-    }
+    status(
+      "AI is planning your 3-page website..."
+    );
 
-    const business =
-      $("business").value;
 
-    /* STEP 1 */
-
-    const rawBlueprint =
-      await callGemini(
-        blueprintPrompt(
-          userPrompt,
-          business
+    const bp =
+      ensureBlueprint(
+        parseJSON(
+          await gemini(
+            blueprintPrompt()
+          )
         )
       );
 
-    setStatus("Validating AI blueprint...");
 
-    const blueprint =
-      parseJSON(rawBlueprint);
+    state.project =
+      bp;
 
-    if(!validateBlueprint(blueprint)){
-      throw new Error(
-        "Gemini produced an incomplete blueprint."
-      );
-    }
 
-    state.blueprint=blueprint;
+    state.selectedPage =
+      "home";
 
-    /* STEP 2 */
 
-    setStatus("ForgeAI is building the website...");
-
-    let html =
-      renderWebsite(blueprint);
-
-    /* STEP 3 */
-
-    setStatus("Running quality checks...");
-
-    let errors =
-      validateHTML(html);
-
-    /* STEP 4 */
-
-    if(errors.length){
-
-      setStatus(
-        "Auto-repairing " +
-        errors.length +
-        " issue(s)..."
-      );
-
-      html=repairHTML(html);
-
-      errors=validateHTML(html);
-    }
-
-    if(errors.length){
-      throw new Error(
-        "Website validation failed: " +
-        errors.join(" ")
-      );
-    }
-
-    /* STEP 5 */
-
-    state.html=html;
-
-    $("preview").srcdoc=html;
-
-    const quality =
-      calculateScore(html,blueprint);
-
-    $("score").textContent =
-      "Quality: " + quality + "/100";
-
-    setStatus(
-      "Website generated successfully."
+    status(
+      "Building pages, product catalog and editor..."
     );
 
-  }catch(error){
 
-    console.error(error);
+    renderAll();
 
-    setStatus(
-      "Error: " + error.message
+
+    status(
+      "Website ready. Edit the name, images, products and colors from the right panel."
     );
 
-  }finally{
-
-    $("generate").disabled=false;
 
   }
+
+  catch(e){
+
+    console.error(e);
+
+    status(
+      "Error: " +
+      e.message
+    );
+
+  }
+
+  finally{
+
+    $("generateBtn")
+      .disabled=false;
+
+  }
+
 }
 
-/* =========================================================
-   AI REDESIGN
-========================================================= */
 
-async function redesign(){
+/* =====================================================
+   AI IMPROVE
+===================================================== */
 
-  if(!state.blueprint){
+async function improve(){
 
-    setStatus(
+  if(!state.project){
+
+    status(
       "Generate a website first."
     );
 
     return;
+
   }
 
-  const instruction =
-    prompt(
-      "What do you want to change?"
-    );
-
-  if(!instruction) return;
 
   try{
 
-    setStatus(
-      "Planning redesign..."
+    $("improveBtn")
+      .disabled=true;
+
+
+    status(
+      "AI is improving the current project..."
     );
 
-    const request=`
 
-You are editing an existing website blueprint.
+    const request = `
 
-CURRENT BLUEPRINT:
+Improve this existing ForgeAI website blueprint.
+
+
+CURRENT:
 
 ${JSON.stringify(
-  state.blueprint,
+  state.project,
   null,
   2
 )}
 
-USER CHANGE:
 
-${instruction}
+USER REQUEST:
 
-Return ONLY the complete updated JSON blueprint.
+Make the design more premium,
+improve copy,
+improve section structure,
+and improve product presentation,
 
-Do not remove existing useful content unless necessary.
+but preserve the 3 pages
+and all useful editable content.
 
-Do not generate HTML.
+
+Return the COMPLETE updated JSON only
+using the same schema.
+
 `;
 
-    const result =
-      await callGemini(request);
 
-    const updated =
-      parseJSON(result);
-
-    if(!validateBlueprint(updated)){
-      throw new Error(
-        "Redesign returned an invalid blueprint."
+    state.project =
+      ensureBlueprint(
+        parseJSON(
+          await gemini(
+            request
+          )
+        )
       );
-    }
 
-    state.blueprint=updated;
 
-    setStatus(
-      "Rebuilding and validating..."
+    renderAll();
+
+
+    status(
+      "AI improvement completed."
     );
 
-    let html=
-      renderWebsite(updated);
+  }
 
-    html=
-      repairHTML(html);
+  catch(e){
 
-    const errors=
-      validateHTML(html);
-
-    if(errors.length){
-      throw new Error(
-        errors.join(" ")
-      );
-    }
-
-    state.html=html;
-
-    $("preview").srcdoc=html;
-
-    $("score").textContent=
-      "Quality: " +
-      calculateScore(html,updated) +
-      "/100";
-
-    setStatus(
-      "Redesign completed."
+    status(
+      "Improve error: " +
+      e.message
     );
 
-  }catch(error){
+  }
 
-    setStatus(
-      "Redesign error: " +
-      error.message
-    );
+  finally{
+
+    $("improveBtn")
+      .disabled=false;
 
   }
 
 }
 
-/* =========================================================
+
+/* =====================================================
    DOWNLOAD
-========================================================= */
+===================================================== */
 
-function downloadHTML(){
+function download(){
 
-  if(!state.html){
+  if(!state.project){
 
-    setStatus(
+    status(
       "Generate a website first."
     );
 
     return;
+
   }
+
 
   const blob =
     new Blob(
-      [state.html],
-      {type:"text/html"}
+      [
+        renderSite(
+          state.project
+        )
+      ],
+      {
+        type:
+          "text/html"
+      }
     );
 
-  const url=
-    URL.createObjectURL(blob);
 
-  const a=
-    document.createElement("a");
+  const a =
+    document.createElement(
+      "a"
+    );
 
-  a.href=url;
-  a.download="forgeai-website.html";
 
-  document.body.appendChild(a);
+  a.href =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  a.download =
+    (
+      state.project.brand.name ||
+      "forgeai-site"
+    )
+      .replace(
+        /[^a-z0-9]+/gi,
+        "-"
+      )
+      .toLowerCase() +
+    ".html";
+
 
   a.click();
 
-  a.remove();
 
-  URL.revokeObjectURL(url);
+  setTimeout(
+    () =>
+      URL.revokeObjectURL(
+        a.href
+      ),
+    500
+  );
+
 }
 
-/* =========================================================
+
+/* =====================================================
+   SAVE
+===================================================== */
+
+function save(){
+
+  if(!state.project){
+
+    status(
+      "Nothing to save."
+    );
+
+    return;
+
+  }
+
+
+  localStorage.setItem(
+    "forgeai-studio-project",
+    JSON.stringify(
+      state.project
+    )
+  );
+
+
+  status(
+    "Project saved on this device."
+  );
+
+}
+
+
+/* =====================================================
+   LOAD
+===================================================== */
+
+function load(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(
+        "forgeai-studio-project"
+      );
+
+
+    if(raw){
+
+      state.project =
+        ensureBlueprint(
+          JSON.parse(raw)
+        );
+
+
+      renderAll();
+
+
+      status(
+        "Saved project loaded."
+      );
+
+    }
+
+  }
+
+  catch(e){
+
+    console.warn(e);
+
+  }
+
+}
+
+
+/* =====================================================
+   PRODUCT MESSAGE
+===================================================== */
+
+window.addEventListener(
+  "message",
+  e => {
+
+    if(
+      e.data?.type ===
+      "product"
+    ){
+
+      state.selectedPage =
+        "products";
+
+
+      state.selectedProduct =
+        e.data.index || 0;
+
+
+      renderAll();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
    EVENTS
-========================================================= */
+===================================================== */
 
-$("generate")
-  .addEventListener(
-    "click",
-    generate
-  );
+$("generateBtn").onclick =
+  generate;
 
-$("redesign")
-  .addEventListener(
-    "click",
-    redesign
-  );
 
-$("download")
-  .addEventListener(
-    "click",
-    downloadHTML
-  );
+$("improveBtn").onclick =
+  improve;
+
+
+$("downloadBtn").onclick =
+  download;
+
+
+$("saveBtn").onclick =
+  save;
+
+
+$("refreshBtn").onclick =
+  () =>
+    state.project &&
+    (
+      $("preview").srcdoc =
+        renderSite(
+          state.project
+        )
+    );
+
+
+$("desktopBtn").onclick =
+  () => {
+
+    $("preview")
+      .style.maxWidth =
+      "none";
+
+
+    $("preview")
+      .style.margin =
+      "0";
+
+  };
+
+
+$("mobileBtn").onclick =
+  () => {
+
+    $("preview")
+      .style.maxWidth =
+      "390px";
+
+
+    $("preview")
+      .style.margin =
+      "auto";
+
+  };
+
+
+load();
 
 </script>
 
