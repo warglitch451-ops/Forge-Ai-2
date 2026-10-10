@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge Studio | AI Website Builder</title>
+<style>
+:root{color-scheme:dark;--bg:#090b12;--panel:#121725;--line:#293249;--text:#f5f7ff;--muted:#9ba5bb;--accent:#8b7cff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,sans-serif}
+button,input,textarea{font:inherit}
+button{cursor:pointer;background:#1b2232;border:1px solid var(--line);border-radius:9px;color:white;padding:10px}
+button:hover{border-color:var(--accent)}
+input,textarea{width:100%;background:#0a0e17;border:1px solid var(--line);border-radius:8px;color:white;padding:10px}
+textarea{resize:vertical;min-height:70px}
+header{padding:15px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-weight:900;font-size:20px}.logo span{color:var(--accent)}
+.layout{display:grid;grid-template-columns:190px minmax(0,1fr) 280px;min-height:90vh}
+aside{background:var(--panel);padding:14px;min-width:0}
+.left{border-right:1px solid var(--line)}.right{border-left:1px solid var(--line)}
+main{padding:16px;min-width:0}
+.nav{width:100%;text-align:left;margin:4px 0;background:transparent}
+.active{background:#302747!important;border-color:var(--accent)!important}
+.label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:15px 0 8px}
+.small{font-size:12px;color:var(--muted)}
+.row{display:flex;gap:8px}.row>*{min-width:0;flex:1}
+.field{margin:12px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+.primary{background:var(--accent);border-color:var(--accent);font-weight:700}
+.full{width:100%}
+.frame{background:#e5e7ee;padding:7px;border-radius:10px}
+iframe{width:100%;height:580px;border:0;background:white;border-radius:5px}
+#chat{height:170px;overflow:auto;border:1px solid var(--line);padding:8px;border-radius:8px;margin:8px 0}
+.message{background:#20283a;padding:8px;margin:6px 0;border-radius:8px;overflow-wrap:anywhere}
+.status{font-size:12px;color:#a8efca;min-height:20px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.left,.right{border:0;border-bottom:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">FORGE <span>/ STUDIO</span></div>
+  <div class="row">
+    <button id="undo">Undo</button>
+    <button id="export">Export HTML</button>
+    <button id="save" class="primary">Save draft</button>
+  </div>
+</header>
+<div class="layout">
+<aside class="left">
+  <div class="label">Products</div>
+  <button class="nav active" data-mode="forge">Forge AI</button>
+  <button class="nav" data-mode="founder">Entrepreneur AI</button>
+  <div class="label">Templates</div>
+  <button class="nav" data-template="agency">Agency website</button>
+  <button class="nav" data-template="startup">Startup website</button>
+  <button class="nav" data-template="portfolio">Portfolio</button>
+  <p class="small">Prototype mode. Website edits are local demonstrations, not real Gemini AI edits.</p>
+</aside>
+<main>
+  <div class="row">
+    <input id="prompt" placeholder="Describe the website you want">
+    <button id="generate" class="primary">Generate demo</button>
+  </div>
+  <p id="project" class="small">Forge AI workspace</p>
+  <div class="frame"><iframe id="preview" title="Website preview" sandbox=""></iframe></div>
+  <p class="small">Select text or images through the manual editor. Export your page as HTML.</p>
+</main>
+<aside class="right">
+  <div class="label">AI chat editor demo</div>
+  <div id="chat" aria-live="polite">
+    <div class="message">Try “make the website dark” or “change the headline”.</div>
+  </div>
+  <textarea id="instruction" placeholder="Describe an edit..."></textarea>
+  <button id="edit" class="primary full">Apply demo edit</button>
+  <div class="label">Manual editing</div>
+  <div class="field"><label>Text</label><textarea id="text" placeholder="New text"></textarea></div>
+  <button id="applyText" class="full">Change headline</button>
+  <div class="field"><label>Image URL</label><input id="image" placeholder="https://example.com/image.jpg"></div>
+  <div class="field"><label>Or upload image</label><input id="upload" type="file" accept="image/*"></div>
+  <button id="applyImage" class="full">Replace hero image</button>
+  <div class="field"><label>Background color</label><input id="color" type="color" value="#f0efff"></div>
+  <button id="applyColor" class="full">Change background</button>
+  <div class="label">Entrepreneur AI</div>
+  <textarea id="idea" placeholder="Describe your business idea"></textarea>
+  <button id="plan" class="full">Create demo business plan</button>
+  <p id="status" class="status"></p>
+</aside>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let mode="forge",html="",previous="",heroImage="";
+const templates={
+agency:`<main style="font-family:Arial;color:#20253b"><section id="hero" style="padding:12vh 8%;background:#f0efff"><p>INDEPENDENT DIGITAL STUDIO</p><h1 id="headline" style="font-size:clamp(38px,7vw,76px)">Ideas into digital experiences.</h1><p>We build memorable digital products for ambitious brands.</p><a href="#services">Explore our services →</a></section><section id="services" style="padding:50px 8%"><h2>Made for what's next.</h2><p>Strategy · Design · Development</p><img id="heroimg" alt="Modern architecture" style="width:100%;height:230px;object-fit:cover" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200"></section></main>`,
+startup:`<main style="font-family:Arial;color:white;background:#101321"><section id="hero" style="padding:12vh 8%;background:linear-gradient(130deg,#403070,#101321)"><p>YOUR NEXT CHAPTER STARTS HERE</p><h1 id="headline" style="font-size:clamp(38px,7vw,72px)">Build something extraordinary.</h1><p>Turn your ambition into a digital product.</p><a href="#features" style="color:#d1c6ff">Discover more →</a></section><section id="features" style="padding:50px 8%"><h2>Less busywork. More building.</h2></section></main>`,
+portfolio:`<main style="font-family:Arial;color:#20253b"><section id="hero" style="padding:12vh 8%;background:#f0efff"><p>DESIGNER · BUILDER · CREATOR</p><h1 id="headline" style="font-size:clamp(38px,7vw,76px)">Work worth remembering.</h1><p>A collection of projects and experiments.</p></section><section style="padding:45px 8%"><h2>Selected work</h2><p>Project One · Project Two · Project Three</p></section></main>`
+};
+function status(s){$("status").textContent=s}
+function show(body){
+ html=body;
+ $("preview").srcdoc='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0}img{max-width:100%}a{display:inline-block;margin-top:10px}</style></head><body>'+html+'</body></html>';
+}
+function saveUndo(){previous=html}
+function log(s){let d=document.createElement("div");d.className="message";d.textContent=s;$("chat").append(d);$("chat").scrollTop=$("chat").scrollHeight}
+document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{
+ mode=b.dataset.mode;
+ document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("active",x===b));
+ $("project").textContent=mode==="forge"?"Forge AI workspace":"Entrepreneur AI workspace";
+ status("Workspace changed.");
+});
+document.querySelectorAll("[data-template]").forEach(b=>b.onclick=()=>{
+ saveUndo();show(templates[b.dataset.template]);status("Template loaded.");
+});
+$("generate").onclick=()=>{
+ let p=$("prompt").value.trim();
+ if(!p)return status("Describe your website first.");
+ saveUndo();
+ let body=templates[mode==="founder"?"startup":"agency"];
+ body=body.replace("Ideas into digital experiences.",p.replace(/[<>]/g,"").slice(0,140));
+ show(body);log("Demo website created for: "+p);status("Demo generated. No AI API was called.");
+};
+$("edit").onclick=()=>{
+ let q=$("instruction").value.trim().toLowerCase();
+ if(!q)return status("Describe an edit first.");
+ saveUndo();
+ if(q.includes("dark")||q.includes("black")){
+   html=html.replace(/background:\s*#[0-9a-f]{3,8}/gi,"background:#111827").replace(/color:#20253b/g,"color:#f5f7ff");
+ }else if(q.includes("purple")) {
+   html=html.replace(/background:\s*#[0-9a-f]{3,8}/gi,"background:#e8e0ff");
+ }else if(q.includes("headline")||q.includes("heading")||q.includes("title")){
+   const t=prompt("Enter the new headline", "Build something extraordinary.");
+   if(t!==null)html=html.replace(/(<h1\b[^>]*>)[\s\S]*?(<\/h1>)/i,"$1"+t.replace(/[<>]/g,"") +"$2");
+ }else if(q.includes("image")){
+   log("Use the manual image editor to replace the image in this demo.");
+ }else{
+   log("Demo mode supports basic dark-theme, purple-theme, and headline changes. Real AI edits require Gemini backend integration.");
+ }
+ show(html);log("Demo edit: "+$("instruction").value);status("Demo edit applied where supported.");
+};
+$("applyText").onclick=()=>{
+ const t=$("text").value.trim();
+ if(!t)return status("Enter replacement text.");
+ saveUndo();
+ html=html.replace(/(<h1\b[^>]*>)[\s\S]*?(<\/h1>)/i,"$1"+t.replace(/[<>]/g,"") +"$2");
+ show(html);status("Headline updated.");
+};
+$("applyColor").onclick=()=>{
+ saveUndo();
+ html=html.replace(/(<section\b[^>]*style="[^"]*background:)[^;"]+/i,"$1"+$("color").value);
+ show(html);status("Background color updated.");
+};
+$("applyImage").onclick=()=>{
+ const file=$("upload").files[0],url=$("image").value.trim();
+ if(file){
+  if(!file.type.startsWith("image/"))return status("Choose an image file.");
+  if(file.size>2*1024*1024)return status("Use an image under 2 MB.");
+  const reader=new FileReader();
+  reader.onload=()=>replaceImage(reader.result);
+  reader.onerror=()=>status("Could not read image.");
+  reader.readAsDataURL(file);
+ }else if(/^https:\/\/\S+/i.test(url))replaceImage(url);
+ else status("Enter an HTTPS image URL or upload an image.");
+};
+function replaceImage(src){
+ saveUndo();
+ if(/<img\b[^>]*id="heroimg"/i.test(html)){
+  html=html.replace(/(<img\b[^>]*id="heroimg"[^>]*src=")[^"]*"/i,"$1"+src+'"');
+ }else{
+  html=html.replace(/(<\/section>)/i,'<img id="heroimg" alt="Uploaded image" style="width:100%;height:220px;object-fit:cover" src="'+src+'">$1');
+ }
+ show(html);status("Image replaced.");
+}
+$("undo").onclick=()=>{if(!previous)return status("Nothing to undo.");const now=html;html=previous;previous=now;show(html);status("Previous version restored.")};
+$("export").onclick=()=>{
+ const blob=new Blob(["<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'></head><body>"+html+"</body></html>"],{type:"text/html"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="forge-website.html";a.click();URL.revokeObjectURL(url);
+ status("HTML exported.");
+};
+$("save").onclick=()=>{
+ try{localStorage.setItem("forge-demo",JSON.stringify({html,mode,prompt:$("prompt").value}));status("Draft saved in this browser.");}
+ catch(e){status("Could not save this draft.");}
+};
+$("plan").onclick=()=>{
+ const idea=$("idea").value.trim();
+ if(!idea)return status("Enter a business idea.");
+ log("BUSINESS IDEA: "+idea+"\n\nCUSTOMERS: Identify a specific audience and interview potential users.\n\nPROBLEM: Verify the problem through real conversations.\n\nSOLUTION: Build a small MVP around the most important need.\n\nREVENUE: Test subscriptions, one-time payments, or advertising where appropriate.\n\nFIRST 30 DAYS: Interview users, test a landing page, build a prototype, measure signups, and refine the offer.\n\nNote: This is a template, not verified market research or a prediction of earnings.");
+ status("Starter business-plan template created.");
+};
+try{
+ const draft=JSON.parse(localStorage.getItem("forge-demo")||"null");
+ if(draft){mode=draft.mode||"forge";$("prompt").value=draft.prompt||"";show(draft.html);}
+ else show(templates.agency);
+}catch(e){show(templates.agency);}
+</script>
+</body>
+</html>
